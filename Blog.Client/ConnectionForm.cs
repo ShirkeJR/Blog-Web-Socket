@@ -16,5 +16,17 @@ namespace Blog.Client
         {
             InitializeComponent();
         }
+
+        private void btnConnect_Click(object sender, EventArgs e)
+        {
+            ServerConnection.Instance.Host = txtBoxHost.Text.ToString();
+            ServerConnection.Instance.Port = Convert.ToUInt16(txtBoxPort.Text.ToString());
+            this.DialogResult = DialogResult.OK;
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
+        }
     }
 }

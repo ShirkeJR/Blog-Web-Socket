@@ -16,7 +16,13 @@ namespace Blog.Client
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ConnectionForm());
+            ConnectionForm connect = new ConnectionForm();
+            DialogResult result = connect.ShowDialog();
+            connect.Dispose();
+            if(result != DialogResult.Cancel)
+            {
+                Application.Run(new MainForm());
+            }
         }
     }
 }
