@@ -54,5 +54,12 @@ namespace Blog.Client
             }
             return false;
         }
+        public void Disconnect()
+        {
+            if(ConnectionSocket != null)
+            {
+                ConnectionSocket.Close();
+            }
+        }
     }
 }
