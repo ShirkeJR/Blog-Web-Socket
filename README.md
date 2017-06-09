@@ -172,3 +172,14 @@ Ogólny format opisu pakietu:
 * __Odpowiedź serwera__: `THX_BYE`
 * __Opis odpowiedzi__: komunikat informujący o pomyślnym wylogowaniu
 * __Ilość parametrów odpowiedzi__: 0
+
+---
+* __Nazwa__: Pakiet zmiany nazwy bloga
+* __Treść pakietu__: `CHANGE_BLOG_NAME Id Nowa nazwa bloga`
+* __Ilość parametrów__: 1
+* __Odpowiedź serwera__: `CHANGE_BLOG_NAME OK`
+* __Opis odpowiedzi__: komunikat informujący o pomyślnej zmianie nazwy bloga
+* __Ilość parametrów odpowiedzi__: 1
+* __Odpowiedź serwera__: `CHANGE_BLOG_NAME FAILED`
+* __Opis odpowiedzi__: komunikat informujący o niepomyślnej zmianie nazwy bloga (np. próbowano zmienić nazwę nie swojego bloga)
+* __Ilość parametrów odpowiedzi__: 1
