@@ -65,6 +65,7 @@ Ogólny format opisu pakietu:
 * __Opis odpowiedzi__: status utworzenia konta
 * __Ilość parametrów odpowiedzi__: 1
 * __Opis parametru 1__: string określający czy konto zostało utworzone pomyślnie (_OK_) czy wystąpił błąd (_INVALID_)
+
 ---
 * __Nazwa__: Pakiet logowania
 * __Treść pakietu__: `LOGIN janbonkowski@umcs.pl TestTest123#`
@@ -76,10 +77,17 @@ Ogólny format opisu pakietu:
 * __Ilość parametrów odpowiedzi__: 2
 * __Opis parametru 1__: string informujący o pomyślnym logowaniu
 * __Opis parametru 2__: int będący ID bloga w systemie
-* __Odpowiedź serwera__: `LOGIN FAILED`
-* __Opis odpowiedzi__: logowanie się nie powiodło
-* __Ilość parametrów odpowiedzi__: 1
-* __Opis parametru 1__: string informujący o niepowodzeniu przy logowaniu
+* __Odpowiedź serwera__: `LOGIN FAILED INVALID`
+* __Opis odpowiedzi__: logowanie się nie powiodło z powodu niepoprawnych danych
+* __Ilość parametrów odpowiedzi__: 2
+* __Opis parametru 1__: string informujący o statusie logowania
+* __Opis parametru 2__: string informujący o nieprawidłowych danych
+* __Odpowiedź serwera__: `LOGIN FAILED LOCKED`
+* __Opis odpowiedzi__: logowanie się nie powiodło z powodu zablokowania konta
+* __Ilość parametrów odpowiedzi__: 2
+* __Opis parametru 1__: string informujący o statusie logowania
+* __Opis parametru 2__: string informujący o zablokowaniu konta
+
 ---
 * __Nazwa__: Pakiet pobierania listy blogów
 * __Treść pakietu__: `DISPLAY_BLOGS`
@@ -88,6 +96,7 @@ Ogólny format opisu pakietu:
 * __Opis odpowiedzi__: lista blogów na serwerze
 * __Ilość parametrów odpowiedzi__: n
 * __Opis parametru 1__: int określający ID bloga + string określający nazwę bloga. Nazwa bloga nie może zawierać tabulacji w nazwie i separatora pionowego |!
+
 ---
 * __Nazwa__: Pakiet pobierania listy wpisów na blogu
 * __Treść pakietu__: `DISPLAY_BLOG X`
@@ -101,6 +110,7 @@ Ogólny format opisu pakietu:
 * __Opis odpowiedzi__: nie można było pobrać listy wpisów na blogu, bo np. nie istnieje
 * __Ilość parametrów odpowiedzi__: 1
 * __Opis parametru 1__: string informujący o niepowodzeniu przy pobieraniu listy
+
 ---
 * __Nazwa__: Pakiet dodawania wpisu do bloga
 * __Treść pakietu__: `ADD_ENTRY To jest tytuł wpisu To jest treść wpisu`
@@ -124,6 +134,7 @@ Ogólny format opisu pakietu:
 * __Opis odpowiedzi__: Użytkownik nie jest właścicielem bloga, na który próbuje dodać notatkę
 * __Ilość parametrów odpowiedzi__: 1
 * __Opis parametru 1__: string informujący o niepowodzeniu przy dodawaniu treści na nie swojego bloga
+
 ---
 * __Nazwa__: Pakiet pobierania wpisu na blogu
 * __Treść pakietu__: `DISPLAY_ENTRY 1`
@@ -134,6 +145,7 @@ Ogólny format opisu pakietu:
 * __Opis parametru 1__: int określający ID wpisu
 * __Opis parametru 2__: string określający tytuł wpisu
 * __Opis parametru 3__: string określający treść wpisu
+
 ---
 * __Nazwa__: Pakiet usuwania wpisu z bloga
 * __Treść pakietu__: `DELETE_ENTRY 15`
@@ -152,6 +164,7 @@ Ogólny format opisu pakietu:
 * __Opis odpowiedzi__: Użytkownik nie jest właścicielem bloga, z którego próbuje usunąć wpis
 * __Ilość parametrów odpowiedzi__: 1
 * __Opis parametru 1__: string informujący o niepowodzeniu przy usuwaniu treści z nie swojego bloga
+
 ---
 * __Nazwa__: Pakiet wylogowania
 * __Treść pakietu__: `THX_BYE`
