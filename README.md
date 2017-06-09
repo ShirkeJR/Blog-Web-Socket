@@ -176,7 +176,9 @@ Ogólny format opisu pakietu:
 ---
 * __Nazwa__: Pakiet zmiany nazwy bloga
 * __Treść pakietu__: `CHANGE_BLOG_NAME Id Nowa nazwa bloga`
-* __Ilość parametrów__: 1
+* __Ilość parametrów__: 2
+* __Opis parametru 1__: id bloga którego nazwa ma zostać zmieniona
+* __Opis parametru 2__: string zawierający nową nazwę bloga
 * __Odpowiedź serwera__: `CHANGE_BLOG_NAME OK`
 * __Opis odpowiedzi__: komunikat informujący o pomyślnej zmianie nazwy bloga
 * __Ilość parametrów odpowiedzi__: 1
