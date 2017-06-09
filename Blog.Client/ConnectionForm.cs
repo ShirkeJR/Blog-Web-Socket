@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Blog.Client
 {
-    public partial class Form1 : Form
+    public partial class ConnectionForm : Form
     {
-        public Form1()
+        public ConnectionForm()
         {
             InitializeComponent();
         }
