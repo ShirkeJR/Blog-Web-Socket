@@ -21,7 +21,16 @@ namespace Blog.Client
         {
             ServerConnection.Instance.Host = txtBoxHost.Text.ToString();
             ServerConnection.Instance.Port = Convert.ToUInt16(txtBoxPort.Text.ToString());
-            this.DialogResult = DialogResult.OK;
+            if(ServerConnection.Instance.Connect())
+            {
+                this.DialogResult = DialogResult.OK;
+            }
+            else
+            {
+                MessageBox.Show("Can't connect to server.", "Connection error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.DialogResult = DialogResult.Cancel;
+            }
+            
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
