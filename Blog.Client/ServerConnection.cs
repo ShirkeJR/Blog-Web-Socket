@@ -59,6 +59,12 @@ namespace Blog.Client
         {
             if(ConnectionSocket != null)
             {
+                Frame request = new Frame("END", null);
+                Frame response;
+
+                SendFrame(request);
+                response = ReceiveFrame();
+
                 ConnectionSocket.Close();
                 ConnectionSocket = null;
             }
@@ -97,7 +103,7 @@ namespace Blog.Client
                 return new Frame(temp[1], temp.Skip(2).Take(temp.Length - 3).ToArray());
         }
 
-        public string registerUser(string login, string password)
+        public string RegisterUser(string login, string password)
         {
             Frame request = new Frame("REGISTER", new string[] { login, password });
             Frame response;
@@ -125,7 +131,7 @@ namespace Blog.Client
                     }
             }
         }
-        public string loginUser(string login,string password)
+        public string LoginUser(string login,string password)
         {
             Frame request = new Frame("LOGIN", new string[] { login, password });
             Frame response;
@@ -159,7 +165,7 @@ namespace Blog.Client
                     }
             }
         }
-        public string logoutUser()
+        public string LogoutUser()
         {
             Frame request = new Frame("THX_BYE", null);
             Frame response;
@@ -188,7 +194,7 @@ namespace Blog.Client
                     }
             }
         }
-        public List<String> getBlogsList()
+        public List<String> GetBlogsList()
         {
             Frame request = new Frame("DISPLAY_BLOG", null);
             Frame response;
@@ -216,7 +222,7 @@ namespace Blog.Client
                     }
             }
         }
-        public List<String> getBlog(int id)
+        public List<String> GetBlog(int id)
         {
             Frame request = new Frame("DISPLAY_BLOGS", new string[] { id.ToString() });
             Frame response;
@@ -247,7 +253,7 @@ namespace Blog.Client
                     }
             }
         }
-        public string addEntry(string title, string text)
+        public string AddEntry(string title, string text)
         {
             Frame request = new Frame("ADD_ENTRY", new string[] { title, text });
             Frame response;
@@ -278,7 +284,7 @@ namespace Blog.Client
                     }
             }
         }
-        public string displayEntry(int id)
+        public string DisplayEntry(int id)
         {
             Frame request = new Frame("ADD_ENTRY", new string[] { id.ToString() });
             Frame response;
@@ -306,7 +312,7 @@ namespace Blog.Client
                     }
             }
         }
-        public string deleteEntry(int id)
+        public string DeleteEntry(int id)
         {
             Frame request = new Frame("ADD_ENTRY", new string[] { id.ToString() });
             Frame response;
