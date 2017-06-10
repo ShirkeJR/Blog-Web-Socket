@@ -10,17 +10,18 @@ wszystko
 
 ### Opis protokołu ###
 Komunikaty pomiędzy serwerem a klientem wymieniane są w formie tekstowej. Pojedynczy pakiet ma następującą budowę:
-`X Y ZZZZZZZZZ...`
+`X Y ZZZZZZZZZ... END`
 gdzie:
 * `X` - całkowita długość prawidłowo odebranego pakietu liczona od pierwszego znaku Y do końca komunikatu
 * `Y` - komenda określająca żądanie
 * `ZZZZZZZZ...` - dane składające się na zapytanie (w przypadku klienta) bądź odpowiedź (w przypadku serwera)
+* `END` - ciąg znaków oznaczający koniec komunikatu, /rn/rn/rn$$"
 
 Pola te są rozdzielone tabulatorem.
 
 W odniesieniu do przykładu:
-`39 LOGIN janbonkowski@umcs.pl TestTest123#`
-* 39 to liczba znaków licząc od `L` do `#`.
+`39\tLOGIN\tjanbonkowski@umcs.pl\tTestTest123#\t/rn/rn/rn$$`
+* 40 to liczba znaków licząc od `L` do ostatniego `\t`.
 * `LOGIN` to żądanie wysyłane do serwera
 * `janbonkowski@umcs.pl TestTest123#` to parametry żądania (tutaj login i hasło)
 
