@@ -82,7 +82,7 @@ namespace Blog.Server
             handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReadCallback), state);
         }
 
-        public static void ReadCallback(IAsyncResult ar)
+        public async static void ReadCallback(IAsyncResult ar)
         {
             String content = String.Empty;
 
@@ -103,7 +103,7 @@ namespace Blog.Server
                 // more data.  
                 content = state.sb.ToString();
                 logBox.Invoke((MethodInvoker)delegate { logBox.Items.Add("Read " + content.Length + " bytes from socket. \n Data : " + content); });
-                content = packetAnalyze.getPacketResponse(content); // ustawić na dostęp z kilku wątków
+                content = await packetAnalyze.getPacketResponse(content); // ustawić na dostęp z kilku wątków
                 Send(handler, content);
 
                 //if (packetSize == content.Length)

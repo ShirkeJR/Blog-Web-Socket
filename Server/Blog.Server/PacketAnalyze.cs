@@ -12,7 +12,7 @@ namespace Blog.Server
         {
         }
 
-        public string getPacketResponse(string content)
+        public async Task<string> getPacketResponse(string content)
         {
             string[] packet = content.Split('\t');
             int packetSize = Convert.ToInt32(packet[0]);
@@ -25,10 +25,10 @@ namespace Blog.Server
                     messagee = buildStatus(packet);
                     break;
                 case "REGISTER":
-                    messagee = buildRegister(packet);
+                    messagee = await buildRegister(packet);
                     break;
                 case "LOGIN":
-                    messagee = buildLogin(packet);
+                    messagee = await buildLogin(packet);
                     break;
                 case "DISPLAY_BLOGS":
                     messagee = buildDisplayBlogs(packet);
@@ -67,11 +67,11 @@ namespace Blog.Server
             return type + "\t" + "status is ok";
         }
 
-        private string buildRegister(string[] packet)
+        private async Task<string> buildRegister(string[] packet)
         {
             string type = "REGISTER";
             string param1;
-            if (true) //ok
+            if (await AccountService.Instance.Register(packet[2], packet[3])) //ok
             {
                 param1 = "OK";
             }
@@ -83,16 +83,17 @@ namespace Blog.Server
         }
 
 
-        private string buildLogin(string[] packet)
+        private async Task<string> buildLogin(string[] packet)
         {
             string type = "LOGIN";
             string param1, param2;
-            if (true) //exist
+            int id;
+            if ((id = await AccountService.Instance.Login(packet[2], packet[3])) > 0) //exist
             {
                 param1 = "OK";
-                param2 = "14";
+                param2 = Convert.ToString(id);
             }
-            else if (false) //wrong data
+            else if (true) //wrong data
             {
                 param1 = "FAILED";
                 param2 = "INVALID";
