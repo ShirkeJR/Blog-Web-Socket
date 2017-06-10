@@ -8,9 +8,6 @@ namespace Blog.Server
 {
     class PacketAnalyze
     {
-        string type;
-        string param1;
-        string param2;
         public PacketAnalyze()
         {
         }
@@ -66,13 +63,14 @@ namespace Blog.Server
 
         private string buildStatus(string[] packet)
         {
-            type = "OK";
+            string type = "OK";
             return type + "\t" + "status is ok";
         }
 
         private string buildRegister(string[] packet)
         {
-            type = "REGISTER";
+            string type = "REGISTER";
+            string param1;
             if (true) //ok
             {
                 param1 = "OK";
@@ -87,7 +85,8 @@ namespace Blog.Server
 
         private string buildLogin(string[] packet)
         {
-            type = "LOGIN";
+            string type = "LOGIN";
+            string param1, param2;
             if (true) //exist
             {
                 param1 = "OK";
@@ -108,14 +107,14 @@ namespace Blog.Server
 
         private string buildDisplayBlogs(string[] packet)
         {
-            type = "DISPLAY_BLOGS";
+            string type = "DISPLAY_BLOGS";
             List<string> paramListBlog; //lista blogów
             return type;
         }
     
         private string buildDisplayBlog(string[] packet)
         {
-            type = "DISPLAY_BLOG";
+            string type = "DISPLAY_BLOG";
             if (true)// Jeżeli blog X istnieje
             {
                 List<string> paramListBlogAdds; //lista wpisów w blogu
@@ -123,18 +122,19 @@ namespace Blog.Server
             }
             else
             {
-                param1 = "FAILED";
+                string param1 = "FAILED";
                 return type + "\t" + param1;
             }
         }
 
         private string buildAddEntry(string[] packet)
         {
-            type = "ADD_ENTRY";
+            string type = "ADD_ENTRY";
+            string param1;
             if (true)// Jak stworzył
             {
                 param1 = "OK";
-                param2 = "15";
+                string param2 = "15";
                 return type + "\t" + param1 + "\t" + param2;
             }
             else if(false) // zły tytuł
@@ -156,15 +156,16 @@ namespace Blog.Server
 
         private string buildDisplayEntry(string[] packet)
         {
-            type = "DISPLAY_ENTRY";
-            param1 = "15";
-            param2 = "Tytuł notatki Treść notatki";
+            string type = "DISPLAY_ENTRY";
+            string param1 = "15";
+            string param2 = "Tytuł notatki Treść notatki";
             return type + "\t" + param1 + "\t" + param2;
         }
 
         private string buildDeleteEntry(string[] packet)
         {
-            type = "DELETE_ENTRY";
+            string type = "DELETE_ENTRY";
+            string param1, param2;
             if (true) // UDAŁO SIĘ
             {
                 param1 = "OK";
@@ -184,7 +185,8 @@ namespace Blog.Server
         }
         private string buildChangeBlogName(string[] packet)
         {
-            type = "CHANGE_BLOG_NAME";
+            string type = "CHANGE_BLOG_NAME";
+            string param1;
             if (true) // UDAŁO SIĘ
             {
                 param1 = "OK";
@@ -199,7 +201,7 @@ namespace Blog.Server
 
         private string buildLogout(string[] packet)
         {
-            type = "THX_BYE";
+            string type = "THX_BYE";
             return type;
         }
 
