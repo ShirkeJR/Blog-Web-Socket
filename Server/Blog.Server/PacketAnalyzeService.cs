@@ -37,7 +37,6 @@ namespace Blog.Server
             int packetSize = Convert.ToInt32(packet[0]);
             string packetType = packet[1];
             string messagee;
-            int sizeM = 0;
             switch (packetType)
             {
                 case "STATUS": // testowe
@@ -74,13 +73,12 @@ namespace Blog.Server
                     messagee = "";
                     break;
             }
-            sizeM = 1 + messagee.Length;
-            sizeM += sizeM.ToString().Length;
-            content = sizeM + "\t" + messagee;
+            messagee = messagee + "\t";
+            content = messagee.Length + "\t" + messagee + "/r/n/r/n/r/n$$";
             return content;
         }
 
-        private async Task<string> buildStatus(string[] packet)
+        private async Task<string> buildStatus(string[] packet) //testowe
         {
             string type = "OK";
             return type + "\t" + "status is ok";
