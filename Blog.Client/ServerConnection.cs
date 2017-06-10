@@ -217,7 +217,14 @@ namespace Blog.Client
 
             SendFrame(request);
             response = ReceiveFrame();
+            try
+            {
 
+            }
+            catch
+            {
+
+            }
             listBlogs.Invoke((MethodInvoker)delegate { listBlogs.Items.Add("lista blogow"); });
 
             switch (response.Command)
