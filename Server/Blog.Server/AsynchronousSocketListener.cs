@@ -141,6 +141,7 @@ namespace Blog.Server
 
         private void Send(Socket handler, String data)
         {
+            logBox.Invoke((MethodInvoker)delegate { logBox.Items.Add("Send " + data.Length + " bytes from socket. \n Data : " + data); });
             // Convert the string data to byte data using ASCII encoding.  
             byte[] byteData = Encoding.ASCII.GetBytes(data);
 

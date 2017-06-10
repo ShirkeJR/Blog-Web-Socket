@@ -105,19 +105,19 @@ namespace Blog.Server
         private async Task<string> buildLogin(string[] packet)
         {
             string type = "LOGIN";
-            string param1, param2;
+            string param1 = "", param2= "";
             int id;
             if ((id = await AccountService.Instance.Login(packet[2], packet[3])) > 0) //exist
             {
                 param1 = "OK";
                 param2 = Convert.ToString(id);
             }
-            else if (true) //wrong data
+            else if (id < 0) //wrong data
             {
                 param1 = "FAILED";
                 param2 = "INVALID";
             }
-            else if (false)
+            else if (false) // może kiedyś locked
             {
                 param1 = "FAILED";
                 param2 = "LOCKED";
@@ -128,17 +128,22 @@ namespace Blog.Server
         private async Task<string> buildDisplayBlogs(string[] packet)
         {
             string type = "DISPLAY_BLOGS";
-            List<string> paramListBlog; //lista blogów
-            return type;
+            List<string> blogsList = await BlogService.Instance.DisplayBlogs();
+            var paramsArray = blogsList.ToArray();
+            var paramsList = string.Join("\t", paramsArray);
+            return type + "\t" + paramsList;
         }
     
         private async Task<string> buildDisplayBlog(string[] packet)
         {
             string type = "DISPLAY_BLOG";
-            if (true)// Jeżeli blog X istnieje
+            int id = Convert.ToInt32(packet[2]);
+            if (await BlogService.Instance.BlogExists(id))// Jeżeli blog X istnieje
             {
-                List<string> paramListBlogAdds; //lista wpisów w blogu
-                return type;
+                List<string> blogPostsList = await BlogService.Instance.DisplayBlogPosts(id); //lista wpisów w blogu
+                var paramsArray = blogPostsList.ToArray();
+                var paramsList = string.Join("\t", paramsArray);
+                return type + "\t" + paramsList;
             }
             else
             {
