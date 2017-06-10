@@ -6,11 +6,30 @@ using System.Threading.Tasks;
 
 namespace Blog.Server
 {
-    class PacketAnalyze
+    class PacketAnalyzeService
     {
-        public PacketAnalyze()
+        #region Singleton
+
+        private static volatile PacketAnalyzeService _instance = null;
+        private static volatile object threadSyncLock = new object();
+
+        private PacketAnalyzeService()
         {
         }
+
+        public static PacketAnalyzeService Instance
+        {
+            get
+            {
+                lock (threadSyncLock)
+                {
+                    if (_instance == null) _instance = new PacketAnalyzeService();
+                    return _instance;
+                }
+            }
+        }
+
+        #endregion Singleton
 
         public async Task<string> getPacketResponse(string content)
         {
@@ -22,7 +41,7 @@ namespace Blog.Server
             switch (packetType)
             {
                 case "STATUS": // testowe
-                    messagee = buildStatus(packet);
+                    messagee = await buildStatus(packet);
                     break;
                 case "REGISTER":
                     messagee = await buildRegister(packet);
@@ -31,25 +50,25 @@ namespace Blog.Server
                     messagee = await buildLogin(packet);
                     break;
                 case "DISPLAY_BLOGS":
-                    messagee = buildDisplayBlogs(packet);
+                    messagee = await buildDisplayBlogs(packet);
                     break;
                 case "DISPLAY_BLOG":
-                    messagee = buildDisplayBlog(packet);
+                    messagee = await buildDisplayBlog(packet);
                     break;
                 case "ADD_ENTRY":
-                    messagee = buildAddEntry(packet);
+                    messagee = await buildAddEntry(packet);
                     break;
                 case "DISPLAY_ENTRY":
-                    messagee = buildDisplayEntry(packet);
+                    messagee = await buildDisplayEntry(packet);
                     break;
                 case "DELETE_ENTRY":
-                    messagee = buildDeleteEntry(packet);
+                    messagee = await buildDeleteEntry(packet);
                     break;
                 case "CHANGE_BLOG_NAME":
-                    messagee = buildChangeBlogName(packet);
+                    messagee = await buildChangeBlogName(packet);
                     break;
                 case "THX_BYE":
-                    messagee = buildLogout(packet);
+                    messagee = await buildLogout(packet);
                     break;
                 default:
                     messagee = "";
@@ -61,7 +80,7 @@ namespace Blog.Server
             return content;
         }
 
-        private string buildStatus(string[] packet)
+        private async Task<string> buildStatus(string[] packet)
         {
             string type = "OK";
             return type + "\t" + "status is ok";
@@ -106,14 +125,14 @@ namespace Blog.Server
             return type + "\t" + param1 + "\t" + param2;
         }
 
-        private string buildDisplayBlogs(string[] packet)
+        private async Task<string> buildDisplayBlogs(string[] packet)
         {
             string type = "DISPLAY_BLOGS";
             List<string> paramListBlog; //lista blogów
             return type;
         }
     
-        private string buildDisplayBlog(string[] packet)
+        private async Task<string> buildDisplayBlog(string[] packet)
         {
             string type = "DISPLAY_BLOG";
             if (true)// Jeżeli blog X istnieje
@@ -128,7 +147,7 @@ namespace Blog.Server
             }
         }
 
-        private string buildAddEntry(string[] packet)
+        private async Task<string> buildAddEntry(string[] packet)
         {
             string type = "ADD_ENTRY";
             string param1;
@@ -155,7 +174,7 @@ namespace Blog.Server
             }
         }
 
-        private string buildDisplayEntry(string[] packet)
+        private async Task<string> buildDisplayEntry(string[] packet)
         {
             string type = "DISPLAY_ENTRY";
             string param1 = "15";
@@ -163,7 +182,7 @@ namespace Blog.Server
             return type + "\t" + param1 + "\t" + param2;
         }
 
-        private string buildDeleteEntry(string[] packet)
+        private async Task<string> buildDeleteEntry(string[] packet)
         {
             string type = "DELETE_ENTRY";
             string param1, param2;
@@ -184,7 +203,7 @@ namespace Blog.Server
             }
             return type + "\t" + param1 + "\t" + param2;
         }
-        private string buildChangeBlogName(string[] packet)
+        private async Task<string> buildChangeBlogName(string[] packet)
         {
             string type = "CHANGE_BLOG_NAME";
             string param1;
@@ -200,7 +219,7 @@ namespace Blog.Server
         }
 
 
-        private string buildLogout(string[] packet)
+        private async Task<string> buildLogout(string[] packet)
         {
             string type = "THX_BYE";
             return type;

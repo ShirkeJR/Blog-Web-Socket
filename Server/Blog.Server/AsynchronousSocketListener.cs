@@ -9,20 +9,36 @@ namespace Blog.Server
 {
     class AsynchronousSocketListener
     {
-        // Thread signal.  
-        private static ManualResetEvent allDone = new ManualResetEvent(false);
-        private static ListBox logBox;
-        private static ListBox clientBox;
-        private static PacketAnalyze packetAnalyze;
+        #region Singleton
 
-        public AsynchronousSocketListener(ListBox lg, ListBox cb)
+        private static volatile AsynchronousSocketListener _instance = null;
+        private static volatile object threadSyncLock = new object();
+
+
+        private AsynchronousSocketListener()
         {
-            logBox = lg;
-            clientBox = cb;
-            packetAnalyze = new PacketAnalyze();
         }
 
-        public static void StartListening()
+        public static AsynchronousSocketListener Instance
+        {
+            get
+            {
+                lock (threadSyncLock)
+                {
+                    if (_instance == null) _instance = new AsynchronousSocketListener();
+                    return _instance;
+                }
+            }
+        }
+
+        #endregion Singleton
+
+        // Thread signal.  
+        private static ManualResetEvent allDone = new ManualResetEvent(false);
+        public ListBox logBox { set; get; }
+        public ListBox clientBox { set; get; }
+
+        public void StartListening()
         {
             // Data buffer for incoming data.  
             byte[] bytes = new Byte[1024];
@@ -66,7 +82,7 @@ namespace Blog.Server
             }
         }
 
-        public static void AcceptCallback(IAsyncResult ar)
+        public void AcceptCallback(IAsyncResult ar)
         {
             // Signal the main thread to continue.  
             allDone.Set();
@@ -82,7 +98,7 @@ namespace Blog.Server
             handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReadCallback), state);
         }
 
-        public async static void ReadCallback(IAsyncResult ar)
+        public async void ReadCallback(IAsyncResult ar)
         {
             String content = String.Empty;
 
@@ -103,7 +119,7 @@ namespace Blog.Server
                 // more data.  
                 content = state.sb.ToString();
                 logBox.Invoke((MethodInvoker)delegate { logBox.Items.Add("Read " + content.Length + " bytes from socket. \n Data : " + content); });
-                content = await packetAnalyze.getPacketResponse(content); // ustawić na dostęp z kilku wątków
+                content = await PacketAnalyzeService.Instance.getPacketResponse(content); // ustawić na dostęp z kilku wątków
                 Send(handler, content);
 
                 //if (packetSize == content.Length)
@@ -123,7 +139,7 @@ namespace Blog.Server
             }
         }
 
-        private static void Send(Socket handler, String data)
+        private void Send(Socket handler, String data)
         {
             // Convert the string data to byte data using ASCII encoding.  
             byte[] byteData = Encoding.ASCII.GetBytes(data);
@@ -133,7 +149,7 @@ namespace Blog.Server
                 new AsyncCallback(SendCallback), handler);
         }
 
-        private static void SendCallback(IAsyncResult ar)
+        private void SendCallback(IAsyncResult ar)
         {
             try
             {

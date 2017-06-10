@@ -17,12 +17,13 @@ namespace Blog.Server
         public Form1()
         {
             InitializeComponent();
-            asynchronousSocketListener = new AsynchronousSocketListener(logBox, clientBox);
+            AsynchronousSocketListener.Instance.logBox = logBox;
+            AsynchronousSocketListener.Instance.clientBox = clientBox;
         }
 
         private async void button1_Click(object sender, EventArgs e)
         {
-            await Task.Run(() => AsynchronousSocketListener.StartListening());
+            await Task.Run(() => AsynchronousSocketListener.Instance.StartListening());
         }
 
         private void button2_Click(object sender, EventArgs e)
