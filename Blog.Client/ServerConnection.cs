@@ -32,7 +32,9 @@ namespace Blog.Client
         public ushort Port { set; get; }
         public Socket ConnectionSocket { set; get; }
         public User LoggedUser { set; get; }
-        public ListBox listBlogs { set; get; }
+        // view
+        public ListBox blogsList { set; get; }
+        public ListBox entriesList { set; get; }
         
         public bool Connect()
         {
@@ -217,16 +219,7 @@ namespace Blog.Client
 
             SendFrame(request);
             response = ReceiveFrame();
-            try
-            {
-
-            }
-            catch
-            {
-
-            }
-            listBlogs.Invoke((MethodInvoker)delegate { listBlogs.Items.Add("lista blogow"); });
-
+            
             switch (response.Command)
             {
                 case "QUE?":
@@ -239,6 +232,8 @@ namespace Blog.Client
                     }
                 case "DISPLAY_BLOG":
                     {
+                        foreach (var p in response.Parametres)
+                            blogsList.Items.Add(p);
                         return response.Parametres.ToList();
                     }
                 default:
