@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,11 +17,13 @@ namespace Blog.Server
         private static ManualResetEvent allDone = new ManualResetEvent(false);
         private static ListBox logBox;
         private static ListBox clientBox;
+        private static PacketAnalyze packetAnalyze;
 
         public AsynchronousSocketListener(ListBox lg, ListBox cb)
         {
             logBox = lg;
             clientBox = cb;
+            packetAnalyze = new PacketAnalyze();
         }
 
         public static void StartListening()
@@ -103,20 +106,24 @@ namespace Blog.Server
                 // Check for end-of-file tag. If it is not there, read   
                 // more data.  
                 content = state.sb.ToString();
-                if (content.IndexOf("<EOF>") > -1)
-                {
-                    // All the data has been read from the   
-                    // client. Display it on the console.  
-                    logBox.Invoke((MethodInvoker)delegate { logBox.Items.Add("Read "+ content.Length + " bytes from socket. \n Data : " + content); });
-                    // Echo the data back to the client.  
-                    Send(handler, content);
-                }
-                else
-                {
-                    // Not all data received. Get more.  
-                    handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
-                    new AsyncCallback(ReadCallback), state);
-                }
+                logBox.Invoke((MethodInvoker)delegate { logBox.Items.Add("Read " + content.Length + " bytes from socket. \n Data : " + content); });
+                content = packetAnalyze.getPacketResponse(content); // ustawić na dostęp z kilku wątków
+                Send(handler, content);
+
+                //if (packetSize == content.Length)
+                //{
+                //    // All the data has been read from the   
+                //    // client. Display it on the console.  
+                //    logBox.Invoke((MethodInvoker)delegate { logBox.Items.Add("Read " + content.Length + " bytes from socket. \n Data : " + content); });
+                //    // Echo the data back to the client.  
+                //    Send(handler, content);
+                //}
+                //else
+                //{
+                //    // Not all data received. Get more.  
+                //    handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
+                //    new AsyncCallback(ReadCallback), state);
+                //}
             }
         }
 
@@ -139,7 +146,7 @@ namespace Blog.Server
                 // Complete sending the data to the remote device.  
                 int bytesSent = handler.EndSend(ar);
                 logBox.Invoke((MethodInvoker)delegate { logBox.Items.Add("Sent " + bytesSent + " bytes to client."); });
-
+                clientBox.Invoke((MethodInvoker)delegate { clientBox.Items.Remove(((IPEndPoint)(handler.RemoteEndPoint)).Address.ToString()); });
                 handler.Shutdown(SocketShutdown.Both);
                 handler.Close();
 
