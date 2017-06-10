@@ -101,12 +101,12 @@ namespace Blog.Client
                 string response = "";
                 Byte[] bytesRecevived = new Byte[1];
 
-                do
+                while (!response.EndsWith("/rn/rn/rn$$"))
                 {
                     receivedBytesCount += ConnectionSocket.Receive(bytesRecevived, bytesRecevived.Length, 0);
                     response = response + Encoding.ASCII.GetString(bytesRecevived, 0, 1);
                 }
-                while (response.EndsWith("/rn/rn/rn$$"));
+                
 
                 string[] temp = response.Split('\t');
                 if (temp.Length == 3)
