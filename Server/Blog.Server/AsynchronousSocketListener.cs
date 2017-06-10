@@ -118,24 +118,21 @@ namespace Blog.Server
                 // Check for end-of-file tag. If it is not there, read   
                 // more data.  
                 content = state.sb.ToString();
-                logBox.Invoke((MethodInvoker)delegate { logBox.Items.Add("Read " + content.Length + " bytes from socket. \n Data : " + content); });
-                content = await PacketAnalyzeService.Instance.getPacketResponse(content); // ustawić na dostęp z kilku wątków
-                Send(handler, content);
-
-                //if (packetSize == content.Length)
-                //{
-                //    // All the data has been read from the   
-                //    // client. Display it on the console.  
-                //    logBox.Invoke((MethodInvoker)delegate { logBox.Items.Add("Read " + content.Length + " bytes from socket. \n Data : " + content); });
-                //    // Echo the data back to the client.  
-                //    Send(handler, content);
-                //}
-                //else
-                //{
-                //    // Not all data received. Get more.  
-                //    handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
-                //    new AsyncCallback(ReadCallback), state);
-                //}
+                if (content.IndexOf("/rn/rn/rn$$") > -1)
+                {
+                    // All the data has been read from the   
+                    // client. Display it on the console.  
+                    logBox.Invoke((MethodInvoker)delegate { logBox.Items.Add("Read " + content.Length + " bytes from socket. \n Data : " + content); });
+                    // Echo the data back to the client.  
+                    content = await PacketAnalyzeService.Instance.getPacketResponse(content); // ustawić na dostęp z kilku wątków
+                    Send(handler, content);
+                }
+                else
+                {
+                    // Not all data received. Get more.  
+                    handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
+                    new AsyncCallback(ReadCallback), state);
+                }
             }
         }
 
@@ -159,6 +156,7 @@ namespace Blog.Server
                 // Complete sending the data to the remote device.  
                 int bytesSent = handler.EndSend(ar);
                 logBox.Invoke((MethodInvoker)delegate { logBox.Items.Add("Sent " + bytesSent + " bytes to client."); });
+
                 clientBox.Invoke((MethodInvoker)delegate { clientBox.Items.Remove(((IPEndPoint)(handler.RemoteEndPoint)).Address.ToString()); });
                 handler.Shutdown(SocketShutdown.Both);
                 handler.Close();

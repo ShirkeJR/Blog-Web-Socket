@@ -1,4 +1,4 @@
-# Blog #
+﻿# Blog #
 
 ### Założenia ###
 * Klienci posiadają konto na serwerze.
@@ -171,6 +171,14 @@ Ogólny format opisu pakietu:
 * __Ilość parametrów__: 0
 * __Odpowiedź serwera__: `THX_BYE`
 * __Opis odpowiedzi__: komunikat informujący o pomyślnym wylogowaniu
+* __Ilość parametrów odpowiedzi__: 0
+
+---
+* __Nazwa__: Pakiet GTFO
+* __Treść pakietu__: `Co kolwiek`
+* __Ilość parametrów__: 0
+* __Odpowiedź serwera__: `GTFO`
+* __Opis odpowiedzi__: komunikat informujący o nie istniejącym komunikacie
 * __Ilość parametrów odpowiedzi__: 0
 
 ---

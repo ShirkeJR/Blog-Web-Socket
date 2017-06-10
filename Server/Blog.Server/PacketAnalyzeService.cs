@@ -70,7 +70,7 @@ namespace Blog.Server
                     messagee = await buildLogout(packet);
                     break;
                 default:
-                    messagee = "";
+                    messagee = await buildDefault(packet);
                     break;
             }
             messagee = messagee + "\t";
@@ -224,6 +224,12 @@ namespace Blog.Server
         private async Task<string> buildLogout(string[] packet)
         {
             string type = "THX_BYE";
+            return type;
+        }
+
+        private async Task<string> buildDefault(string[] packet)
+        {
+            string type = "GTFO";
             return type;
         }
 
