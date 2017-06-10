@@ -58,6 +58,7 @@
     <Compile Include="ConnectionForm.Designer.cs">
       <DependentUpon>ConnectionForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\Frame.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,6 +68,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerConnection.cs" />
+    <Compile Include="Models\User.cs" />
     <EmbeddedResource Include="BlogForm.resx">
       <DependentUpon>BlogForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -94,7 +96,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="protocol.md" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
