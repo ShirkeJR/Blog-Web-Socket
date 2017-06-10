@@ -214,7 +214,7 @@ namespace Blog.Client
         }
         public List<String> GetBlogsList()
         {
-            Frame request = new Frame("DISPLAY_BLOG", null);
+            Frame request = new Frame("DISPLAY_BLOGS", null);
             Frame response;
 
             SendFrame(request);
@@ -230,7 +230,7 @@ namespace Blog.Client
                     {
                         return new List<String>() { "IDENTIFY_PLS" };
                     }
-                case "DISPLAY_BLOG":
+                case "DISPLAY_BLOGS":
                     {
                         foreach (var p in response.Parametres)
                             blogsList.Items.Add(p);
@@ -244,7 +244,7 @@ namespace Blog.Client
         }
         public List<String> GetBlog(int id)
         {
-            Frame request = new Frame("DISPLAY_BLOGS", new string[] { id.ToString() });
+            Frame request = new Frame("DISPLAY_BLOG", new string[] { id.ToString() });
             Frame response;
 
             SendFrame(request);
