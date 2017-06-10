@@ -35,7 +35,10 @@ namespace Blog.Client
         }
         override public string ToString()
         {
-            return String.Format("{0}\t{1}\t{3}\t/rn/rn$$",FrameLength,Command,String.Join("\t",Parametres));
+            if (ParametresCount != 0)
+                return String.Format("{0}\t{1}\t{3}\t/rn/rn$$", FrameLength, Command, String.Join("\t", Parametres));
+            else
+                return String.Format("{0}\t{1}\t/rn/rn$$", FrameLength, Command);
         }
     }
 }
