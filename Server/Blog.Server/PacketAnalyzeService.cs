@@ -74,7 +74,7 @@ namespace Blog.Server
                     break;
             }
             messagee = messagee + "\t";
-            content = messagee.Length + "\t" + messagee + "/r/n/r/n/r/n$$";
+            content = messagee.Length + "\t" + messagee + "/rn/rn/rn$$";
             return content;
         }
 
