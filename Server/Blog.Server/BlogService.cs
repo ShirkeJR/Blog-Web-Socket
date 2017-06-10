@@ -34,7 +34,7 @@ namespace Blog.Server
         #endregion Singleton
 
 
-        public async Task<List<string>> DisplayBlogs()
+        public async Task<string> DisplayBlogs()
         {
             string query = "SELECT [Id], [BlogName] FROM [dbo].[Users]";
             using (SqlConnection conn = await SqlManager.Instance.CreateConnection())
@@ -45,7 +45,9 @@ namespace Blog.Server
                 {
                     blogList.Add(Convert.ToString(result["Id"]) + "|" + Convert.ToString(result["BlogName"]));
                 }
-                return blogList;
+                var paramsArray = blogList.ToArray();
+                var paramsList = string.Join("\t", paramsArray);
+                return paramsList;
             }
         }
 
@@ -62,7 +64,7 @@ namespace Blog.Server
             }
         }
 
-        public async Task<List<string>> DisplayBlogPosts(int id)
+        public async Task<string> DisplayBlogPosts(int id)
         {
 
             string query = "SELECT [Id], [Title] FROM [dbo].[Posts] WHERE [UserId] = @Id";
@@ -76,10 +78,27 @@ namespace Blog.Server
                 {
                     blogPostsList.Add(Convert.ToString(result["Id"]) + "|" + Convert.ToString(result["Title"]));
                 }
-                return blogPostsList;
+                var paramsArray = blogPostsList.ToArray();
+                var paramsList = string.Join("\t", paramsArray);
+                return paramsList;
             }
         }
-
+        public async Task<string> DisplayEntry(int id)
+        {
+            string query = "SELECT [Id], [Title], [Date]. [Content] FROM [dbo].[Posts] WHERE [Id] = @Id";
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters["@Id"] = id;
+            using (SqlConnection conn = await SqlManager.Instance.CreateConnection())
+            {
+                string entry = "";
+                var result = await SqlManager.Instance.ExecuteReaderAsync(conn, query, parameters);
+                while (result.Read())
+                {
+                    entry = Convert.ToString(result["Id"]) + "\t" + Convert.ToString(result["Title"]) + "\t" + Convert.ToString(result["Date"]) + "\t" + Convert.ToString(result["Content"]);
+                }
+                return entry;
+            }
+        }
 
 
     }

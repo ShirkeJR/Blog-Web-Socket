@@ -89,16 +89,16 @@ namespace Blog.Server
         private async Task<string> buildRegister(string[] packet)
         {
             string type = "REGISTER";
-            string param1;
+            string param;
             if (await AccountService.Instance.Register(packet[2], packet[3])) //ok
             {
-                param1 = "OK";
+                param = "OK";
             }
             else
             {
-                param1 = "INVALID";
+                param = "INVALID";
             }
-            return type + "\t" + param1;
+            return type + "\t" + param;
         }
 
 
@@ -128,9 +128,7 @@ namespace Blog.Server
         private async Task<string> buildDisplayBlogs(string[] packet)
         {
             string type = "DISPLAY_BLOGS";
-            List<string> blogsList = await BlogService.Instance.DisplayBlogs();
-            var paramsArray = blogsList.ToArray();
-            var paramsList = string.Join("\t", paramsArray);
+            string paramsList = await BlogService.Instance.DisplayBlogs();
             return type + "\t" + paramsList;
         }
     
@@ -140,9 +138,7 @@ namespace Blog.Server
             int id = Convert.ToInt32(packet[2]);
             if (await BlogService.Instance.BlogExists(id))// Jeżeli blog X istnieje
             {
-                List<string> blogPostsList = await BlogService.Instance.DisplayBlogPosts(id); //lista wpisów w blogu
-                var paramsArray = blogPostsList.ToArray();
-                var paramsList = string.Join("\t", paramsArray);
+                string paramsList = await BlogService.Instance.DisplayBlogPosts(id); //lista wpisów w blogu
                 return type + "\t" + paramsList;
             }
             else
@@ -182,9 +178,9 @@ namespace Blog.Server
         private async Task<string> buildDisplayEntry(string[] packet)
         {
             string type = "DISPLAY_ENTRY";
-            string param1 = "15";
-            string param2 = "Tytuł notatki Treść notatki";
-            return type + "\t" + param1 + "\t" + param2;
+            int id = Convert.ToInt32(packet[2]);
+            string entry = await BlogService.Instance.DisplayEntry(id); //lista wpisów w blogu
+            return type + "\t" + entry;
         }
 
         private async Task<string> buildDeleteEntry(string[] packet)
@@ -208,19 +204,22 @@ namespace Blog.Server
             }
             return type + "\t" + param1 + "\t" + param2;
         }
+
         private async Task<string> buildChangeBlogName(string[] packet)
         {
             string type = "CHANGE_BLOG_NAME";
-            string param1;
-            if (true) // UDAŁO SIĘ
+            int id = Convert.ToInt32(packet[2]);
+            string newTitle = packet[3];
+            string param = "";
+            if (await AccountService.Instance.ChangeBlogName(id, id, newTitle)) // UDAŁO SIĘ
             {
-                param1 = "OK";
+                param = "OK";
             }
-            else if (false) // coś się zjebało
+            else // coś się zjebało
             {
-                param1 = "FAILED ";
+                param = "FAILED";
             }
-            return type + "\t" + param1;
+            return type + "\t" + param;
         }
 
 
