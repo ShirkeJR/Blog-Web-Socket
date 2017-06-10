@@ -28,7 +28,8 @@ namespace Blog.Client
             else
             {
                 MessageBox.Show("Can't connect to server.", "Connection error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                this.DialogResult = DialogResult.Cancel;
+                //this.DialogResult = DialogResult.Cancel;
+                this.DialogResult = DialogResult.OK;
             }
             
         }

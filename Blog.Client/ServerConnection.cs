@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Blog.Client
 {
@@ -31,6 +32,7 @@ namespace Blog.Client
         public ushort Port { set; get; }
         public Socket ConnectionSocket { set; get; }
         public User LoggedUser { set; get; }
+        public ListBox listBlogs { set; get; }
         
         public bool Connect()
         {
@@ -71,36 +73,50 @@ namespace Blog.Client
         }
         public bool SendFrame(Frame frame)
         {
-            if (!ConnectionSocket.Connected)
+            try
+            {
+                if (!ConnectionSocket.Connected)
+                    return false;
+
+                Byte[] bytesToSend = Encoding.ASCII.GetBytes(frame.ToString());
+                int bytesSent = ConnectionSocket.Send(bytesToSend, bytesToSend.Length, 0);
+
+                if (bytesSent == bytesToSend.Length)
+                    return true;
+                else
+                    return false;
+            }
+            catch(Exception ex)
+            {
                 return false;
-
-            Byte[] bytesToSend = Encoding.ASCII.GetBytes(frame.ToString());
-            int bytesSent = ConnectionSocket.Send(bytesToSend, bytesToSend.Length, 0);
-
-            if (bytesSent == bytesToSend.Length)
-                return true;
-            else
-                return false;
-
+            }
         }
         public Frame ReceiveFrame()
         {
-            int receivedBytesCount = 0;
-            string response = "";
-            Byte[] bytesRecevived = new Byte[1];
-
-            do
+            try
             {
-                receivedBytesCount += ConnectionSocket.Receive(bytesRecevived, bytesRecevived.Length, 0);
-                response = response + Encoding.ASCII.GetString(bytesRecevived, 0, 1);
-            }
-            while (response.EndsWith("/rn/rn/rn$$"));
+                int receivedBytesCount = 0;
+                string response = "";
+                Byte[] bytesRecevived = new Byte[1];
 
-            string[] temp = response.Split('\t');
-            if (temp.Length == 3)
-                return new Frame(temp[1], null);
-            else
-                return new Frame(temp[1], temp.Skip(2).Take(temp.Length - 3).ToArray());
+                do
+                {
+                    receivedBytesCount += ConnectionSocket.Receive(bytesRecevived, bytesRecevived.Length, 0);
+                    response = response + Encoding.ASCII.GetString(bytesRecevived, 0, 1);
+                }
+                while (response.EndsWith("/rn/rn/rn$$"));
+
+                string[] temp = response.Split('\t');
+                if (temp.Length == 3)
+                    return new Frame(temp[1], null);
+                else
+                    return new Frame(temp[1], temp.Skip(2).Take(temp.Length - 3).ToArray());
+            }
+            catch(Exception ex)
+            {
+                return new Frame("ERROR", null);
+            }
+            
         }
 
         public string RegisterUser(string login, string password)
@@ -201,6 +217,8 @@ namespace Blog.Client
 
             SendFrame(request);
             response = ReceiveFrame();
+
+            listBlogs.Invoke((MethodInvoker)delegate { listBlogs.Items.Add("lista blogow"); });
 
             switch (response.Command)
             {

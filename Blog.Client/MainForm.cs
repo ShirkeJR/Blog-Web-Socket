@@ -15,6 +15,8 @@ namespace Blog.Client
         public MainForm()
         {
             InitializeComponent();
+            ServerConnection.Instance.listBlogs = listBox1;
+            ServerConnection.Instance.GetBlogsList();
         }
     }
 }
