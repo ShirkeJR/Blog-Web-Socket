@@ -30,7 +30,14 @@ namespace Blog.Client
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            ServerConnection.Instance.GetBlogsList();
+            if (!ServerConnection.Instance.GetBlogsList())
+            {
+                if(!ServerConnection.Instance.ConnectionSocket.Connected)
+                {
+                    labelConnection.Text = "Connection lost.";
+                    //ServerConnection.Instance.Connect(ServerConnection.Instance.Host, ServerConnection.Instance.Port);
+                }
+            }
         }
 
         private void btnLogout_Click(object sender, EventArgs e)
@@ -52,5 +59,7 @@ namespace Blog.Client
         {
 
         }
+
+        
     }
 }
