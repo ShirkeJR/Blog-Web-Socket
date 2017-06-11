@@ -46,26 +46,6 @@ namespace Blog.Server
             return await AuthManager.AuthManager.Instance.Login(login, password);
         }
 
-        public async Task<bool> ChangeBlogName(int userId, int blogId, string newName)
-        {
-            if (userId != blogId)
-                return false;
-
-            if (newName.Length == 0 || string.IsNullOrEmpty(newName) || string.IsNullOrWhiteSpace(newName))
-                return false;
-
-            string query = "UPDATE [dbo].[Users] SET [BlogName] = @BlogName WHERE [Id] = @Id";
-            Dictionary<string, object> parameters = new Dictionary<string, object>();
-            parameters["@BlogName"] = newName;
-            parameters["@Id"] = blogId;
-            using (SqlConnection conn = await SqlManager.Instance.CreateConnection())
-            {
-                var result = await SqlManager.Instance.ExecuteNonQueryAsync(conn, query, parameters);
-                int value = Convert.ToInt32(result.ToString());
-                return value == 1;
-            }
-        }
-
         public bool Disconnect(int userId)
         {
             // TODO: delete logged in user from clients list with connection close
