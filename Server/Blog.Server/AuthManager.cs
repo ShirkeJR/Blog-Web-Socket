@@ -1,10 +1,11 @@
 ﻿using Blog.Database;
+using Blog.Utils;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 
-namespace Blog.AuthManager
+namespace Blog.Server
 {
     public class AuthManager
     {

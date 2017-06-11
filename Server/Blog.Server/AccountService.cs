@@ -33,17 +33,17 @@ namespace Blog.Server
 
         public async Task<bool> Exists(string login, string password)
         {
-            return await AuthManager.AuthManager.Instance.Exists(login, password);
+            return await AuthManager.Instance.Exists(login, password);
         }
 
         public async Task<bool> Register(string login, string password)
         {
-            return await AuthManager.AuthManager.Instance.Register(login, password);
+            return await AuthManager.Instance.Register(login, password);
         }
         
         public async Task<int> Login(string login, string password)
         {
-            return await AuthManager.AuthManager.Instance.Login(login, password);
+            return await AuthManager.Instance.Login(login, password);
         }
 
         public bool Disconnect(int userId)

@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="AccountService.cs" />
     <Compile Include="AsynchronousSocketListener.cs" />
+    <Compile Include="AuthManager.cs" />
     <Compile Include="BlogService.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -89,9 +90,6 @@
       <Project>{976d36ee-154d-427a-a37d-dd3f49a33e9f}</Project>
       <Name>Blog.Constants</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Blog.AuthManager\Blog.AuthManager.csproj">
-      <Project>{912e6dae-cbb7-4fda-915d-96501dde1bd8}</Project>
-      <Name>Blog.AuthManager</Name>
     </ProjectReference>
     <ProjectReference Include="..\Blog.Database\Blog.Database.csproj">
       <Project>{98a99dcb-63dd-4e73-8759-f566d377b5eb}</Project>
