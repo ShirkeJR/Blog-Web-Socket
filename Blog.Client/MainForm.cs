@@ -25,7 +25,7 @@ namespace Blog.Client
 
         private void listBlogs_DoubleClick(object sender, EventArgs e)
         {
-            listBlogs.SelectedItem = "lel";
+            listBlogs.SelectedItem = "lel"; // nie dziala xd
             BlogForm child = new BlogForm();
             this.Hide();
             child.ShowDialog();
