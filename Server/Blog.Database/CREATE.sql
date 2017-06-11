@@ -5,10 +5,10 @@ GO
 
 CREATE TABLE [dbo].[Users] (
     [Id]       INT        IDENTITY (1, 1) NOT NULL,
-    [Login]    NCHAR (32) NOT NULL,
-    [Password] NCHAR (64) NOT NULL,
+    [Login]    NVARCHAR (32) NOT NULL,
+    [Password] NVARCHAR (64) NOT NULL,
     [IsLocked] BIT        NOT NULL,
-    [BlogName] NCHAR (64) NOT NULL,
+    [BlogName] NVARCHAR (64) NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 
@@ -21,8 +21,8 @@ CREATE NONCLUSTERED INDEX [IX_Users_Id]
 CREATE TABLE [dbo].[Posts] (
     [Id]      INT          IDENTITY (1, 1) NOT NULL,
     [UserId]  INT          NOT NULL,
-    [Title]   NCHAR (32)   NOT NULL,
-    [Content] NCHAR (2048) NOT NULL,
+    [Title]   NVARCHAR (32)   NOT NULL,
+    [Content] NVARCHAR (2048) NOT NULL,
     [Date]    DATETIME     NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_Posts_Users] FOREIGN KEY ([UserId]) REFERENCES [dbo].[Users] ([Id])
