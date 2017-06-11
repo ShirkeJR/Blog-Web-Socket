@@ -25,7 +25,11 @@ namespace Blog.Client
 
         private void listBlogs_DoubleClick(object sender, EventArgs e)
         {
-
+            listBlogs.SelectedItem = "lel";
+            BlogForm child = new BlogForm();
+            this.Hide();
+            child.ShowDialog();
+            this.Show();
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
@@ -60,6 +64,10 @@ namespace Blog.Client
 
         }
 
-        
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            ServerConnection.Instance.Disconnect();
+            this.Close();
+        }
     }
 }

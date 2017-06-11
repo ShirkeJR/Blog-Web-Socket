@@ -216,6 +216,8 @@ namespace Blog.Client
         }
         public bool GetBlogsList()
         {
+            if (ConnectionSocket.Connected == false)
+                return false;
             Frame request = new Frame("DISPLAY_BLOGS", null);
             Frame response;
 
