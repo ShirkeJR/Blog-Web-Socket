@@ -19,9 +19,7 @@ namespace Blog.Client
 
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            ServerConnection.Instance.Host = txtBoxHost.Text.ToString();
-            ServerConnection.Instance.Port = Convert.ToUInt16(txtBoxPort.Text.ToString());
-            if(ServerConnection.Instance.Connect())
+            if (ServerConnection.Instance.Connect(txtBoxHost.Text.ToString(), Convert.ToUInt16(txtBoxPort.Text.ToString())))
             {
                 this.DialogResult = DialogResult.OK;
             }

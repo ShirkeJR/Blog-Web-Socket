@@ -33,11 +33,13 @@ namespace Blog.Client
         public Socket ConnectionSocket { set; get; }
         public User LoggedUser { set; get; }
         // view
-        public ListBox blogsList { set; get; }
-        public ListBox entriesList { set; get; }
-        
-        public bool Connect()
+        public ListBox listBlogs { set; get; }
+        public ListBox listEntries { set; get; }
+
+        public bool Connect(string host, ushort port)
         {
+            Host = host;
+            Port = port;
             IPHostEntry hostEntry = Dns.GetHostEntry(Host);
             foreach (IPAddress address in hostEntry.AddressList)
             {
@@ -212,7 +214,7 @@ namespace Blog.Client
                     }
             }
         }
-        public List<String> GetBlogsList()
+        public bool GetBlogsList()
         {
             Frame request = new Frame("DISPLAY_BLOGS", null);
             Frame response;
@@ -224,21 +226,22 @@ namespace Blog.Client
             {
                 case "QUE?":
                     {
-                        return new List<String>() { "QUE?" };
+                        return false;
                     }
                 case "IDENTIFY_PLS":
                     {
-                        return new List<String>() { "IDENTIFY_PLS" };
+                        return false;
                     }
                 case "DISPLAY_BLOGS":
                     {
+                        listBlogs.Items.Clear();
                         foreach (var p in response.Parametres)
-                            blogsList.Items.Add(p);
-                        return response.Parametres.ToList();
+                            listBlogs.Items.Add(p);
+                        return true;
                     }
                 default:
                     {
-                        return new List<String>() { "ERROR" };
+                        return false;
                     }
             }
         }
