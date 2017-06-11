@@ -77,9 +77,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Blog.Constants\Blog.Constants.csproj">
+    <ProjectReference Include="..\Common\Blog.Constants\Blog.Constants.csproj">
       <Project>{976d36ee-154d-427a-a37d-dd3f49a33e9f}</Project>
       <Name>Blog.Constants</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\Blog.Utils\Blog.Utils.csproj">
+      <Project>{060cc0c1-017a-42b2-a643-5275cd7123c8}</Project>
+      <Name>Blog.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

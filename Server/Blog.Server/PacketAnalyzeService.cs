@@ -209,7 +209,7 @@ namespace Blog.Server
             int id = Convert.ToInt32(packet[2]);
             string newTitle = packet[3];
             string param = "";
-            if (await AccountService.Instance.ChangeBlogName(id, id, newTitle)) // UDAŁO SIĘ
+            if (await BlogService.Instance.ChangeBlogName(id, id, newTitle)) // UDAŁO SIĘ
             {
                 param = "OK";
             }

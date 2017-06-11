@@ -33,37 +33,17 @@ namespace Blog.Server
 
         public async Task<bool> Exists(string login, string password)
         {
-            return await AuthManager.AuthManager.Instance.Exists(login, password);
+            return await AuthManager.Instance.Exists(login, password);
         }
 
         public async Task<bool> Register(string login, string password)
         {
-            return await AuthManager.AuthManager.Instance.Register(login, password);
+            return await AuthManager.Instance.Register(login, password);
         }
         
         public async Task<int> Login(string login, string password)
         {
-            return await AuthManager.AuthManager.Instance.Login(login, password);
-        }
-
-        public async Task<bool> ChangeBlogName(int userId, int blogId, string newName)
-        {
-            if (userId != blogId)
-                return false;
-
-            if (newName.Length == 0 || string.IsNullOrEmpty(newName) || string.IsNullOrWhiteSpace(newName))
-                return false;
-
-            string query = "UPDATE [dbo].[Users] SET [BlogName] = @BlogName WHERE [Id] = @Id";
-            Dictionary<string, object> parameters = new Dictionary<string, object>();
-            parameters["@BlogName"] = newName;
-            parameters["@Id"] = blogId;
-            using (SqlConnection conn = await SqlManager.Instance.CreateConnection())
-            {
-                var result = await SqlManager.Instance.ExecuteNonQueryAsync(conn, query, parameters);
-                int value = Convert.ToInt32(result.ToString());
-                return value == 1;
-            }
+            return await AuthManager.Instance.Login(login, password);
         }
 
         public bool Disconnect(int userId)
