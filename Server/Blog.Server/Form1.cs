@@ -13,21 +13,26 @@ namespace Blog.Server
 {
     public partial class Form1 : Form
     {
-        AsynchronousSocketListener asynchronousSocketListener;
         public Form1()
         {
             InitializeComponent();
-            AsynchronousSocketListener.Instance.logBox = logBox;
-            AsynchronousSocketListener.Instance.clientBox = clientBox;
+            TestServer.Instance.logBox = logBox;
+            TestServer.Instance.clientBox = clientBox;
+            button2.Enabled = false;
         }
 
         private async void button1_Click(object sender, EventArgs e)
         {
-            await Task.Run(() => AsynchronousSocketListener.Instance.StartListening());
+            logBox.Items.Add("Server starting...");
+            button1.Enabled = false;
+            button2.Enabled = true;
+            await Task.Run(() => TestServer.Instance.StartListening());
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            button1.Enabled = true;
+            button2.Enabled = false;
         }
     }
 }

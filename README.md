@@ -193,3 +193,7 @@ Ogólny format opisu pakietu:
 * __Odpowiedź serwera__: `CHANGE_BLOG_NAME FAILED`
 * __Opis odpowiedzi__: komunikat informujący o niepomyślnej zmianie nazwy bloga (np. próbowano zmienić nazwę nie swojego bloga)
 * __Ilość parametrów odpowiedzi__: 1
+* __Odpowiedź serwera__: `CHANGE_BLOG_NAME NOTOWNER`
+* __Opis odpowiedzi__: Użytkownik nie jest właścicielem bloga, z którego próbuje usunąć wpis
+* __Ilość parametrów odpowiedzi__: 1
+* __Opis parametru 1__: string informujący o niepowodzeniu przy usuwaniu treści z nie swojego bloga

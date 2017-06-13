@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Blog.Server
 {
-    class StateObject
+    class ClientObject
     {
         // Client  socket.  
         public Socket workSocket = null;
@@ -17,5 +17,7 @@ namespace Blog.Server
         public byte[] buffer = new byte[BufferSize];
         // Received data string.  
         public StringBuilder sb = new StringBuilder();
+
+        public int id = 0;
     }
 }

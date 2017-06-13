@@ -31,7 +31,7 @@ namespace Blog.Server
 
         #endregion Singleton
 
-        public async Task<string> getPacketResponse(string content)
+        public async Task<string> getPacketResponse(string content, ClientData clientData)
         {
             string[] packet = content.Split('\t');
             int packetSize = Convert.ToInt32(packet[0]);
@@ -46,8 +46,15 @@ namespace Blog.Server
                     messagee = await buildRegister(packet);
                     break;
                 case "LOGIN":
-                    messagee = await buildLogin(packet);
-                    break;
+                    {
+                        messagee = await buildLogin(packet);
+                        if (messagee.Contains("OK"))
+                        {
+                            string[] paramList = messagee.Split('\t');
+                            clientData.Id = Convert.ToInt32(paramList[2]);
+                        }
+                    }
+                    break; 
                 case "DISPLAY_BLOGS":
                     messagee = await buildDisplayBlogs(packet);
                     break;
@@ -55,19 +62,19 @@ namespace Blog.Server
                     messagee = await buildDisplayBlog(packet);
                     break;
                 case "ADD_ENTRY":
-                    messagee = await buildAddEntry(packet);
+                    messagee = await buildAddEntry(packet, clientData);
                     break;
                 case "DISPLAY_ENTRY":
                     messagee = await buildDisplayEntry(packet);
                     break;
                 case "DELETE_ENTRY":
-                    messagee = await buildDeleteEntry(packet);
+                    messagee = await buildDeleteEntry(packet, clientData);
                     break;
                 case "CHANGE_BLOG_NAME":
-                    messagee = await buildChangeBlogName(packet);
+                    messagee = await buildChangeBlogName(packet, clientData);
                     break;
                 case "THX_BYE":
-                    messagee = await buildLogout(packet);
+                    messagee = await buildLogout(packet, clientData);
                     break;
                 default:
                     messagee = await buildDefault(packet);
@@ -146,32 +153,33 @@ namespace Blog.Server
             }
         }
 
-        private async Task<string> buildAddEntry(string[] packet)
+        private async Task<string> buildAddEntry(string[] packet, ClientData clientData)
         {
             string type = "ADD_ENTRY";
             string param1;
-            if (true)// Jak stworzył
+            if (clientData.Id != -1)// Jak stworzył
             {
-                param1 = "OK";
-                string param2 = "15";
-                return type + "\t" + param1 + "\t" + param2;
+                if(await BlogService.Instance.AddEntry(clientData.Id, packet[2], packet[3]))
+                {
+                    param1 = "OK";
+                    string param2 = Convert.ToString(await BlogService.Instance.GetEntryId(clientData.Id, packet[2]));
+                    return type + "\t" + param1 + "\t" + param2;
+                }
+                else if (packet[2].Length > 31) // zły tytuł
+                {
+                    param1 = "ERR_TITLE";
+                    return type + "\t" + param1;
+                }
+                else if (packet[3].Length > 2047) // zła treść
+                {
+                    param1 = "ERR_CONTENT";
+                    return type + "\t" + param1;
+                }
             }
-            else if(false) // zły tytuł
-            {
-                param1 = "ERR_TITLE";
-                return type + "\t" + param1;
-            }
-            else if(false) // zła treść
-            {
-                param1 = "ERR_CONTENT";
-                return type + "\t" + param1;
-            }
-            else if (false) // nie ten właściciel
-            {
-                param1 = "ERR_OWNER";
-                return type + "\t" + param1;
-            }
+            param1 = "ERR_OWNER";
+            return type + "\t" + param1;
         }
+
 
         private async Task<string> buildDisplayEntry(string[] packet)
         {
@@ -181,55 +189,61 @@ namespace Blog.Server
             return type + "\t" + entry;
         }
 
-        private async Task<string> buildDeleteEntry(string[] packet)
+        private async Task<string> buildDeleteEntry(string[] packet, ClientData clientData)
         {
             string type = "DELETE_ENTRY";
             string param1, param2;
-            if (true) // UDAŁO SIĘ
+            int id = Convert.ToInt32(packet[2]);
+            if (clientData.Id != -1) // UDAŁO SIĘ
             {
-                param1 = "OK";
-                param2 = "15";
+                if(await BlogService.Instance.DeleteEntry(id, clientData.Id))
+                {
+                    param1 = "OK";
+                    param2 = Convert.ToString(id);
+                }
+                else
+                {
+                    param1 = "FAILED ";
+                    param2 = "NOTEXIST";
+                }
+                return type + "\t" + param1 + "\t" + param2;
             }
-            else if(false) // coś się zjebało
-            {
-                param1 = "FAILED ";
-                param2 = "NOTEXIST";
-            }
-            else if (false) // ty nie owner
-            {
-                param1 = "FAILED";
-                param2 = "NOTOWNER";
-            }
+            param1 = "FAILED";
+            param2 = "NOTOWNER";
             return type + "\t" + param1 + "\t" + param2;
         }
 
-        private async Task<string> buildChangeBlogName(string[] packet)
+        private async Task<string> buildChangeBlogName(string[] packet, ClientData clientData)
         {
             string type = "CHANGE_BLOG_NAME";
             int id = Convert.ToInt32(packet[2]);
             string newTitle = packet[3];
             string param = "";
-            if (await BlogService.Instance.ChangeBlogName(id, id, newTitle)) // UDAŁO SIĘ
+            if (clientData.Id != id)
+            {
+                param = "NOTOWNER";
+                return type + "\t" + param;
+            }
+            if (await BlogService.Instance.ChangeBlogName(clientData.Id, id, newTitle)) // UDAŁO SIĘ
             {
                 param = "OK";
+                return type + "\t" + param;
             }
-            else // coś się zjebało
-            {
-                param = "FAILED";
-            }
+            param = "FAILED";
             return type + "\t" + param;
         }
 
 
-        private async Task<string> buildLogout(string[] packet)
+        private async Task<string> buildLogout(string[] packet, ClientData clientData)
         {
             string type = "THX_BYE";
+            clientData.Id = -1;
             return type;
         }
 
         private async Task<string> buildDefault(string[] packet)
         {
-            string type = "GTFO";
+            string type = "QUE?";
             return type;
         }
 

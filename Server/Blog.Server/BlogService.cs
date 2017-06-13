@@ -82,7 +82,7 @@ namespace Blog.Server
 
         public async Task<string> DisplayEntry(int id)
         {
-            string query = "SELECT [Id], [Title], [Date]. [Content] FROM [dbo].[Posts] WHERE [Id] = @Id";
+            string query = "SELECT [Id], [Title], [Content], [Date] FROM [dbo].[Posts] WHERE [Id] = @Id";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters["@Id"] = id;
             using (SqlConnection conn = await SqlManager.Instance.CreateConnection())
@@ -116,5 +116,55 @@ namespace Blog.Server
                 return value == 1;
             }
         }
+
+        public async Task<bool> AddEntry(int id, string title, string content)
+        {
+            DateTime date = DateTime.Now;
+            string query = "INSERT INTO [dbo].[Posts] ([UserId], [Title], [Content], [Date]) VALUES (@Id, @Title, @Content, @Date)";
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters["@Id"] = id;
+            parameters["@Title"] = title;
+            parameters["@Content"] = content;
+            parameters["@Date"] = date;
+            using (SqlConnection conn = await SqlManager.Instance.CreateConnection())
+            {
+                var result = await SqlManager.Instance.ExecuteNonQueryAsync(conn, query, parameters);
+                int value = Convert.ToInt32(result.ToString());
+                return value == 1;
+            }
+        }
+
+        public async Task<int> GetEntryId(int id, string title)
+        {
+            string query = "SELECT [Id] FROM [dbo].[Posts] WHERE [UserId] = @Id AND [Title] = @Title";
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters["@Id"] = id;
+            parameters["@Title"] = title;
+            using (SqlConnection conn = await SqlManager.Instance.CreateConnection())
+            {
+                var result = await SqlManager.Instance.ExecuteReaderAsync(conn, query, parameters);
+                result.Read();
+                if (!result.HasRows)
+                    return 0;
+                else
+                    return Convert.ToInt32(result["Id"]);
+            }
+        }
+
+        public async Task<bool> DeleteEntry(int id, int clientId)
+        {
+            string query = "DELETE FROM [dbo].[Posts] WHERE [UserId] = @ClientID AND [Id] = @Id";
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters["@Id"] = id;
+            parameters["@ClientId"] = clientId;
+            using (SqlConnection conn = await SqlManager.Instance.CreateConnection())
+            {
+                var result = await SqlManager.Instance.ExecuteNonQueryAsync(conn, query, parameters);
+                int value = Convert.ToInt32(result.ToString());
+                return value == 1;
+            }
+        }
+
+
     }
 }
