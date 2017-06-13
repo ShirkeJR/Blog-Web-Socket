@@ -11,22 +11,23 @@ namespace Blog.Client
 {
     public sealed class ServerConnection
     {
-        // singleton pattern
-        private static ServerConnection instance = null;
+        #region Singleton
+        private static volatile ServerConnection instance = null;
+        private static volatile object threadSyncLock = new object();
 
         private ServerConnection() { }
         public static ServerConnection Instance
         {
             get
             {
-                if(instance == null)
+                lock (threadSyncLock)
                 {
-                    instance = new ServerConnection();
+                    if (instance == null) instance = new ServerConnection();
+                    return instance;
                 }
-                return instance;
             }
         }
-
+        #endregion Singleton
         // connection
         public string Host { set; get; }
         public ushort Port { set; get; }
