@@ -26,70 +26,35 @@ namespace Blog.Client
         }
         #endregion Singleton
         public User User { set; get; }
+        public bool Logged { set; get; } = false;
 
-        public string Register(string login, string password)
+        public bool Register(string login, string password)
         {
             Frame request = new Frame("REGISTER", new string[] { login, password });
-            Frame response;
+            Frame response = null;
 
             ConnectionService.Instance.SendFrame(request);
-            response = ConnectionService.Instance.ReceiveFrame();
+            ConnectionService.Instance.ReceiveFrame(response);
 
-            switch (response.Command)
-            {
-                case "QUE?":
-                    {
-                        return String.Format("QUE?");
-                    }
-                case "IDENTIFY_PLS":
-                    {
-                        return String.Format("IDENTIFY_PLS");
-                    }
-                case "REGISTER":
-                    {
-                        return response.Parametres[0];
-                    }
-                default:
-                    {
-                        return String.Format("ERROR");
-                    }
-            }
+            return !response.CheckError();
         }
-        public string Login(string login, string password)
+        public bool Login(string login, string password)
         {
             Frame request = new Frame("LOGIN", new string[] { login, password });
-            Frame response;
+            Frame response = null;
 
             ConnectionService.Instance.SendFrame(request);
-            response = ConnectionService.Instance.ReceiveFrame();
+            ConnectionService.Instance.ReceiveFrame(response);
 
-            switch (response.Command)
+            if (!response.CheckError())
             {
-                case "QUE?":
-                    {
-                        return String.Format("QUE?");
-                    }
-                case "IDENTIFY_PLS":
-                    {
-                        return String.Format("IDENTIFY_PLS");
-                    }
-                case "LOGIN":
-                    {
-                        if (response.Parametres[0].Equals("OK"))
-                        {
-                            User = new User(login, Convert.ToUInt32(response.Parametres[1]));
-                            return response.Parametres[1];
-                        }
-                        else
-                            return response.Parametres[0];
-                    }
-                default:
-                    {
-                        return String.Format("ERROR");
-                    }
+                User = new User(login, Convert.ToUInt32(response.Parametres[1]));
+                Logged = true;
+                return true;
             }
+            else return false;     
         }
-        public string Logout()
+        public bool Logout()
         {
             Frame request = new Frame("THX_BYE", null);
             Frame response;
@@ -97,26 +62,13 @@ namespace Blog.Client
             ConnectionService.Instance.SendFrame(request);
             response = ConnectionService.Instance.ReceiveFrame();
 
-            switch (response.Command)
+            if (!response.CheckError())
             {
-                case "QUE?":
-                    {
-                        return String.Format("QUE?");
-                    }
-                case "IDENTIFY_PLS":
-                    {
-                        return String.Format("IDENTIFY_PLS");
-                    }
-                case "THX_BYE":
-                    {
-                        User = null;
-                        return String.Format("THX_BYE");
-                    }
-                default:
-                    {
-                        return String.Format("ERROR");
-                    }
+                User = null;
+                Logged = false;
+                return true;
             }
+            else return false;
         }
     }
 }

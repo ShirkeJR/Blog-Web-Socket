@@ -12,6 +12,7 @@ namespace Blog.Client
 {
     public partial class BlogForm : Form
     {
+        public int ID { set; get; }
         public BlogForm()
         {
             InitializeComponent();
@@ -19,7 +20,7 @@ namespace Blog.Client
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.Width += 50;
         }
     }
 }
