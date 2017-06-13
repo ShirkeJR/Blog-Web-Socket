@@ -27,7 +27,7 @@ namespace Blog.Client
 
         private void listBlogs_DoubleClick(object sender, EventArgs e)
         {
-            listBlogs.SelectedItem = "lel"; // nie dziala xd
+            MessageBox.Show(listBlogs.SelectedItem.ToString(), "t", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             BlogForm child = new BlogForm();
             this.Hide();
             child.ShowDialog();
