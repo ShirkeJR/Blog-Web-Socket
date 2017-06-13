@@ -16,20 +16,12 @@ namespace Blog.Client
         {
             InitializeComponent();
         }
-
         private void btnConnect_Click(object sender, EventArgs e)
         {
-            if (ServerConnection.Instance.Connect(txtBoxHost.Text.ToString(), Convert.ToUInt16(txtBoxPort.Text.ToString())))
-            {
+            if (ConnectionService.Instance.Connect(txtBoxHost.Text.ToString(), Convert.ToUInt16(txtBoxPort.Text.ToString())))
                 this.DialogResult = DialogResult.OK;
-            }
             else
-            {
-                MessageBox.Show("Can't connect to server.", "Connection error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                //this.DialogResult = DialogResult.Cancel;
-                //this.DialogResult = DialogResult.OK;
-            }
-            
+                MessageBox.Show("Can't connect to server.", "Connection error", MessageBoxButtons.OK, MessageBoxIcon.Error); 
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

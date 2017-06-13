@@ -18,9 +18,10 @@ namespace Blog.Client
             InitializeComponent();
             panelLogged.Visible = false;
             panelGuest.Visible = true;
-            labelConnection.Text = "Connected to:: " + IPAddress.Parse(((IPEndPoint)ServerConnection.Instance.ConnectionSocket.RemoteEndPoint).Address.ToString()) + ":" + ((IPEndPoint)ServerConnection.Instance.ConnectionSocket.RemoteEndPoint).Port.ToString();
-            ServerConnection.Instance.listBlogs = listBlogs;
-            ServerConnection.Instance.GetBlogsList();
+
+            DataService.Instance.LabelConnection = labelConnection;
+            DataService.Instance.ListBlogs = listBlogs;
+            DataService.Instance.GetBlogsList();
         }
 
         private void listBlogs_DoubleClick(object sender, EventArgs e)
@@ -34,14 +35,13 @@ namespace Blog.Client
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            if (!ServerConnection.Instance.GetBlogsList())
+            if(!ConnectionService.Instance.ConnectionSocket.Connected)
             {
-                if(!ServerConnection.Instance.ConnectionSocket.Connected)
-                {
-                    labelConnection.Text = "Connection lost.";
-                    ServerConnection.Instance.Connect(ServerConnection.Instance.Host, ServerConnection.Instance.Port);
-                }
+                labelConnection.Text = "Reconnect.";
+                ConnectionService.Instance.Connect(ConnectionService.Instance.Host, ConnectionService.Instance.Port);
+                DataService.Instance.GetBlogsList();
             }
+            
         }
 
         private void btnLogout_Click(object sender, EventArgs e)
@@ -66,7 +66,7 @@ namespace Blog.Client
 
         private void btnExit_Click(object sender, EventArgs e)
         {
-            ServerConnection.Instance.Disconnect();
+            ConnectionService.Instance.Disconnect();
             this.Close();
         }
     }
