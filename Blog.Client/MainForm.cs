@@ -30,7 +30,6 @@ namespace Blog.Client
 
         private void listBlogs_DoubleClick(object sender, EventArgs e)
         {
-            ConnectionService.Instance.Reconnect();
             if (listBlogs.SelectedItem != null)
             {
                 BlogForm child = new BlogForm();
@@ -77,8 +76,6 @@ namespace Blog.Client
         }
         private void btnMyBlog_Click(object sender, EventArgs e)
         {
-            //blog frame + id;
-            ConnectionService.Instance.Reconnect();
             BlogForm child = new BlogForm();
             this.Hide();
             child.ID = Convert.ToInt32(AccountService.Instance.User.ID);

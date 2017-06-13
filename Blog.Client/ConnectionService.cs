@@ -64,6 +64,7 @@ namespace Blog.Client
         }
         public bool Reconnect()
         {
+            if (ConnectionSocket != null) Disconnect(); 
             return Connect(Host, Port);
         }
         public bool Connected()
