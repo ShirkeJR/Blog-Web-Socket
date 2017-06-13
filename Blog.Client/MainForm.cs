@@ -35,7 +35,10 @@ namespace Blog.Client
                 BlogForm child = new BlogForm();
                 this.Hide();
                 child.ID = Convert.ToInt32(listBlogs.SelectedItem.ToString().Split('|')[0]);
+                child.Title = listBlogs.SelectedItem.ToString().Split('|')[1];
                 child.ShowDialog();
+                DataService.Instance.LabelLoggedUser = labelLoggedUser;
+                DataService.Instance.GetLoggedUser();
                 this.Show();
             }
         }
@@ -74,6 +77,14 @@ namespace Blog.Client
         private void btnMyBlog_Click(object sender, EventArgs e)
         {
             //blog frame + id;
+            BlogForm child = new BlogForm();
+            this.Hide();
+            child.ID = Convert.ToInt32(AccountService.Instance.User.ID);
+            child.Title = DataService.Instance.GetBlogTitle(Convert.ToInt32(AccountService.Instance.User.ID));
+            child.ShowDialog();
+            DataService.Instance.LabelLoggedUser = labelLoggedUser;
+            DataService.Instance.GetLoggedUser();
+            this.Show();
         }
         private void btnExit_Click(object sender, EventArgs e)
         {

@@ -35,15 +35,32 @@
             this.btnReturn = new System.Windows.Forms.Button();
             this.panelGuest = new System.Windows.Forms.Panel();
             this.labelGuest = new System.Windows.Forms.Label();
+            this.txtBoxEntryTitle = new System.Windows.Forms.TextBox();
+            this.txtBoxEntryText = new System.Windows.Forms.TextBox();
+            this.panelUserControl2 = new System.Windows.Forms.Panel();
+            this.btnRefresh2 = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
+            this.panelLogged = new System.Windows.Forms.Panel();
+            this.btnAddEntry = new System.Windows.Forms.Button();
+            this.btnChangeTitle = new System.Windows.Forms.Button();
+            this.labelLoggedUser = new System.Windows.Forms.Label();
+            this.panelEdit = new System.Windows.Forms.Panel();
+            this.btnEditSave = new System.Windows.Forms.Button();
+            this.btnEditCancel = new System.Windows.Forms.Button();
+            this.panelLogged2 = new System.Windows.Forms.Panel();
+            this.btnDelete = new System.Windows.Forms.Button();
             this.panelUserControl.SuspendLayout();
             this.panelGuest.SuspendLayout();
+            this.panelUserControl2.SuspendLayout();
+            this.panelLogged.SuspendLayout();
+            this.panelEdit.SuspendLayout();
+            this.panelLogged2.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtBoxBlogTitle
             // 
-            this.txtBoxBlogTitle.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtBoxBlogTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.txtBoxBlogTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtBoxBlogTitle.Location = new System.Drawing.Point(12, 9);
             this.txtBoxBlogTitle.Name = "txtBoxBlogTitle";
@@ -55,9 +72,8 @@
             // 
             // listEntries
             // 
-            this.listEntries.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listEntries.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.listEntries.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listEntries.FormattingEnabled = true;
             this.listEntries.ItemHeight = 31;
@@ -65,14 +81,15 @@
             this.listEntries.Name = "listEntries";
             this.listEntries.Size = new System.Drawing.Size(410, 469);
             this.listEntries.TabIndex = 1;
+            this.listEntries.DoubleClick += new System.EventHandler(this.listEntries_DoubleClick);
             // 
             // panelUserControl
             // 
-            this.panelUserControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelUserControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.panelUserControl.BackColor = System.Drawing.SystemColors.Window;
             this.panelUserControl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelUserControl.Controls.Add(this.panelLogged);
             this.panelUserControl.Controls.Add(this.panelGuest);
             this.panelUserControl.Controls.Add(this.btnReturn);
             this.panelUserControl.Controls.Add(this.btnRefresh);
@@ -131,13 +148,172 @@
             this.labelGuest.Text = "Guest";
             this.labelGuest.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // txtBoxEntryTitle
+            // 
+            this.txtBoxEntryTitle.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtBoxEntryTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold);
+            this.txtBoxEntryTitle.Location = new System.Drawing.Point(462, 9);
+            this.txtBoxEntryTitle.Name = "txtBoxEntryTitle";
+            this.txtBoxEntryTitle.ReadOnly = true;
+            this.txtBoxEntryTitle.Size = new System.Drawing.Size(410, 24);
+            this.txtBoxEntryTitle.TabIndex = 3;
+            this.txtBoxEntryTitle.Text = "nazwa wpisu";
+            this.txtBoxEntryTitle.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // txtBoxEntryText
+            // 
+            this.txtBoxEntryText.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtBoxEntryText.Location = new System.Drawing.Point(462, 36);
+            this.txtBoxEntryText.Multiline = true;
+            this.txtBoxEntryText.Name = "txtBoxEntryText";
+            this.txtBoxEntryText.ReadOnly = true;
+            this.txtBoxEntryText.Size = new System.Drawing.Size(410, 469);
+            this.txtBoxEntryText.TabIndex = 4;
+            this.txtBoxEntryText.Text = "tresc wpisu";
+            // 
+            // panelUserControl2
+            // 
+            this.panelUserControl2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panelUserControl2.BackColor = System.Drawing.SystemColors.Window;
+            this.panelUserControl2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelUserControl2.Controls.Add(this.panelLogged2);
+            this.panelUserControl2.Controls.Add(this.panelEdit);
+            this.panelUserControl2.Controls.Add(this.btnClose);
+            this.panelUserControl2.Controls.Add(this.btnRefresh2);
+            this.panelUserControl2.Location = new System.Drawing.Point(462, 511);
+            this.panelUserControl2.Name = "panelUserControl2";
+            this.panelUserControl2.Size = new System.Drawing.Size(410, 87);
+            this.panelUserControl2.TabIndex = 5;
+            // 
+            // btnRefresh2
+            // 
+            this.btnRefresh2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRefresh2.Location = new System.Drawing.Point(2, 3);
+            this.btnRefresh2.Name = "btnRefresh2";
+            this.btnRefresh2.Size = new System.Drawing.Size(404, 24);
+            this.btnRefresh2.TabIndex = 0;
+            this.btnRefresh2.Text = "Refresh";
+            this.btnRefresh2.UseVisualStyleBackColor = true;
+            this.btnRefresh2.Click += new System.EventHandler(this.btnRefresh2_Click);
+            // 
+            // btnClose
+            // 
+            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnClose.Location = new System.Drawing.Point(2, 60);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(404, 24);
+            this.btnClose.TabIndex = 1;
+            this.btnClose.Text = "Close";
+            this.btnClose.UseVisualStyleBackColor = true;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // panelLogged
+            // 
+            this.panelLogged.Controls.Add(this.labelLoggedUser);
+            this.panelLogged.Controls.Add(this.btnChangeTitle);
+            this.panelLogged.Controls.Add(this.btnAddEntry);
+            this.panelLogged.Location = new System.Drawing.Point(0, 29);
+            this.panelLogged.Name = "panelLogged";
+            this.panelLogged.Size = new System.Drawing.Size(410, 30);
+            this.panelLogged.TabIndex = 3;
+            // 
+            // btnAddEntry
+            // 
+            this.btnAddEntry.Location = new System.Drawing.Point(2, 2);
+            this.btnAddEntry.Name = "btnAddEntry";
+            this.btnAddEntry.Size = new System.Drawing.Size(121, 24);
+            this.btnAddEntry.TabIndex = 0;
+            this.btnAddEntry.Text = "New Entry";
+            this.btnAddEntry.UseVisualStyleBackColor = true;
+            this.btnAddEntry.Click += new System.EventHandler(this.btnAddEntry_Click);
+            // 
+            // btnChangeTitle
+            // 
+            this.btnChangeTitle.Location = new System.Drawing.Point(285, 2);
+            this.btnChangeTitle.Name = "btnChangeTitle";
+            this.btnChangeTitle.Size = new System.Drawing.Size(121, 24);
+            this.btnChangeTitle.TabIndex = 1;
+            this.btnChangeTitle.Text = "Change Title";
+            this.btnChangeTitle.UseVisualStyleBackColor = true;
+            this.btnChangeTitle.Click += new System.EventHandler(this.btnChangeTitle_Click);
+            // 
+            // labelLoggedUser
+            // 
+            this.labelLoggedUser.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.labelLoggedUser.Location = new System.Drawing.Point(129, 2);
+            this.labelLoggedUser.Name = "labelLoggedUser";
+            this.labelLoggedUser.Size = new System.Drawing.Size(150, 24);
+            this.labelLoggedUser.TabIndex = 2;
+            this.labelLoggedUser.Text = "logged as:";
+            this.labelLoggedUser.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // panelEdit
+            // 
+            this.panelEdit.Controls.Add(this.btnEditCancel);
+            this.panelEdit.Controls.Add(this.btnEditSave);
+            this.panelEdit.Location = new System.Drawing.Point(0, 29);
+            this.panelEdit.Name = "panelEdit";
+            this.panelEdit.Size = new System.Drawing.Size(410, 30);
+            this.panelEdit.TabIndex = 2;
+            // 
+            // btnEditSave
+            // 
+            this.btnEditSave.Location = new System.Drawing.Point(2, 2);
+            this.btnEditSave.Name = "btnEditSave";
+            this.btnEditSave.Size = new System.Drawing.Size(121, 24);
+            this.btnEditSave.TabIndex = 0;
+            this.btnEditSave.Text = "Save";
+            this.btnEditSave.UseVisualStyleBackColor = true;
+            this.btnEditSave.Click += new System.EventHandler(this.btnEditSave_Click);
+            // 
+            // btnEditCancel
+            // 
+            this.btnEditCancel.Location = new System.Drawing.Point(285, 2);
+            this.btnEditCancel.Name = "btnEditCancel";
+            this.btnEditCancel.Size = new System.Drawing.Size(121, 24);
+            this.btnEditCancel.TabIndex = 1;
+            this.btnEditCancel.Text = "Cancel";
+            this.btnEditCancel.UseVisualStyleBackColor = true;
+            this.btnEditCancel.Click += new System.EventHandler(this.btnEditCancel_Click);
+            // 
+            // panelLogged2
+            // 
+            this.panelLogged2.Controls.Add(this.btnDelete);
+            this.panelLogged2.Location = new System.Drawing.Point(0, 29);
+            this.panelLogged2.Name = "panelLogged2";
+            this.panelLogged2.Size = new System.Drawing.Size(410, 30);
+            this.panelLogged2.TabIndex = 3;
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.Location = new System.Drawing.Point(2, 2);
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.Size = new System.Drawing.Size(404, 24);
+            this.btnDelete.TabIndex = 1;
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.UseVisualStyleBackColor = true;
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
             // BlogForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(434, 611);
+            this.ClientSize = new System.Drawing.Size(884, 611);
             this.ControlBox = false;
+            this.Controls.Add(this.panelUserControl2);
+            this.Controls.Add(this.txtBoxEntryText);
+            this.Controls.Add(this.txtBoxEntryTitle);
             this.Controls.Add(this.panelUserControl);
             this.Controls.Add(this.listEntries);
             this.Controls.Add(this.txtBoxBlogTitle);
@@ -147,6 +323,10 @@
             this.Text = "Blog";
             this.panelUserControl.ResumeLayout(false);
             this.panelGuest.ResumeLayout(false);
+            this.panelUserControl2.ResumeLayout(false);
+            this.panelLogged.ResumeLayout(false);
+            this.panelEdit.ResumeLayout(false);
+            this.panelLogged2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -161,5 +341,19 @@
         private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.Panel panelGuest;
         private System.Windows.Forms.Label labelGuest;
+        private System.Windows.Forms.TextBox txtBoxEntryTitle;
+        private System.Windows.Forms.TextBox txtBoxEntryText;
+        private System.Windows.Forms.Panel panelUserControl2;
+        private System.Windows.Forms.Button btnClose;
+        private System.Windows.Forms.Button btnRefresh2;
+        private System.Windows.Forms.Panel panelLogged;
+        private System.Windows.Forms.Button btnChangeTitle;
+        private System.Windows.Forms.Button btnAddEntry;
+        private System.Windows.Forms.Label labelLoggedUser;
+        private System.Windows.Forms.Panel panelEdit;
+        private System.Windows.Forms.Button btnEditCancel;
+        private System.Windows.Forms.Button btnEditSave;
+        private System.Windows.Forms.Panel panelLogged2;
+        private System.Windows.Forms.Button btnDelete;
     }
 }

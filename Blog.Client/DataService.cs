@@ -31,6 +31,10 @@ namespace Blog.Client
         public ListBox ListEntries { set; get; }
         public Label LabelConnection { set; get; }
         public Label LabelLoggedUser { set; get; }
+        public TextBox TxtBoxBlogTitle { set; get; }
+        public TextBox TxtBoxEntryText { set; get; }
+        public TextBox TxtBoxEntryTitle { set; get; }
+        public int EID { set; get; }
 
         public bool GetBlogs()
         {
@@ -107,7 +111,9 @@ namespace Blog.Client
 
             if (!response.CheckError())
             {
-                // wypelnianie editboxa itp
+                EID = id;
+                TxtBoxEntryTitle.Text = response.Parametres[1];
+                TxtBoxEntryText.Text = response.Parametres[2];
                 return true;
             }
             else return false;
@@ -133,7 +139,15 @@ namespace Blog.Client
         {
             if (AccountService.Instance.Logged) LabelLoggedUser.Text = "Logged as: " + AccountService.Instance.User.Login.ToString();
             else LabelLoggedUser.Text = "Logged as: -----------";
+        }    
+        public string GetBlogTitle(int id)
+        {
+            foreach(string s in TxtBoxBlogTitle.Container.Components)
+            {
+                if (Convert.ToInt32(s.Split('|')[0]) == id)
+                    return s.Split('|')[1];
+            }
+            return "";
         }
-        
     }
 }
