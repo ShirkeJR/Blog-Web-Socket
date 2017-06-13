@@ -18,9 +18,14 @@ namespace Blog.Client
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnRefresh_Click(object sender, EventArgs e)
         {
-            this.Width += 50;
+
+        }
+
+        private void btnReturn_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
