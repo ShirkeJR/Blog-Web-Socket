@@ -39,7 +39,7 @@ namespace Blog.Client
                 if(!ServerConnection.Instance.ConnectionSocket.Connected)
                 {
                     labelConnection.Text = "Connection lost.";
-                    //ServerConnection.Instance.Connect(ServerConnection.Instance.Host, ServerConnection.Instance.Port);
+                    ServerConnection.Instance.Connect(ServerConnection.Instance.Host, ServerConnection.Instance.Port);
                 }
             }
         }
