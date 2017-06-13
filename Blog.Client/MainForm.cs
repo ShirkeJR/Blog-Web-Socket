@@ -22,6 +22,7 @@ namespace Blog.Client
             DataService.Instance.LabelConnection = labelConnection;
             DataService.Instance.ListBlogs = listBlogs;
             DataService.Instance.GetBlogsList();
+            DataService.Instance.GetConnection();
         }
 
         private void listBlogs_DoubleClick(object sender, EventArgs e)

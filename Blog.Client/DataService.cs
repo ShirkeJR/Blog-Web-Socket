@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -183,6 +184,20 @@ namespace Blog.Client
                         return String.Format("ERROR");
                     }
             }
+        }
+        public bool GetConnection()
+        {
+            if (ConnectionService.Instance.Connected())
+            {
+                LabelConnection.Text = "Connected to:: " + ConnectionService.Instance.IPEndPoint.Address.ToString() + ":" + ConnectionService.Instance.IPEndPoint.Port.ToString();
+                return true;
+            }
+            else
+            {
+                LabelConnection.Text = "Connection lost. ";
+                return false;
+            }
+
         }
     }
 }

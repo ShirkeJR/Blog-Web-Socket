@@ -31,6 +31,7 @@ namespace Blog.Client
         // connection
         public string Host { set; get; }
         public ushort Port { set; get; }
+        public IPEndPoint IPEndPoint { set; get; }
         public Socket ConnectionSocket { set; get; }
         // view
         
@@ -50,7 +51,7 @@ namespace Blog.Client
                     if (tempSocket.Connected)
                     {
                         ConnectionSocket = tempSocket;
-                        DataService.Instance.LabelConnection.Text = "Connected to:: " + IPAddress.Parse(((IPEndPoint)ipEndPoint).Address.ToString()) + ":" + ((IPEndPoint)ipEndPoint).Port.ToString();
+                        IPEndPoint = ipEndPoint;
                         return true;
                     }
                 }
