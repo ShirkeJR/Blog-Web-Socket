@@ -30,21 +30,25 @@ namespace Blog.Client
 
         public bool Register(string login, string password)
         {
+            if (!ConnectionService.Instance.Connected()) return false;
+
             Frame request = new Frame("REGISTER", new string[] { login, password });
             Frame response = null;
 
             ConnectionService.Instance.SendFrame(request);
-            ConnectionService.Instance.ReceiveFrame(response);
+            response = ConnectionService.Instance.ReceiveFrame();
 
             return !response.CheckError();
         }
         public bool Login(string login, string password)
         {
+            if (!ConnectionService.Instance.Connected()) return false;
+
             Frame request = new Frame("LOGIN", new string[] { login, password });
             Frame response = null;
 
             ConnectionService.Instance.SendFrame(request);
-            ConnectionService.Instance.ReceiveFrame(response);
+            response = ConnectionService.Instance.ReceiveFrame();
 
             if (!response.CheckError())
             {
@@ -56,6 +60,8 @@ namespace Blog.Client
         }
         public bool Logout()
         {
+            if (!ConnectionService.Instance.Connected()) return false;
+
             Frame request = new Frame("THX_BYE", null);
             Frame response;
 

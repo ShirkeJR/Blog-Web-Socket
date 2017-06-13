@@ -26,7 +26,7 @@ namespace Blog.Client
             string login = txtBoxLogin.Text;
             string pass1 = txtBoxPassword1.Text;
             string pass2 = txtBoxPassword2.Text;
-            if (pass1.Equals(pass2))
+            if (pass1.Equals(pass2) && !pass1.Equals(""))
             {
                 if (AccountService.Instance.Register(login, pass1)) this.DialogResult = DialogResult.OK;
                 else MessageBox.Show("Register error", "Register error", MessageBoxButtons.OK, MessageBoxIcon.Error);

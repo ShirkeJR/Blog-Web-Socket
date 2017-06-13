@@ -46,9 +46,10 @@ namespace Blog.Client
             ConnectionService.Instance.SendFrame(request);
             response = ConnectionService.Instance.ReceiveFrame();
 
-            if (!response.CheckError())
+            if (!response.CheckError() && response!=null)
             {
                 ListBlogs.Items.Clear();
+                if(response.Parametres != null)
                 foreach (var p in response.Parametres)
                     ListBlogs.Items.Add(p);
                 return true;
