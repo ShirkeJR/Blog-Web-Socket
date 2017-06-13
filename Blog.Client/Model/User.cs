@@ -7,8 +7,8 @@
         
         public User(string login, uint id)
         {
-            UserLogin = login;
-            UserID = id;
+            Login = login;
+            ID = id;
         }
     }
 }

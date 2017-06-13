@@ -52,9 +52,9 @@ namespace Blog.Client
                     }
                 case "DISPLAY_BLOGS":
                     {
-                        listBlogs.Items.Clear();
+                        ListBlogs.Items.Clear();
                         foreach (var p in response.Parametres)
-                            listBlogs.Items.Add(p);
+                            ListBlogs.Items.Add(p);
                         return true;
                     }
                 default:
