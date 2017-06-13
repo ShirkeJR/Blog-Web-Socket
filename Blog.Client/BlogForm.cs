@@ -39,11 +39,23 @@ namespace Blog.Client
             {
                 panelLogged.Visible = true;
                 panelGuest.Visible = false;
+                if (AccountService.Instance.User.ID != ID)
+                {
+                    btnAddEntry.Enabled = false;
+                    btnChangeTitle.Enabled = false;
+                    btnDelete.Enabled = false;
+                }
+                else
+                {
+                    btnAddEntry.Enabled = true;
+                    btnChangeTitle.Enabled = true;
+                    btnDelete.Enabled = true;
+                }
             }
             else
             {
-                panelLogged.Visible = true;
-                panelGuest.Visible = false;
+                panelLogged.Visible = false;
+                panelGuest.Visible = true;
             }
         }
 
@@ -137,7 +149,6 @@ namespace Blog.Client
             btnRefresh2.Enabled = true;
             btnClose.Enabled = true;
 
-            if (!ConnectionService.Instance.Connected()) ConnectionService.Instance.Reconnect();
             DataService.Instance.GetLoggedUser();
             txtBoxBlogTitle.Text = Title;
             DataService.Instance.GetEntries(ID);
@@ -154,6 +165,10 @@ namespace Blog.Client
 
             txtBoxEntryTitle.ReadOnly = true;
             txtBoxEntryText.ReadOnly = true;
+
+            panelUserControl.Enabled = true;
+            btnRefresh2.Enabled = true;
+            btnClose.Enabled = true;
         }
         private void btnDelete_Click(object sender, EventArgs e)
         {
@@ -168,7 +183,6 @@ namespace Blog.Client
                 txtBoxEntryTitle.ReadOnly = true;
                 txtBoxEntryText.ReadOnly = true;
 
-                if (!ConnectionService.Instance.Connected()) ConnectionService.Instance.Reconnect();
                 DataService.Instance.GetLoggedUser();
                 txtBoxBlogTitle.Text = Title;
                 DataService.Instance.GetEntries(ID);
@@ -195,6 +209,18 @@ namespace Blog.Client
                 {
                     panelLogged2.Visible = true;
                     panelEdit.Visible = false;
+                    if (AccountService.Instance.User.ID != ID)
+                    {
+                        btnAddEntry.Enabled = false;
+                        btnChangeTitle.Enabled = false;
+                        btnDelete.Enabled = false;
+                    }
+                    else
+                    {
+                        btnAddEntry.Enabled = true;
+                        btnChangeTitle.Enabled = true;
+                        btnDelete.Enabled = true;
+                    }
                 }
                 else
                 {
