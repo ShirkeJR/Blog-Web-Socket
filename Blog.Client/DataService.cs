@@ -40,7 +40,8 @@ namespace Blog.Client
             Frame response = null;
 
             ConnectionService.Instance.SendFrame(request);
-            ConnectionService.Instance.ReceiveFrame(response);
+            //ConnectionService.Instance.ReceiveFrame(response);
+            response = ConnectionService.Instance.ReceiveFrame();
 
             if (!response.CheckError())
             {

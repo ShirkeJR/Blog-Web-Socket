@@ -34,7 +34,7 @@ namespace Blog.Client
             {
                 BlogForm child = new BlogForm();
                 this.Hide();
-                child.ID = Convert.ToInt32(listBlogs.SelectedItem.ToString().Split('|'));
+                child.ID = Convert.ToInt32(listBlogs.SelectedItem.ToString().Split('|')[0]);
                 child.ShowDialog();
                 this.Show();
             }
