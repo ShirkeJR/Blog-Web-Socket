@@ -50,7 +50,7 @@ namespace Blog.Server
             }
         }
 
-        public async Task<bool> BlogExists(int id)
+        public async Task<bool> Exists(int id)
         {
             string query = "SELECT COUNT(*) FROM [dbo].[Posts] WHERE [UserId] = @Id";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
