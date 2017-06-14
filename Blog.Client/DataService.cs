@@ -52,7 +52,7 @@ namespace Blog.Client
             {
                 ListBlogs.Items.Clear();
                 BlogsID.Clear();
-                if (response.Parametres != null)
+                if (response.Parametres != null || !response.Parametres[0].Contains('|'))
                     foreach (var p in response.Parametres)
                     {
                         BlogsID.Add(Convert.ToInt32(p.Split('|')[0]));
@@ -82,7 +82,7 @@ namespace Blog.Client
             {
                 ListEntries.Items.Clear();
                 EntriesID.Clear();
-                foreach (var p in response.Parametres)
+                foreach (var p in response.Parametres || !response.Parametres[0].Contains('|'))
                 {
                     EntriesID.Add(Convert.ToInt32(p.Split('|')[0]));
                     ListEntries.Items.Add(">"+p.Split('|')[1]);
