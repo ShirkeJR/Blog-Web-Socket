@@ -45,6 +45,7 @@ namespace Blog.Server
         {
             Socket s;
             listenerSocket.Bind(localEndPoint);
+            LoggingService.Instance.AddLog(string.Format("Socket bound to {0}:{1}", localEndPoint.Address, localEndPoint.Port));
             while (true)
             {
                 listenerSocket.Listen(0);

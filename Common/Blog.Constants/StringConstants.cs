@@ -2,6 +2,9 @@
 {
     public static class StringConstants
     {
+        public const string SymmetricKey = "TESTTESTTESTTEST";
+        public const string SymmetricSalt = "1234abcd5678efgh";
+
         public const string PacketEnding = "/rn/rn/rn$$";
         public const string UnrecognizedCommandAnswer = "QUE?";
         public const string LoginRequiredAnswer = "IDENTIFY_PLS";

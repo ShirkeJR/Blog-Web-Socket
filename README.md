@@ -201,3 +201,6 @@ Ogólny format opisu pakietu:
 * __Ilość parametrów__: 0
 * __Odpowiedź serwera__: `PONG`
 * __Ilość parametrów odpowiedzi__: 0
+
+### Szyfrowanie ###
+Pakiety używane w komunikacji są szyfrowane algorytmem AES. Szyfrowanie można wyłączyć zakomentowując na górze plików __ConnectionService__ (w kliencie) i __ClientData__ (w serwerze) linijkę `#define IMPROVED_PACKET_ENCRYPTION`.

@@ -1,6 +1,11 @@
-﻿using System;
+﻿#define IMPROVED_PACKET_ENCRYPTION
+
+using Blog.Constants;
+using Blog.Utils;
+using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -54,7 +59,11 @@ namespace Blog.Server
                     if (bytesRead > 0)
                     {
                         content = Encoding.ASCII.GetString(bytes, 0, bytesRead);
-                        if (content.IndexOf("/rn/rn/rn$$") > -1)
+#if IMPROVED_PACKET_ENCRYPTION
+                        var content2 = CryptoService.Decrypt<AesManaged>(content.Substring(0, content.Length - StringConstants.PacketEnding.Length), StringConstants.SymmetricKey, StringConstants.SymmetricSalt);
+                        content = string.Format("{0}{1}", content2, content.Substring(content.Length - StringConstants.PacketEnding.Length));
+#endif
+                        if (content.IndexOf(StringConstants.PacketEnding) > -1)
                         {
                             LoggingService.Instance.AddLog("-->\t" + content);
                             if (content.StartsWith("4\tEOT\t"))
@@ -70,6 +79,9 @@ namespace Blog.Server
                             }
 
                             content = await PacketAnalyzeService.Instance.getPacketResponse(content, this);
+#if IMPROVED_PACKET_ENCRYPTION
+                            content = string.Format("{0}{1}", CryptoService.Encrypt<AesManaged>(content.Substring(0, content.Length - StringConstants.PacketEnding.Length), StringConstants.SymmetricKey, StringConstants.SymmetricSalt), StringConstants.PacketEnding);
+#endif
                             LoggingService.Instance.AddLog("<--\t" + content);
                             byte[] byteData = Encoding.ASCII.GetBytes(content);
                             clientSocket.Send(byteData);
