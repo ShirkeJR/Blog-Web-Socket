@@ -28,7 +28,9 @@ namespace Blog.Client
         }
         #endregion Singleton
         public ListBox ListBlogs { set; get; }
+        public List<int> BlogsID { set; get; }
         public ListBox ListEntries { set; get; }
+        public List<int> EntriesID { set; get; }
         public Label LabelConnection { set; get; }
         public Label LabelLoggedUser { set; get; }
         public TextBox TxtBoxBlogTitle { set; get; }
@@ -49,9 +51,15 @@ namespace Blog.Client
             if (!response.CheckError() && response != null)
             {
                 ListBlogs.Items.Clear();
+                BlogsID.Clear();
                 if (response.Parametres != null)
                     foreach (var p in response.Parametres)
-                        ListBlogs.Items.Add(p);
+                    {
+                        BlogsID.Add(Convert.ToInt32(p.Split('|')[0]));
+                        ListBlogs.Items.Add(">"+p.Split('|')[1]);
+                    }
+                        
+                        
                 return true;
             }
             else
@@ -73,8 +81,12 @@ namespace Blog.Client
             if (!response.CheckError())
             {
                 ListEntries.Items.Clear();
+                EntriesID.Clear();
                 foreach (var p in response.Parametres)
-                    ListEntries.Items.Add(p);
+                {
+                    EntriesID.Add(Convert.ToInt32(p.Split('|')[0]));
+                    ListEntries.Items.Add(">"+p.Split('|')[1]);
+                }
                 return true;
             }
             else
@@ -122,7 +134,7 @@ namespace Blog.Client
             {
                 EID = id;
                 TxtBoxEntryTitle.Text = response.Parametres[1];
-                TxtBoxEntryText.Text = response.Parametres[3] + "\n" + response.Parametres[2];
+                TxtBoxEntryText.Text = response.Parametres[3] + "\n\n" + response.Parametres[2];
                 return true;
             }
             else return false;
@@ -151,13 +163,8 @@ namespace Blog.Client
         }    
         public string GetBlogTitle(int id)
         {
-            
-            foreach(string s in ListBlogs.Items)
-            {
-                if (Convert.ToInt32(s.Split('|')[0]) == id)
-                    return s.Split('|')[1];
-            }
-            return "";
+            if (BlogsID.Contains(id)) return ListBlogs.Items[BlogsID.IndexOf(id)].ToString();
+            else return "";
         }
     }
 }

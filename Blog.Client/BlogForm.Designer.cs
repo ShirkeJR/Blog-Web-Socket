@@ -62,6 +62,7 @@
             this.txtBoxBlogTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.txtBoxBlogTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtBoxBlogTitle.HideSelection = false;
             this.txtBoxBlogTitle.Location = new System.Drawing.Point(12, 9);
             this.txtBoxBlogTitle.Name = "txtBoxBlogTitle";
             this.txtBoxBlogTitle.ReadOnly = true;

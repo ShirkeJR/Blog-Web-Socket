@@ -65,7 +65,7 @@ namespace Blog.Client
                     case "DISPLAY_BLOGS": return false;
                     case "DISPLAY_BLOG":
                         {
-                            if (Parametres[0].Equals("FAILED")) { MessageBox.Show("Failed to get blog entries", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return true; }
+                            if (Parametres[0].Equals("FAILED")) { /*MessageBox.Show("Failed to get blog entries", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);*/ return true; }
                             else return false;
                         }
                     case "ADD_ENTRY":

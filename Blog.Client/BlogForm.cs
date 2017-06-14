@@ -19,12 +19,13 @@ namespace Blog.Client
         {
             InitializeComponent();
             ID = id;
-            Title = title;
+            Title = title.Remove(0, 1);
             DataService.Instance.TxtBoxBlogTitle = txtBoxBlogTitle;
             DataService.Instance.ListEntries = listEntries;
             DataService.Instance.LabelLoggedUser = labelLoggedUser;
             DataService.Instance.TxtBoxEntryTitle = txtBoxEntryTitle;
             DataService.Instance.TxtBoxEntryText = txtBoxEntryText;
+            DataService.Instance.EntriesID = new List<int>();
 
             DataService.Instance.GetLoggedUser();
             txtBoxBlogTitle.Text = Title;
@@ -35,6 +36,10 @@ namespace Blog.Client
             txtBoxEntryText.Visible = false;
             txtBoxEntryTitle.Visible = false;
             panelUserControl2.Visible = false;
+
+            txtBoxBlogTitle.SelectionLength = 0;
+            txtBoxBlogTitle.SelectionStart = 0;
+            txtBoxBlogTitle.Enabled = false;
 
             if (AccountService.Instance.Logged)
             {
@@ -106,6 +111,7 @@ namespace Blog.Client
             if(btnChangeTitle.Text.Equals("Change Title"))
             {
                 btnChangeTitle.Text = "Save";
+                txtBoxBlogTitle.Enabled = true;
                 txtBoxBlogTitle.ReadOnly = false;
 
                 panelUserControl2.Enabled = false;
@@ -125,6 +131,7 @@ namespace Blog.Client
                 btnAddEntry.Enabled = true;
                 if (DataService.Instance.ChangeBlogTitle(ID, newTitle))
                     Title = newTitle;
+                txtBoxBlogTitle.Enabled = false;
             }
 
         }
@@ -203,7 +210,7 @@ namespace Blog.Client
         {
             if (listEntries.SelectedItem != null)
             {
-                int id = Convert.ToInt32(listEntries.SelectedItem.ToString().Split('|')[0]);
+                int id = DataService.Instance.EntriesID[listEntries.SelectedIndex];
 
                 DataService.Instance.DisplayEntry(id);
 
@@ -211,38 +218,7 @@ namespace Blog.Client
                 this.Height = 650;
                 txtBoxEntryText.Visible = true;
                 txtBoxEntryTitle.Visible = true;
-                panelUserControl2.Visible = true;
-                //this.Width = 900;
-                //txtBoxEntryText.Visible = true;
-                //txtBoxEntryTitle.Visible = true;
-                //panelUserControl2.Visible = true;
-
-                //txtBoxEntryTitle.ReadOnly = true;
-                //txtBoxEntryText.ReadOnly = true;
-
-                //if (AccountService.Instance.Logged)
-                //{
-                //    panelLogged2.Visible = true;
-                //    panelEdit.Visible = false;
-                //    if (AccountService.Instance.User.ID != ID)
-                //    {
-                //        btnAddEntry.Enabled = false;
-                //        btnChangeTitle.Enabled = false;
-                //        btnDelete.Enabled = false;
-                //    }
-                //    else
-                //    {
-                //        btnAddEntry.Enabled = true;
-                //        btnChangeTitle.Enabled = true;
-                //        btnDelete.Enabled = true;
-                //    }
-                //}
-                //else
-                //{
-                //    panelLogged2.Visible = false;
-                //    panelEdit.Visible = false;
-                //}
-
+                panelUserControl2.Visible = true;               
             }
         }
     }

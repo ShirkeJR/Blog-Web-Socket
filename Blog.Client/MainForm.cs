@@ -23,6 +23,7 @@ namespace Blog.Client
             DataService.Instance.LabelConnection = labelConnection;
             DataService.Instance.LabelLoggedUser = labelLoggedUser;
             DataService.Instance.ListBlogs = listBlogs;
+            DataService.Instance.BlogsID = new List<int>();
 
             DataService.Instance.GetBlogs();
             DataService.Instance.GetConnection();
@@ -32,8 +33,8 @@ namespace Blog.Client
         {
             if (listBlogs.SelectedItem != null)
             {
-                int id = Convert.ToInt32(listBlogs.SelectedItem.ToString().Split('|')[0]);
-                string title = listBlogs.SelectedItem.ToString().Split('|')[1];
+                int id = DataService.Instance.BlogsID[listBlogs.SelectedIndex];
+                string title = listBlogs.SelectedItem.ToString();
                 BlogForm child = new BlogForm(id, title);
                 this.Hide();
                 child.ShowDialog();

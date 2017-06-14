@@ -40,27 +40,36 @@ namespace Blog.Client
         {
             Host = host;
             Port = port;
-            IPHostEntry hostEntry = Dns.GetHostEntry(Host);
-            foreach (IPAddress address in hostEntry.AddressList)
+            try
             {
-                IPEndPoint ipEndPoint = new IPEndPoint(address, Port);
-                Socket tempSocket = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-                try
+                IPHostEntry hostEntry = Dns.GetHostEntry(Host);
+                foreach (IPAddress address in hostEntry.AddressList)
                 {
-                    tempSocket.Connect(ipEndPoint);
-                    if (tempSocket.Connected)
+                    IPEndPoint ipEndPoint = new IPEndPoint(address, Port);
+                    Socket tempSocket = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+                    try
                     {
-                        ConnectionSocket = tempSocket;
-                        IPEndPoint = ipEndPoint;
-                        return true;
+                        tempSocket.Connect(ipEndPoint);
+                        if (tempSocket.Connected)
+                        {
+                            ConnectionSocket = tempSocket;
+                            IPEndPoint = ipEndPoint;
+                            return true;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
                     }
                 }
-                catch (Exception ex)
-                {
-
-                }
+                return false;
             }
-            return false;
+            catch
+            {
+                return false;
+            }
+            
+            
         }
         public bool Reconnect()
         {
@@ -76,7 +85,12 @@ namespace Blog.Client
         {
             if (ConnectionSocket != null)
             {
-                if(ConnectionSocket.Connected) ConnectionSocket.Close();
+                if (ConnectionSocket.Connected)
+                {
+                    Frame request = new Frame("EOT", null);
+                    SendFrame(request);
+                    ConnectionSocket.Close();
+                }
                 ConnectionSocket = null;
                 return true;
             }
