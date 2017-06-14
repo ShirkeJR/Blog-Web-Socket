@@ -33,9 +33,11 @@ namespace Blog.Server
         }
         public async void dataListening(object cSocket)
         {
-            logBox.Invoke((MethodInvoker)delegate { logBox.Items.Add("Client open"); });
             String content = String.Empty;
             Socket clientSocket = (Socket)cSocket;
+            logBox.Invoke((MethodInvoker)delegate { logBox.Items.Add("Client: " +
+                (((IPEndPoint)(clientSocket.RemoteEndPoint)).Address.ToString()) + ": " +
+                (((IPEndPoint)(clientSocket.RemoteEndPoint)).Port.ToString()) + " open"); });
 
             byte[] bytes;
             int bytesRead = 0;
@@ -73,7 +75,11 @@ namespace Blog.Server
                 }
                 if (!clientSocket.Connected)
                 {
-                    logBox.Invoke((MethodInvoker)delegate { logBox.Items.Add("Client close"); });
+                    logBox.Invoke((MethodInvoker)delegate {
+                        logBox.Items.Add("Client: " +
+                        (((IPEndPoint)(clientSocket.RemoteEndPoint)).Address.ToString()) + ": " +
+                        (((IPEndPoint)(clientSocket.RemoteEndPoint)).Port.ToString()) + " closed");
+                    });
                     clientBox.Invoke((MethodInvoker)delegate { clientBox.Items.Remove((((IPEndPoint)(clientSocket.RemoteEndPoint)).Address.ToString()) + ": " +((IPEndPoint)(clientSocket.RemoteEndPoint)).Port.ToString()); });
                     clientSocket.Shutdown(SocketShutdown.Both);
                     clientSocket.Close();
