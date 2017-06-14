@@ -51,6 +51,8 @@
             this.listBlogs.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.listBlogs.Font = new System.Drawing.Font("Microsoft Sans Serif", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBlogs.FormattingEnabled = true;
+            this.listBlogs.HorizontalExtent = 1000;
+            this.listBlogs.HorizontalScrollbar = true;
             this.listBlogs.ItemHeight = 31;
             this.listBlogs.Location = new System.Drawing.Point(12, 36);
             this.listBlogs.Name = "listBlogs";
