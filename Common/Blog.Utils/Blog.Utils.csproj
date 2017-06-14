@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{912E6DAE-CBB7-4FDA-915D-96501DDE1BD8}</ProjectGuid>
+    <ProjectGuid>{060CC0C1-017A-42B2-A643-5275CD7123C8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Blog.AuthManager</RootNamespace>
-    <AssemblyName>Blog.AuthManager</AssemblyName>
+    <RootNamespace>Blog.Utils</RootNamespace>
+    <AssemblyName>Blog.Utils</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,15 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuthManager.cs" />
     <Compile Include="CryptoService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Blog.Database\Blog.Database.csproj">
-      <Project>{98A99DCB-63DD-4E73-8759-F566D377B5EB}</Project>
-      <Name>Blog.Database</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
