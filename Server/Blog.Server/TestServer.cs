@@ -51,11 +51,14 @@ namespace Blog.Server
 
         public void StartListening()
         {
+            Socket s;
             listenerSocket.Bind(localEndPoint);
             while (true)
             {
                 listenerSocket.Listen(0);
-                _clients.Add(new ClientData(listenerSocket.Accept(), logBox));
+                s = listenerSocket.Accept();
+                clientBox.Invoke((MethodInvoker)delegate { clientBox.Items.Add((((IPEndPoint)(s.RemoteEndPoint)).Address.ToString()) + ": " + ((IPEndPoint)(s.RemoteEndPoint)).Port.ToString()); });
+                _clients.Add(new ClientData(s, logBox, clientBox));
             }
         }
     }
