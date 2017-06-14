@@ -24,19 +24,23 @@ namespace Blog.Server
 
         private async void button1_Click(object sender, EventArgs e)
         {
-            logBox.Items.Add("Server starting...");
+            logBox.Items.Add("*Server starting...");
             button1.Enabled = false;
             if (!running)
             {
                 running = true;
                 await Task.Run(() => TestServer.Instance.StartListening());
-            }
-            
+            }  
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

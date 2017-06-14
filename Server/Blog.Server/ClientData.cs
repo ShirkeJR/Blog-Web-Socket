@@ -35,7 +35,7 @@ namespace Blog.Server
         {
             String content = String.Empty;
             Socket clientSocket = (Socket)cSocket;
-            logBox.Invoke((MethodInvoker)delegate { logBox.Items.Add("Client: " +
+            logBox.Invoke((MethodInvoker)delegate { logBox.Items.Add("*Client: " +
                 (((IPEndPoint)(clientSocket.RemoteEndPoint)).Address.ToString()) + ": " +
                 (((IPEndPoint)(clientSocket.RemoteEndPoint)).Port.ToString()) + " open"); });
 
@@ -76,7 +76,7 @@ namespace Blog.Server
                 if (!clientSocket.Connected)
                 {
                     logBox.Invoke((MethodInvoker)delegate {
-                        logBox.Items.Add("Client: " +
+                        logBox.Items.Add("*Client: " +
                         (((IPEndPoint)(clientSocket.RemoteEndPoint)).Address.ToString()) + ": " +
                         (((IPEndPoint)(clientSocket.RemoteEndPoint)).Port.ToString()) + " closed");
                     });
