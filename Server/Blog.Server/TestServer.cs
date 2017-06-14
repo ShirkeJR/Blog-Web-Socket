@@ -1,30 +1,24 @@
-﻿using System;
+﻿using Blog.Constants;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Blog.Server
 {
-    class TestServer
+    internal class TestServer
     {
         #region Singleton
 
         private static volatile TestServer _instance = null;
         private static volatile object threadSyncLock = new object();
 
-  
         private TestServer()
         {
             listenerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             _clients = new List<ClientData>();
             ipHostInfo = Dns.Resolve(Dns.GetHostName());
             ipAddress = ipHostInfo.AddressList[0];
-            localEndPoint = new IPEndPoint(ipAddress, 11000);
+            localEndPoint = new IPEndPoint(ipAddress, Int16Constants.DefaultPort);
         }
 
         public static TestServer Instance

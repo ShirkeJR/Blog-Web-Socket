@@ -1,32 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Blog.Server
 {
-    class ClientData
+    internal class ClientData
     {
-        private Socket clientSocket;
-        private Thread clientThread;
-        private int id;
+        private Socket clientSocket = null;
+        private Thread clientThread = null;
+        private int id = -1;
         public int Id { get { return id; } set { id = value; } }
-
-
+        public Socket ClientSocket { get { return clientSocket; } set { clientSocket = value; } }
+        public Thread ClientThread { get { return clientThread; } set { clientThread = value; } }
 
         public ClientData(Socket clientSocket)
         {
             this.clientSocket = clientSocket;
-            id = -1;
             clientThread = new Thread(dataListening);
             clientThread.Start(clientSocket);
-     
         }
+
         public async void dataListening(object cSocket)
         {
             String content = String.Empty;
@@ -38,7 +34,7 @@ namespace Blog.Server
             byte[] bytes;
             int bytesRead = 0;
 
-            while(true)
+            while (true)
             {
                 try
                 {
@@ -53,15 +49,15 @@ namespace Blog.Server
                         return;
                     }
                     bytes = new byte[clientSocket.SendBufferSize];
-                    bytesRead = clientSocket.Receive(bytes); 
+                    bytesRead = clientSocket.Receive(bytes);
 
                     if (bytesRead > 0)
                     {
                         content = Encoding.ASCII.GetString(bytes, 0, bytesRead);
                         if (content.IndexOf("/rn/rn/rn$$") > -1)
                         {
-                            if (content.StartsWith("4\tEOT\t")) 
                             LoggingService.Instance.AddLog("-->\t" + content);
+                            if (content.StartsWith("4\tEOT\t"))
                             {
                                 LoggingService.Instance.AddLog("*Client: " +
                                     (((IPEndPoint)(clientSocket.RemoteEndPoint)).Address.ToString()) + ": " +
@@ -87,9 +83,8 @@ namespace Blog.Server
                         }
                     }
                 }
-                catch (SocketException ex)
+                catch (SocketException)
                 {
-
                 }
             }
         }
