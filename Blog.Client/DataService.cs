@@ -86,7 +86,7 @@ namespace Blog.Client
                     foreach (var p in response.Parametres)
                     {
                         EntriesID.Add(Convert.ToInt32(p.Split('|')[0]));
-                        ListEntries.Items.Add(">"+p.Split('|')[1]);
+                        ListEntries.Items.Add(">    "+p.Split('|')[1]);
                     }
                 return true;
             }
