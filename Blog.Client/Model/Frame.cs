@@ -43,7 +43,6 @@ namespace Blog.Client
             if (Local) return false;
             else
             {
-                if (CheckFrame()) return false;
                 switch(Command)
                 {
                     case "QUE?": { MessageBox.Show("Client request error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return true; }
