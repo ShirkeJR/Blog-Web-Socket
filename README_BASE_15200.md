@@ -1,4 +1,4 @@
-﻿# Blog #
+# Blog #
 
 ### Założenia ###
 * Klienci posiadają konto na serwerze.
@@ -10,21 +10,18 @@ wszystko
 
 ### Opis protokołu ###
 Komunikaty pomiędzy serwerem a klientem wymieniane są w formie tekstowej. Pojedynczy pakiet ma następującą budowę:
-`X Y ZZZZZZZZZ...`
+`X Y ZZZZZZZZZ... END`
 gdzie:
 * `X` - całkowita długość prawidłowo odebranego pakietu liczona od pierwszego znaku Y do końca komunikatu
 * `Y` - komenda określająca żądanie
 * `ZZZZZZZZ...` - dane składające się na zapytanie (w przypadku klienta) bądź odpowiedź (w przypadku serwera)
-<<<<<<< HEAD
-=======
-* `END` - ciąg znaków oznaczający koniec komunikatu, /rn/rn/rn$$
->>>>>>> 1a4142a... Update README.md
+* `END` - ciąg znaków oznaczający koniec komunikatu, /rn/rn/rn$$"
 
 Pola te są rozdzielone tabulatorem.
 
 W odniesieniu do przykładu:
-`39 LOGIN janbonkowski@umcs.pl TestTest123#`
-* 39 to liczba znaków licząc od `L` do `#`.
+`39\tLOGIN\tjanbonkowski@umcs.pl\tTestTest123#\t/rn/rn/rn$$`
+* 40 to liczba znaków licząc od `L` do ostatniego `\t`.
 * `LOGIN` to żądanie wysyłane do serwera
 * `janbonkowski@umcs.pl TestTest123#` to parametry żądania (tutaj login i hasło)
 
@@ -178,14 +175,6 @@ Ogólny format opisu pakietu:
 * __Ilość parametrów odpowiedzi__: 0
 
 ---
-* __Nazwa__: Pakiet GTFO
-* __Treść pakietu__: `Co kolwiek`
-* __Ilość parametrów__: 0
-* __Odpowiedź serwera__: `GTFO`
-* __Opis odpowiedzi__: komunikat informujący o nie istniejącym komunikacie
-* __Ilość parametrów odpowiedzi__: 0
-
----
 * __Nazwa__: Pakiet zmiany nazwy bloga
 * __Treść pakietu__: `CHANGE_BLOG_NAME Id Nowa nazwa bloga`
 * __Ilość parametrów__: 2
@@ -197,7 +186,3 @@ Ogólny format opisu pakietu:
 * __Odpowiedź serwera__: `CHANGE_BLOG_NAME FAILED`
 * __Opis odpowiedzi__: komunikat informujący o niepomyślnej zmianie nazwy bloga (np. próbowano zmienić nazwę nie swojego bloga)
 * __Ilość parametrów odpowiedzi__: 1
-* __Odpowiedź serwera__: `CHANGE_BLOG_NAME NOTOWNER`
-* __Opis odpowiedzi__: Użytkownik nie jest właścicielem bloga, z którego próbuje usunąć wpis
-* __Ilość parametrów odpowiedzi__: 1
-* __Opis parametru 1__: string informujący o niepowodzeniu przy usuwaniu treści z nie swojego bloga
