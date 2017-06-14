@@ -14,18 +14,14 @@ namespace Blog.Server
     {
         private Socket clientSocket;
         private Thread clientThread;
-        private ListBox logBox;
-        private ListBox clientBox;
         private int id;
         public int Id { get { return id; } set { id = value; } }
 
 
 
-        public ClientData(Socket clientSocket, ListBox lg, ListBox cb)
+        public ClientData(Socket clientSocket)
         {
             this.clientSocket = clientSocket;
-            this.logBox = lg;
-            this.clientBox = cb;
             id = -1;
             clientThread = new Thread(dataListening);
             clientThread.Start(clientSocket);
@@ -35,9 +31,9 @@ namespace Blog.Server
         {
             String content = String.Empty;
             Socket clientSocket = (Socket)cSocket;
-            logBox.Invoke((MethodInvoker)delegate { logBox.Items.Add("*Client: " +
-                (((IPEndPoint)(clientSocket.RemoteEndPoint)).Address.ToString()) + ": " +
-                (((IPEndPoint)(clientSocket.RemoteEndPoint)).Port.ToString()) + " open"); });
+            LoggingService.Instance.AddLog("*Client: " +
+(((IPEndPoint)(clientSocket.RemoteEndPoint)).Address.ToString()) + ": " +
+(((IPEndPoint)(clientSocket.RemoteEndPoint)).Port.ToString()) + " open");
 
             byte[] bytes;
             int bytesRead = 0;
@@ -48,12 +44,10 @@ namespace Blog.Server
                 {
                     if (!clientSocket.Connected)
                     {
-                        logBox.Invoke((MethodInvoker)delegate {
-                            logBox.Items.Add("*Client: " +
+                        LoggingService.Instance.AddLog("*Client: " +
                             (((IPEndPoint)(clientSocket.RemoteEndPoint)).Address.ToString()) + ": " +
                             (((IPEndPoint)(clientSocket.RemoteEndPoint)).Port.ToString()) + " closed");
-                        });
-                        clientBox.Invoke((MethodInvoker)delegate { clientBox.Items.Remove((((IPEndPoint)(clientSocket.RemoteEndPoint)).Address.ToString()) + ": " + ((IPEndPoint)(clientSocket.RemoteEndPoint)).Port.ToString()); });
+                        LoggingService.Instance.RemoveClient(this);
                         clientSocket.Shutdown(SocketShutdown.Both);
                         clientSocket.Close();
                         return;
@@ -66,29 +60,28 @@ namespace Blog.Server
                         content = Encoding.ASCII.GetString(bytes, 0, bytesRead);
                         if (content.IndexOf("/rn/rn/rn$$") > -1)
                         {
-                            logBox.Invoke((MethodInvoker)delegate { logBox.Items.Add("-->\t" + content); });
                             if (content.StartsWith("4\tEOT\t")) 
+                            LoggingService.Instance.AddLog("-->\t" + content);
                             {
-                                logBox.Invoke((MethodInvoker)delegate {
-                                    logBox.Items.Add("*Client: " +
+                                LoggingService.Instance.AddLog("*Client: " +
                                     (((IPEndPoint)(clientSocket.RemoteEndPoint)).Address.ToString()) + ": " +
                                     (((IPEndPoint)(clientSocket.RemoteEndPoint)).Port.ToString()) + " closed");
-                                });
-                                clientBox.Invoke((MethodInvoker)delegate { clientBox.Items.Remove((((IPEndPoint)(clientSocket.RemoteEndPoint)).Address.ToString()) + ": " + ((IPEndPoint)(clientSocket.RemoteEndPoint)).Port.ToString()); });
+
+                                LoggingService.Instance.RemoveClient(this);
                                 clientSocket.Shutdown(SocketShutdown.Both);
                                 clientSocket.Close();
                                 return;
                             }
 
                             content = await PacketAnalyzeService.Instance.getPacketResponse(content, this);
-                            logBox.Invoke((MethodInvoker)delegate { logBox.Items.Add("<--\t" + content); });
+                            LoggingService.Instance.AddLog("<--\t" + content);
                             byte[] byteData = Encoding.ASCII.GetBytes(content);
                             clientSocket.Send(byteData);
                         }
                         else
                         {
                             content = await PacketAnalyzeService.Instance.getPacketResponse("daoijhdoiajsd", this);
-                            logBox.Invoke((MethodInvoker)delegate { logBox.Items.Add(content); });
+                            LoggingService.Instance.AddLog(content);
                             byte[] byteData = Encoding.ASCII.GetBytes(content);
                             clientSocket.Send(byteData);
                         }

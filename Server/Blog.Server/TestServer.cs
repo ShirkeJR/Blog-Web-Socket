@@ -43,8 +43,6 @@ namespace Blog.Server
 
         private Socket listenerSocket;
         private List<ClientData> _clients;
-        public ListBox logBox { set; get; }
-        public ListBox clientBox { set; get; }
         private IPHostEntry ipHostInfo;
         private IPAddress ipAddress;
         private IPEndPoint localEndPoint;
@@ -57,10 +55,10 @@ namespace Blog.Server
             {
                 listenerSocket.Listen(0);
                 s = listenerSocket.Accept();
-                clientBox.Invoke((MethodInvoker)delegate { clientBox.Items.Add((((IPEndPoint)(s.RemoteEndPoint)).Address.ToString()) + ": " + ((IPEndPoint)(s.RemoteEndPoint)).Port.ToString()); });
-                _clients.Add(new ClientData(s, logBox, clientBox));
+                ClientData clientData = new ClientData(s);
+                LoggingService.Instance.AddClient(clientData);
+                _clients.Add(clientData);
             }
         }
     }
-
 }
