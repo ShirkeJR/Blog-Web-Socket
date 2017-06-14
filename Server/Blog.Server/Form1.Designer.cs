@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.clientBox = new System.Windows.Forms.ListBox();
             this.logBox = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -40,26 +39,13 @@
             // 
             this.button1.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.button1.Location = new System.Drawing.Point(12, 344);
+            this.button1.Location = new System.Drawing.Point(11, 362);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(141, 51);
+            this.button1.Size = new System.Drawing.Size(836, 42);
             this.button1.TabIndex = 0;
             this.button1.Text = "Start";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button2
-            // 
-            this.button2.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.button2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.button2.Location = new System.Drawing.Point(703, 344);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(145, 51);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Stop";
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // clientBox
             // 
@@ -69,7 +55,7 @@
             this.clientBox.ItemHeight = 16;
             this.clientBox.Location = new System.Drawing.Point(633, 32);
             this.clientBox.Name = "clientBox";
-            this.clientBox.Size = new System.Drawing.Size(215, 308);
+            this.clientBox.Size = new System.Drawing.Size(215, 324);
             this.clientBox.TabIndex = 3;
             // 
             // logBox
@@ -80,7 +66,7 @@
             this.logBox.ItemHeight = 16;
             this.logBox.Location = new System.Drawing.Point(12, 32);
             this.logBox.Name = "logBox";
-            this.logBox.Size = new System.Drawing.Size(614, 308);
+            this.logBox.Size = new System.Drawing.Size(614, 324);
             this.logBox.TabIndex = 4;
             // 
             // label1
@@ -115,7 +101,6 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.logBox);
             this.Controls.Add(this.clientBox);
-            this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Name = "Form1";
             this.Text = "Blog Server";
@@ -127,7 +112,6 @@
         #endregion
 
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
         private System.Windows.Forms.ListBox clientBox;
         public  System.Windows.Forms.ListBox logBox;
         private System.Windows.Forms.Label label1;
