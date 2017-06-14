@@ -98,7 +98,7 @@ namespace Blog.Client
         }
         override public string ToString()
         {
-            if (Parametres != null) return String.Format("{0}\t{1}\t{3}\t/rn/rn/rn$$", Length, Command, String.Join("\t", Parametres));
+            if (Parametres != null) return String.Format("{0}\t{1}\t{2}\t/rn/rn/rn$$", Length, Command, String.Join("\t", Parametres));
             else return String.Format("{0}\t{1}\t/rn/rn/rn$$", Length, Command);
         }
     }
