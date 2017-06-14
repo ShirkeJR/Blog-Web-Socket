@@ -46,6 +46,18 @@ namespace Blog.Server
             {
                 try
                 {
+                    if (!clientSocket.Connected)
+                    {
+                        logBox.Invoke((MethodInvoker)delegate {
+                            logBox.Items.Add("*Client: " +
+                            (((IPEndPoint)(clientSocket.RemoteEndPoint)).Address.ToString()) + ": " +
+                            (((IPEndPoint)(clientSocket.RemoteEndPoint)).Port.ToString()) + " closed");
+                        });
+                        clientBox.Invoke((MethodInvoker)delegate { clientBox.Items.Remove((((IPEndPoint)(clientSocket.RemoteEndPoint)).Address.ToString()) + ": " + ((IPEndPoint)(clientSocket.RemoteEndPoint)).Port.ToString()); });
+                        clientSocket.Shutdown(SocketShutdown.Both);
+                        clientSocket.Close();
+                        return;
+                    }
                     bytes = new byte[clientSocket.SendBufferSize];
                     bytesRead = clientSocket.Receive(bytes); 
 
@@ -53,7 +65,19 @@ namespace Blog.Server
                     {
                         content = Encoding.ASCII.GetString(bytes, 0, bytesRead);
                         if (content.IndexOf("/rn/rn/rn$$") > -1)
-                        {  
+                        {
+                            if (content.StartsWith("4\tEOT\t")) 
+                            {
+                                logBox.Invoke((MethodInvoker)delegate {
+                                    logBox.Items.Add("*Client: " +
+                                    (((IPEndPoint)(clientSocket.RemoteEndPoint)).Address.ToString()) + ": " +
+                                    (((IPEndPoint)(clientSocket.RemoteEndPoint)).Port.ToString()) + " closed");
+                                });
+                                clientBox.Invoke((MethodInvoker)delegate { clientBox.Items.Remove((((IPEndPoint)(clientSocket.RemoteEndPoint)).Address.ToString()) + ": " + ((IPEndPoint)(clientSocket.RemoteEndPoint)).Port.ToString()); });
+                                clientSocket.Shutdown(SocketShutdown.Both);
+                                clientSocket.Close();
+                                return;
+                            }
                             logBox.Invoke((MethodInvoker)delegate { logBox.Items.Add(content); });
                             content = await PacketAnalyzeService.Instance.getPacketResponse(content, this);
                             logBox.Invoke((MethodInvoker)delegate { logBox.Items.Add(content); });
@@ -71,19 +95,7 @@ namespace Blog.Server
                 }
                 catch (SocketException ex)
                 {
-                    Console.WriteLine("Client Disconnected.");
-                }
-                if (!clientSocket.Connected)
-                {
-                    logBox.Invoke((MethodInvoker)delegate {
-                        logBox.Items.Add("*Client: " +
-                        (((IPEndPoint)(clientSocket.RemoteEndPoint)).Address.ToString()) + ": " +
-                        (((IPEndPoint)(clientSocket.RemoteEndPoint)).Port.ToString()) + " closed");
-                    });
-                    clientBox.Invoke((MethodInvoker)delegate { clientBox.Items.Remove((((IPEndPoint)(clientSocket.RemoteEndPoint)).Address.ToString()) + ": " +((IPEndPoint)(clientSocket.RemoteEndPoint)).Port.ToString()); });
-                    clientSocket.Shutdown(SocketShutdown.Both);
-                    clientSocket.Close();
-                    return;
+
                 }
             }
         }

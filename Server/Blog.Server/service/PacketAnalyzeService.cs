@@ -76,6 +76,9 @@ namespace Blog.Server
                 case "THX_BYE":
                     messagee = await buildLogout(packet, clientData);
                     break;
+                case "EOT":
+                    messagee = await buildExit(packet);
+                    break;
                 default:
                     messagee = await buildDefault(packet);
                     break;
@@ -244,6 +247,12 @@ namespace Blog.Server
         private async Task<string> buildDefault(string[] packet)
         {
             string type = "QUE?";
+            return type;
+        }
+
+        private async Task<string> buildExit(string[] packet)
+        {
+            string type = "EOT";
             return type;
         }
 

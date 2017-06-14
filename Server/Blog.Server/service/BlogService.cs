@@ -38,6 +38,8 @@ namespace Blog.Server
             {
                 var result = await SqlManager.Instance.ExecuteReaderAsync(conn, query);
                 List<string> blogList = new List<string>();
+                if (!result.HasRows)
+                    return "";
                 while (result.Read())
                 {
                     blogList.Add(Convert.ToString(result["Id"]) + "|" + Convert.ToString(result["BlogName"]));
@@ -89,6 +91,8 @@ namespace Blog.Server
             {
                 string entry = "";
                 var result = await SqlManager.Instance.ExecuteReaderAsync(conn, query, parameters);
+                if (!result.HasRows)
+                    return "";
                 while (result.Read())
                 {
                     entry = Convert.ToString(result["Id"]) + "\t" + Convert.ToString(result["Title"]) + "\t" + Convert.ToString(result["Date"]) + "\t" + Convert.ToString(result["Content"]);
