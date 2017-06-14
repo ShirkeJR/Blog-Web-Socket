@@ -1,102 +1,102 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿#define IMPROVED_PACKET_ENCRYPTION
+
+using Blog.Constants;
+using Blog.Utils;
+using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Blog.Server
 {
-    class ClientData
+    internal class ClientData
     {
-        private Socket clientSocket;
-        private Thread clientThread;
-        private ListBox logBox;
-        private ListBox clientBox;
-        private int id;
+        private Socket clientSocket = null;
+        private Thread clientThread = null;
+        private int id = -1;
         public int Id { get { return id; } set { id = value; } }
+        public Socket ClientSocket { get { return clientSocket; } set { clientSocket = value; } }
+        public Thread ClientThread { get { return clientThread; } set { clientThread = value; } }
 
-
-
-        public ClientData(Socket clientSocket, ListBox lg, ListBox cb)
+        public ClientData(Socket clientSocket)
         {
             this.clientSocket = clientSocket;
-            this.logBox = lg;
-            this.clientBox = cb;
-            id = -1;
             clientThread = new Thread(dataListening);
             clientThread.Start(clientSocket);
-     
         }
+
         public async void dataListening(object cSocket)
         {
             String content = String.Empty;
             Socket clientSocket = (Socket)cSocket;
-            logBox.Invoke((MethodInvoker)delegate { logBox.Items.Add("*Client: " +
-                (((IPEndPoint)(clientSocket.RemoteEndPoint)).Address.ToString()) + ": " +
-                (((IPEndPoint)(clientSocket.RemoteEndPoint)).Port.ToString()) + " open"); });
+            LoggingService.Instance.AddLog("*Client: " +
+(((IPEndPoint)(clientSocket.RemoteEndPoint)).Address.ToString()) + ": " +
+(((IPEndPoint)(clientSocket.RemoteEndPoint)).Port.ToString()) + " open");
 
             byte[] bytes;
             int bytesRead = 0;
 
-            while(true)
+            while (true)
             {
                 try
                 {
                     if (!clientSocket.Connected)
                     {
-                        logBox.Invoke((MethodInvoker)delegate {
-                            logBox.Items.Add("*Client: " +
+                        LoggingService.Instance.AddLog("*Client: " +
                             (((IPEndPoint)(clientSocket.RemoteEndPoint)).Address.ToString()) + ": " +
                             (((IPEndPoint)(clientSocket.RemoteEndPoint)).Port.ToString()) + " closed");
-                        });
-                        clientBox.Invoke((MethodInvoker)delegate { clientBox.Items.Remove((((IPEndPoint)(clientSocket.RemoteEndPoint)).Address.ToString()) + ": " + ((IPEndPoint)(clientSocket.RemoteEndPoint)).Port.ToString()); });
+                        LoggingService.Instance.RemoveClient(this);
                         clientSocket.Shutdown(SocketShutdown.Both);
                         clientSocket.Close();
                         return;
                     }
                     bytes = new byte[clientSocket.SendBufferSize];
-                    bytesRead = clientSocket.Receive(bytes); 
+                    bytesRead = clientSocket.Receive(bytes);
 
                     if (bytesRead > 0)
                     {
                         content = Encoding.ASCII.GetString(bytes, 0, bytesRead);
-                        if (content.IndexOf("/rn/rn/rn$$") > -1)
+#if IMPROVED_PACKET_ENCRYPTION
+                        var content2 = CryptoService.Decrypt<AesManaged>(content.Substring(0, content.Length - StringConstants.PacketEnding.Length), StringConstants.SymmetricKey, StringConstants.SymmetricSalt);
+                        content = string.Format("{0}{1}", content2, content.Substring(content.Length - StringConstants.PacketEnding.Length));
+#endif
+                        if (content.IndexOf(StringConstants.PacketEnding) > -1)
                         {
-                            logBox.Invoke((MethodInvoker)delegate { logBox.Items.Add("-->\t" + content); });
-                            if (content.StartsWith("4\tEOT\t")) 
+                            LoggingService.Instance.AddLog("-->\t" + content);
+                            if (content.StartsWith("4\tEOT\t"))
                             {
-                                logBox.Invoke((MethodInvoker)delegate {
-                                    logBox.Items.Add("*Client: " +
+                                LoggingService.Instance.AddLog("*Client: " +
                                     (((IPEndPoint)(clientSocket.RemoteEndPoint)).Address.ToString()) + ": " +
                                     (((IPEndPoint)(clientSocket.RemoteEndPoint)).Port.ToString()) + " closed");
-                                });
-                                clientBox.Invoke((MethodInvoker)delegate { clientBox.Items.Remove((((IPEndPoint)(clientSocket.RemoteEndPoint)).Address.ToString()) + ": " + ((IPEndPoint)(clientSocket.RemoteEndPoint)).Port.ToString()); });
+
+                                LoggingService.Instance.RemoveClient(this);
                                 clientSocket.Shutdown(SocketShutdown.Both);
                                 clientSocket.Close();
                                 return;
                             }
 
                             content = await PacketAnalyzeService.Instance.getPacketResponse(content, this);
-                            logBox.Invoke((MethodInvoker)delegate { logBox.Items.Add("<--\t" + content); });
+#if IMPROVED_PACKET_ENCRYPTION
+                            content = string.Format("{0}{1}", CryptoService.Encrypt<AesManaged>(content.Substring(0, content.Length - StringConstants.PacketEnding.Length), StringConstants.SymmetricKey, StringConstants.SymmetricSalt), StringConstants.PacketEnding);
+#endif
+                            LoggingService.Instance.AddLog("<--\t" + content);
                             byte[] byteData = Encoding.ASCII.GetBytes(content);
                             clientSocket.Send(byteData);
                         }
                         else
                         {
                             content = await PacketAnalyzeService.Instance.getPacketResponse("daoijhdoiajsd", this);
-                            logBox.Invoke((MethodInvoker)delegate { logBox.Items.Add(content); });
+                            LoggingService.Instance.AddLog(content);
                             byte[] byteData = Encoding.ASCII.GetBytes(content);
                             clientSocket.Send(byteData);
                         }
                     }
                 }
-                catch (SocketException ex)
+                catch (SocketException)
                 {
-
                 }
             }
         }

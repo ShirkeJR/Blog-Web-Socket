@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Blog.Constants;
+using System;
 using System.Windows.Forms;
 
 namespace Blog.Client
@@ -45,50 +46,52 @@ namespace Blog.Client
             {
                 switch(Command)
                 {
-                    case "QUE?": { MessageBox.Show("Client request error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return true; }
-                    case "IDENTIFY_PLS": { MessageBox.Show("Login first to continue", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return true; }
-                    case "REGISTER":
+                    case StringConstants.UnrecognizedCommandAnswer: { MessageBox.Show("Client request error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return true; }
+                    case StringConstants.LoginRequiredAnswer: { MessageBox.Show("Login first to continue", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return true; }
+                    case StringConstants.RegisterPacketName:
                         {
-                            if (Parametres[0].Equals("OK")) return false;
+                            if (StringConstants.RegisterPacketAnswerOK.Equals(Parametres[0])) return false;
                             else { MessageBox.Show("Failed to register user", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return true; }
                         }
-                    case "LOGIN":
+                    case StringConstants.LoginPacketName:
                         {
-                            if (Parametres[0].Equals("OK")) return false;
+                            if (StringConstants.LoginPacketAnswerOK.Equals(Parametres[0])) return false;
                             else
                             {
-                                if(Parametres[1].Equals("INVALID")) { MessageBox.Show("Wrong login or password", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return true; }
+                                if(StringConstants.LoginPacketAnswerFailedInvalid.Equals(Parametres[1])) { MessageBox.Show("Wrong login or password", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return true; }
                                 else { MessageBox.Show("Account blocked", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return true; }
                             }
                         }
-                    case "THX_BYE": return false;
-                    case "DISPLAY_BLOGS": return false;
-                    case "DISPLAY_BLOG":
+                    case StringConstants.LogoutPacketName: return false;
+                    case StringConstants.DisplayBlogsPacketName: return false;
+                    case StringConstants.DisplayBlogPacketName:
                         {
-                            if (Parametres[0].Equals("FAILED")) { /*MessageBox.Show("Failed to get blog entries", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);*/ return true; }
+                            if (StringConstants.DisplayBlogPacketAnswerFailed.Equals(Parametres[0])) { /*MessageBox.Show("Failed to get blog entries", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);*/ return true; }
                             else return false;
                         }
-                    case "ADD_ENTRY":
+                    case StringConstants.AddEntryPacketName:
                         {
-                            if (Parametres[0].Equals("OK")) return false;
-                            else if (Parametres[1].Equals("ERR_TITLE")) { MessageBox.Show("Title error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return true; }
-                            else if (Parametres[1].Equals("ERR_CONTENT")) { MessageBox.Show("Content error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return true; }
-                            else { MessageBox.Show("User permission error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return true; }
-
-                        }
-                    case "DISPLAY_ENTRY": return false;
-                    case "DELETE_ENTRY":
-                        {
-                            if (Parametres[0].Equals("FAILED"))
+                            if (StringConstants.AddEntryPacketAnswerOK.Equals(Parametres[0])) return false;
+                            else
                             {
-                                if (Parametres[1].Equals("NOTEXIST")) { MessageBox.Show("Entry doesn't exist", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return true; }
+                                if (StringConstants.AddEntryPacketAnswerInvalidTitle.Equals(Parametres[2])) { MessageBox.Show("Title error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return true; }
+                                else if (StringConstants.AddEntryPacketAnswerInvalidContent.Equals(Parametres[2])) { MessageBox.Show("Content error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return true; }
+                                else { MessageBox.Show("User permission error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return true; }
+                            }
+                        }
+                    case StringConstants.DisplayEntryPacketName: return false;
+                    case StringConstants.DeleteEntryPacketName:
+                        {
+                            if (StringConstants.DeleteEntryPacketAnswerFailed.Equals(Parametres[0]))
+                            {
+                                if (StringConstants.DeleteEntryPacketAnswerFailedNotExist.Equals(Parametres[1])) { MessageBox.Show("Entry doesn't exist", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return true; }
                                 else { MessageBox.Show("User permission error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return true; }
                             }
                             else return false;
                         }
-                    case "CHANGE_BLOG_NAME":
+                    case StringConstants.ChangeBlogNamePacketName:
                         {
-                            if (Parametres[0].Equals("OK")) return false;
+                            if (StringConstants.ChangeBlogNamePacketAnswerOK.Equals(Parametres[0])) return false;
                             else { MessageBox.Show("Failed to change blog name", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return true; }
                         }
                     case "EMPTY": { MessageBox.Show("Failed to get response from server", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return true; }
@@ -98,8 +101,8 @@ namespace Blog.Client
         }
         override public string ToString()
         {
-            if (Parametres != null) return String.Format("{0}\t{1}\t{2}\t/rn/rn/rn$$", Length, Command, String.Join("\t", Parametres));
-            else return String.Format("{0}\t{1}\t/rn/rn/rn$$", Length, Command);
+            if (Parametres != null) return string.Format(string.Format("{0}\t{1}", StringConstants.GlobalPacketFormat, StringConstants.PacketEnding), Length, Command, string.Join("\t", Parametres));
+            else return string.Format("{0}\t{1}\t{2}", Length, Command, StringConstants.PacketEnding);
         }
     }
 }

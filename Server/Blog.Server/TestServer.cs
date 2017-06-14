@@ -1,30 +1,24 @@
-﻿using System;
+﻿using Blog.Constants;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Blog.Server
 {
-    class TestServer
+    internal class TestServer
     {
         #region Singleton
 
         private static volatile TestServer _instance = null;
         private static volatile object threadSyncLock = new object();
 
-  
         private TestServer()
         {
             listenerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             _clients = new List<ClientData>();
             ipHostInfo = Dns.Resolve(Dns.GetHostName());
             ipAddress = ipHostInfo.AddressList[0];
-            localEndPoint = new IPEndPoint(ipAddress, 11000);
+            localEndPoint = new IPEndPoint(ipAddress, Int16Constants.DefaultPort);
         }
 
         public static TestServer Instance
@@ -43,8 +37,6 @@ namespace Blog.Server
 
         private Socket listenerSocket;
         private List<ClientData> _clients;
-        public ListBox logBox { set; get; }
-        public ListBox clientBox { set; get; }
         private IPHostEntry ipHostInfo;
         private IPAddress ipAddress;
         private IPEndPoint localEndPoint;
@@ -53,14 +45,15 @@ namespace Blog.Server
         {
             Socket s;
             listenerSocket.Bind(localEndPoint);
+            LoggingService.Instance.AddLog(string.Format("Socket bound to {0}:{1}", localEndPoint.Address, localEndPoint.Port));
             while (true)
             {
                 listenerSocket.Listen(0);
                 s = listenerSocket.Accept();
-                clientBox.Invoke((MethodInvoker)delegate { clientBox.Items.Add((((IPEndPoint)(s.RemoteEndPoint)).Address.ToString()) + ": " + ((IPEndPoint)(s.RemoteEndPoint)).Port.ToString()); });
-                _clients.Add(new ClientData(s, logBox, clientBox));
+                ClientData clientData = new ClientData(s);
+                LoggingService.Instance.AddClient(clientData);
+                _clients.Add(clientData);
             }
         }
     }
-
 }

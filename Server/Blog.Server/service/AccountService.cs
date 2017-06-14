@@ -1,8 +1,4 @@
-﻿using Blog.Database;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Blog.Server
 {
@@ -40,16 +36,15 @@ namespace Blog.Server
         {
             return await AuthManager.Instance.Register(login, password);
         }
-        
+
         public async Task<int> Login(string login, string password)
         {
             return await AuthManager.Instance.Login(login, password);
         }
 
-        public bool Disconnect(int userId)
+        public async Task<bool> IsLocked(string login)
         {
-            // TODO: delete logged in user from clients list with connection close
-            return true;
+            return await AuthManager.Instance.IsLocked(login);
         }
     }
 }

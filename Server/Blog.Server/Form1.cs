@@ -17,15 +17,14 @@ namespace Blog.Server
         public Form1()
         {
             InitializeComponent();
-            TestServer.Instance.logBox = logBox;
-            TestServer.Instance.clientBox = clientBox;
+            LoggingService.Instance.Initialize(logBox, clientBox);
             running = false;
         }
 
-        private async void button1_Click(object sender, EventArgs e)
+        private async void btnStart_Click(object sender, EventArgs e)
         {
-            logBox.Items.Add("*Server starting...");
-            button1.Enabled = false;
+            LoggingService.Instance.AddLog("*Server starting...");
+            btnStart.Enabled = false;
             if (!running)
             {
                 running = true;
@@ -33,19 +32,9 @@ namespace Blog.Server
             }  
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button2_Click_1(object sender, EventArgs e)
+        private void btnExit_Click(object sender, EventArgs e)
         {
             System.Environment.Exit(1);
-        }
-
-        private void logBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }

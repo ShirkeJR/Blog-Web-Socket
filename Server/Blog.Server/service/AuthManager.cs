@@ -45,6 +45,18 @@ namespace Blog.Server
             }
         }
 
+        public async Task<bool> IsLocked(string login)
+        {
+            string query = "SELECT IsLocked FROM [dbo].[Users] WHERE [Login] = @Login";
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters["@Login"] = login;
+            using (SqlConnection conn = await SqlManager.Instance.CreateConnection())
+            {
+                var result = await SqlManager.Instance.ExecuteScalarAsync(conn, query, parameters);
+                return Convert.ToBoolean(result.ToString());
+            }
+        }
+
         public async Task<bool> Register(string login, string password)
         {
             if (await Exists(login, password))

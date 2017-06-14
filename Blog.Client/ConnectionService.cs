@@ -1,8 +1,13 @@
-﻿using System;
+﻿#define IMPROVED_PACKET_ENCRYPTION
+
+using Blog.Constants;
+using Blog.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -87,7 +92,7 @@ namespace Blog.Client
             {
                 if (ConnectionSocket.Connected)
                 {
-                    Frame request = new Frame("EOT", null);
+                    Frame request = new Frame(StringConstants.ConnectionClosePacketName, null);
                     SendFrame(request);
                     ConnectionSocket.Close();
                 }
@@ -102,13 +107,19 @@ namespace Blog.Client
             {
                 if (!ConnectionSocket.Connected) return false;
 
-                Byte[] bytesToSend = Encoding.ASCII.GetBytes(frame.ToString());
+#if IMPROVED_PACKET_ENCRYPTION
+                var frameString = frame.ToString();
+                string toSend = string.Format("{0}{1}", CryptoService.Encrypt<AesManaged>(frameString.Substring(0, frameString.Length - StringConstants.PacketEnding.Length), StringConstants.SymmetricKey, StringConstants.SymmetricSalt), StringConstants.PacketEnding);
+#else
+                string toSend = frame.ToString();
+#endif
+                byte[] bytesToSend = Encoding.ASCII.GetBytes(toSend);
                 int bytesSent = ConnectionSocket.Send(bytesToSend, bytesToSend.Length, 0);
 
                 if (bytesSent == bytesToSend.Length) return true;
                 else return false;
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 return false;
             }
@@ -121,7 +132,7 @@ namespace Blog.Client
                 string response = "";
                 Byte[] bytesReceived = new Byte[1];
 
-                while (!response.EndsWith("/rn/rn/rn$$"))
+                while (!response.EndsWith(StringConstants.PacketEnding))
                 {
                     receivedBytesCount += ConnectionSocket.Receive(bytesReceived, bytesReceived.Length, 0);
                     response = response + Encoding.ASCII.GetString(bytesReceived, 0, 1);
@@ -144,14 +155,18 @@ namespace Blog.Client
             {
                 int receivedBytesCount = 0;
                 string response = "";
-                Byte[] bytesReceived = new Byte[1];
+                byte[] bytesReceived = new byte[1];
 
-                while (!response.EndsWith("/rn/rn/rn$$"))
+                while (!response.EndsWith(StringConstants.PacketEnding))
                 {
                     receivedBytesCount += ConnectionSocket.Receive(bytesReceived, bytesReceived.Length, 0);
                     response = response + Encoding.ASCII.GetString(bytesReceived, 0, 1);
                 }
-                
+
+#if IMPROVED_PACKET_ENCRYPTION
+                var response2 = CryptoService.Decrypt<AesManaged>(response.Substring(0, response.Length - StringConstants.PacketEnding.Length), StringConstants.SymmetricKey, StringConstants.SymmetricSalt);
+                response = string.Format("{0}{1}", response2, response.Substring(response.Length - StringConstants.PacketEnding.Length));
+#endif
                 string[] temp = response.Split('\t');
                 if (temp.Length == 3) return new Frame(temp[1], null, false);
                 else return new Frame(temp[1], temp.Skip(2).Take(temp.Length - 3).ToArray(), false);

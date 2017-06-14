@@ -123,18 +123,16 @@ Ogólny format opisu pakietu:
 * __Ilość parametrów odpowiedzi__: 2
 * __Opis parametru 1__: string określający sukces przy dodawaniu wpisu
 * __Opis parametru 2__: int określający ID dodanego wpisu
-* __Odpowiedź serwera__: `ADD_ENTRY ERR_TITLE`
+* __Odpowiedź serwera__: `ADD_ENTRY INVALID TITLE`
 * __Opis odpowiedzi__: Tytuł był zbyt długi lub zawierał niedozwolone znaki
-* __Ilość parametrów odpowiedzi__: 1
-* __Opis parametru 1__: string informujący o niepowodzeniu przy dodawaniu treści na bloga ze względu na błąd w tytule
-* __Odpowiedź serwera__: `ADD_ENTRY ERR_CONTENT`
+* __Ilość parametrów odpowiedzi__: 2
+* __Opis parametru 1__: string informujący o niepowodzeniu przy dodawaniu treści na bloga
+* __Opis parametru 2__: string informujący o błędzie w tytule
+* __Odpowiedź serwera__: `ADD_ENTRY INVALID CONTENT`
 * __Opis odpowiedzi__: Treść była zbyt długa lub zawierała niedozwolone znaki
-* __Ilość parametrów odpowiedzi__: 1
-* __Opis parametru 1__: string informujący o niepowodzeniu przy dodawaniu treści na bloga ze względu na błąd w treści
-* __Odpowiedź serwera__: `ADD_ENTRY ERR_OWNER`
-* __Opis odpowiedzi__: Użytkownik nie jest właścicielem bloga, na który próbuje dodać notatkę
-* __Ilość parametrów odpowiedzi__: 1
-* __Opis parametru 1__: string informujący o niepowodzeniu przy dodawaniu treści na nie swojego bloga
+* __Ilość parametrów odpowiedzi__: 2
+* __Opis parametru 1__: string informujący o niepowodzeniu przy dodawaniu treści na bloga
+* __Opis parametru 2__: string informujący o błędzie w treści
 
 ---
 * __Nazwa__: Pakiet pobierania wpisu na blogu
@@ -175,14 +173,6 @@ Ogólny format opisu pakietu:
 * __Ilość parametrów odpowiedzi__: 0
 
 ---
-* __Nazwa__: Pakiet GTFO
-* __Treść pakietu__: `Co kolwiek`
-* __Ilość parametrów__: 0
-* __Odpowiedź serwera__: `GTFO`
-* __Opis odpowiedzi__: komunikat informujący o nie istniejącym komunikacie
-* __Ilość parametrów odpowiedzi__: 0
-
----
 * __Nazwa__: Pakiet zmiany nazwy bloga
 * __Treść pakietu__: `CHANGE_BLOG_NAME Id Nowa nazwa bloga`
 * __Ilość parametrów__: 2
@@ -192,9 +182,25 @@ Ogólny format opisu pakietu:
 * __Opis odpowiedzi__: komunikat informujący o pomyślnej zmianie nazwy bloga
 * __Ilość parametrów odpowiedzi__: 1
 * __Odpowiedź serwera__: `CHANGE_BLOG_NAME FAILED`
-* __Opis odpowiedzi__: komunikat informujący o niepomyślnej zmianie nazwy bloga (np. próbowano zmienić nazwę nie swojego bloga)
+* __Opis odpowiedzi__: komunikat informujący o niepomyślnej zmianie nazwy bloga z powodu nieprawidłowości w nowej nazwie
 * __Ilość parametrów odpowiedzi__: 1
 * __Odpowiedź serwera__: `CHANGE_BLOG_NAME NOTOWNER`
-* __Opis odpowiedzi__: Użytkownik nie jest właścicielem bloga, z którego próbuje usunąć wpis
+* __Opis odpowiedzi__: komunikat informujący o niepomyślnej zmianie nazwy bloga ze względu na nie bycie jego właścicielem
 * __Ilość parametrów odpowiedzi__: 1
-* __Opis parametru 1__: string informujący o niepowodzeniu przy usuwaniu treści z nie swojego bloga
+* __Opis parametru 1__: string informujący o niepowodzeniu przy zmianie nazwy bloga ze względu na nie bycie jego właścicielem
+
+---
+* __Nazwa__: Pakiet zakończenia transmisji
+* __Treść pakietu__: `EOT`
+* __Ilość parametrów__: 0
+* __Odpowiedź serwera__: brak
+
+---
+* __Nazwa__: Pakiet benchmarkowy połączenia
+* __Treść pakietu__: `PING`
+* __Ilość parametrów__: 0
+* __Odpowiedź serwera__: `PONG`
+* __Ilość parametrów odpowiedzi__: 0
+
+### Szyfrowanie ###
+Pakiety używane w komunikacji są szyfrowane algorytmem AES. Szyfrowanie można wyłączyć zakomentowując na górze plików __ConnectionService__ (w kliencie) i __ClientData__ (w serwerze) linijkę `#define IMPROVED_PACKET_ENCRYPTION`.
