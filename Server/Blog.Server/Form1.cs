@@ -33,12 +33,17 @@ namespace Blog.Server
             }  
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void Form1_Load(object sender, EventArgs e)
         {
-            
+
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            System.Environment.Exit(1);
+        }
+
+        private void logBox_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

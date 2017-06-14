@@ -66,6 +66,7 @@ namespace Blog.Server
                         content = Encoding.ASCII.GetString(bytes, 0, bytesRead);
                         if (content.IndexOf("/rn/rn/rn$$") > -1)
                         {
+                            logBox.Invoke((MethodInvoker)delegate { logBox.Items.Add("-->\t" + content); });
                             if (content.StartsWith("4\tEOT\t")) 
                             {
                                 logBox.Invoke((MethodInvoker)delegate {
@@ -78,9 +79,9 @@ namespace Blog.Server
                                 clientSocket.Close();
                                 return;
                             }
-                            logBox.Invoke((MethodInvoker)delegate { logBox.Items.Add(content); });
+
                             content = await PacketAnalyzeService.Instance.getPacketResponse(content, this);
-                            logBox.Invoke((MethodInvoker)delegate { logBox.Items.Add(content); });
+                            logBox.Invoke((MethodInvoker)delegate { logBox.Items.Add("<--\t" + content); });
                             byte[] byteData = Encoding.ASCII.GetBytes(content);
                             clientSocket.Send(byteData);
                         }
