@@ -62,7 +62,7 @@
             this.txtBoxHost.Name = "txtBoxHost";
             this.txtBoxHost.Size = new System.Drawing.Size(176, 20);
             this.txtBoxHost.TabIndex = 2;
-            this.txtBoxHost.Text = "192.168.0.106";
+            this.txtBoxHost.Text = "192.168.0.11";
             // 
             // txtBoxPort
             // 
