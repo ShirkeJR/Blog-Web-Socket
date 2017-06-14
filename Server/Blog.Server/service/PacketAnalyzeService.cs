@@ -137,7 +137,10 @@ namespace Blog.Server
         {
             string type = "DISPLAY_BLOGS";
             string paramsList = await BlogService.Instance.DisplayBlogs();
-            return type + "\t" + paramsList;
+            if (paramsList.Length > 2)
+                return type + "\t" + paramsList;
+            else
+                return type;
         }
     
         private async Task<string> buildDisplayBlog(string[] packet)
@@ -147,7 +150,10 @@ namespace Blog.Server
             if (await BlogService.Instance.BlogExists(id))// Jeżeli blog X istnieje
             {
                 string paramsList = await BlogService.Instance.DisplayBlogPosts(id); //lista wpisów w blogu
-                return type + "\t" + paramsList;
+                if (paramsList.Length > 2)
+                    return type + "\t" + paramsList;
+                else
+                    return type;
             }
             else
             {
