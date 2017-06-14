@@ -52,11 +52,11 @@ namespace Blog.Client
             {
                 ListBlogs.Items.Clear();
                 BlogsID.Clear();
-                if (response.Parametres != null || !response.Parametres[0].Contains('|'))
+                if (response.Parametres != null)
                     foreach (var p in response.Parametres)
                     {
                         BlogsID.Add(Convert.ToInt32(p.Split('|')[0]));
-                        ListBlogs.Items.Add(">"+p.Split('|')[1]);
+                        ListBlogs.Items.Add(">  "+p.Split('|')[1]);
                     }
                         
                         
@@ -82,7 +82,7 @@ namespace Blog.Client
             {
                 ListEntries.Items.Clear();
                 EntriesID.Clear();
-                if (response.Parametres != null || !response.Parametres[0].Contains('|'))
+                if (response.Parametres != null)
                     foreach (var p in response.Parametres)
                     {
                         EntriesID.Add(Convert.ToInt32(p.Split('|')[0]));
