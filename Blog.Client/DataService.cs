@@ -32,7 +32,7 @@ namespace Blog.Client
         public Label LabelConnection { set; get; }
         public Label LabelLoggedUser { set; get; }
         public TextBox TxtBoxBlogTitle { set; get; }
-        public TextBox TxtBoxEntryText { set; get; }
+        public RichTextBox TxtBoxEntryText { set; get; }
         public TextBox TxtBoxEntryTitle { set; get; }
         public int EID { set; get; }
 
@@ -46,15 +46,19 @@ namespace Blog.Client
             ConnectionService.Instance.SendFrame(request);
             response = ConnectionService.Instance.ReceiveFrame();
 
-            if (!response.CheckError() && response!=null)
+            if (!response.CheckError() && response != null)
             {
                 ListBlogs.Items.Clear();
-                if(response.Parametres != null)
-                foreach (var p in response.Parametres)
-                    ListBlogs.Items.Add(p);
+                if (response.Parametres != null)
+                    foreach (var p in response.Parametres)
+                        ListBlogs.Items.Add(p);
                 return true;
             }
-            else return false;
+            else
+            {
+                ListBlogs.Items.Clear();
+                return false;
+            }
         }
         public bool GetEntries(int id)
         {
@@ -68,12 +72,16 @@ namespace Blog.Client
 
             if (!response.CheckError())
             {
-                ListBlogs.Items.Clear();
+                ListEntries.Items.Clear();
                 foreach (var p in response.Parametres)
                     ListEntries.Items.Add(p);
                 return true;
             }
-            else return false;
+            else
+            {
+                ListEntries.Items.Clear();
+                return false;
+            }
         }
         public bool ChangeBlogTitle(int id, string title)
         {
@@ -114,7 +122,7 @@ namespace Blog.Client
             {
                 EID = id;
                 TxtBoxEntryTitle.Text = response.Parametres[1];
-                TxtBoxEntryText.Text = response.Parametres[2];
+                TxtBoxEntryText.Text = response.Parametres[3] + "\n" + response.Parametres[2];
                 return true;
             }
             else return false;
@@ -143,7 +151,8 @@ namespace Blog.Client
         }    
         public string GetBlogTitle(int id)
         {
-            foreach(string s in TxtBoxBlogTitle.Container.Components)
+            
+            foreach(string s in ListBlogs.Items)
             {
                 if (Convert.ToInt32(s.Split('|')[0]) == id)
                     return s.Split('|')[1];

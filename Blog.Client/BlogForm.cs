@@ -14,9 +14,12 @@ namespace Blog.Client
     {
         public string Title { set; get; }
         public int ID { set; get; }
-        public BlogForm()
+
+        public BlogForm(int id, string title)
         {
             InitializeComponent();
+            ID = id;
+            Title = title;
             DataService.Instance.TxtBoxBlogTitle = txtBoxBlogTitle;
             DataService.Instance.ListEntries = listEntries;
             DataService.Instance.LabelLoggedUser = labelLoggedUser;
@@ -28,16 +31,16 @@ namespace Blog.Client
             DataService.Instance.GetEntries(ID);
 
             this.Width = 450;
+            this.Height = 650;
             txtBoxEntryText.Visible = false;
             txtBoxEntryTitle.Visible = false;
             panelUserControl2.Visible = false;
-            panelEdit.Visible = false;
-            panelLogged2.Visible = false;
 
-            panelUserControl.Visible = true;
             if (AccountService.Instance.Logged)
             {
                 panelLogged.Visible = true;
+                panelLogged2.Visible = true;
+                panelEdit.Visible = false;
                 panelGuest.Visible = false;
                 if (AccountService.Instance.User.ID != ID)
                 {
@@ -55,26 +58,34 @@ namespace Blog.Client
             else
             {
                 panelLogged.Visible = false;
+                panelLogged2.Visible = false;
+                panelEdit.Visible = false;
                 panelGuest.Visible = true;
             }
-        }
+            //this.Width = 450;
 
+            //txtBoxEntryText.Visible = false;
+            //txtBoxEntryTitle.Visible = false;
+            //panelUserControl2.Visible = false;
+            //panelEdit.Visible = false;
+            //panelLogged2.Visible = false;
+
+            //panelUserControl.Visible = true;
+        }
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            if (!ConnectionService.Instance.Connected()) ConnectionService.Instance.Reconnect();
             DataService.Instance.GetLoggedUser();
             txtBoxBlogTitle.Text = Title;
             DataService.Instance.GetEntries(ID);
         }
-
         private void btnReturn_Click(object sender, EventArgs e)
         {
             this.Close();
         }
-
         private void btnAddEntry_Click(object sender, EventArgs e)
         {
             this.Width = 900;
+            this.Height = 650;
             txtBoxEntryText.Visible = true;
             txtBoxEntryTitle.Visible = true;
             panelUserControl2.Visible = true;
@@ -90,7 +101,6 @@ namespace Blog.Client
             btnRefresh2.Enabled = false;
             btnClose.Enabled = false;
         }
-
         private void btnChangeTitle_Click(object sender, EventArgs e)
         {
             if(btnChangeTitle.Text.Equals("Change Title"))
@@ -103,7 +113,7 @@ namespace Blog.Client
                 btnReturn.Enabled = false;
                 btnAddEntry.Enabled = false;
             }
-            if (btnChangeTitle.Text.Equals("Save"))
+            else if (btnChangeTitle.Text.Equals("Save"))
             {
                 txtBoxBlogTitle.ReadOnly = true;
                 btnChangeTitle.Text = "Change Title";
@@ -122,25 +132,25 @@ namespace Blog.Client
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Width = 450;
+            this.Height = 650;
             txtBoxEntryText.Visible = false;
             txtBoxEntryTitle.Visible = false;
             panelUserControl2.Visible = false;
         }
-
         private void btnRefresh2_Click(object sender, EventArgs e)
         {
-            if (!ConnectionService.Instance.Connected()) ConnectionService.Instance.Reconnect();
             DataService.Instance.DisplayEntry(DataService.Instance.EID);
         }
-
         private void btnEditSave_Click(object sender, EventArgs e)
         {
             DataService.Instance.AddEntry(txtBoxEntryTitle.Text, txtBoxEntryText.Text);
             this.Width = 450;
+            this.Height = 650;
             txtBoxEntryText.Visible = false;
             txtBoxEntryTitle.Visible = false;
             panelUserControl2.Visible = false;
             panelEdit.Visible = false;
+            panelLogged2.Visible = true;
 
             txtBoxEntryTitle.ReadOnly = true;
             txtBoxEntryText.ReadOnly = true;
@@ -154,14 +164,15 @@ namespace Blog.Client
             DataService.Instance.GetEntries(ID);
 
         }
-
         private void btnEditCancel_Click(object sender, EventArgs e)
         {
             this.Width = 450;
+            this.Height = 650;
             txtBoxEntryText.Visible = false;
             txtBoxEntryTitle.Visible = false;
             panelUserControl2.Visible = false;
             panelEdit.Visible = false;
+            panelLogged2.Visible = true;
 
             txtBoxEntryTitle.ReadOnly = true;
             txtBoxEntryText.ReadOnly = true;
@@ -178,17 +189,16 @@ namespace Blog.Client
                 txtBoxEntryText.Visible = false;
                 txtBoxEntryTitle.Visible = false;
                 panelUserControl2.Visible = false;
-                panelEdit.Visible = false;
+                //panelEdit.Visible = false;
 
-                txtBoxEntryTitle.ReadOnly = true;
-                txtBoxEntryText.ReadOnly = true;
+                //txtBoxEntryTitle.ReadOnly = true;
+                //txtBoxEntryText.ReadOnly = true;
 
                 DataService.Instance.GetLoggedUser();
                 txtBoxBlogTitle.Text = Title;
                 DataService.Instance.GetEntries(ID);
             }   
         }
-
         private void listEntries_DoubleClick(object sender, EventArgs e)
         {
             if (listEntries.SelectedItem != null)
@@ -198,35 +208,40 @@ namespace Blog.Client
                 DataService.Instance.DisplayEntry(id);
 
                 this.Width = 900;
+                this.Height = 650;
                 txtBoxEntryText.Visible = true;
                 txtBoxEntryTitle.Visible = true;
                 panelUserControl2.Visible = true;
-                
-                txtBoxEntryTitle.ReadOnly = true;
-                txtBoxEntryText.ReadOnly = true;
+                //this.Width = 900;
+                //txtBoxEntryText.Visible = true;
+                //txtBoxEntryTitle.Visible = true;
+                //panelUserControl2.Visible = true;
 
-                if (AccountService.Instance.Logged)
-                {
-                    panelLogged2.Visible = true;
-                    panelEdit.Visible = false;
-                    if (AccountService.Instance.User.ID != ID)
-                    {
-                        btnAddEntry.Enabled = false;
-                        btnChangeTitle.Enabled = false;
-                        btnDelete.Enabled = false;
-                    }
-                    else
-                    {
-                        btnAddEntry.Enabled = true;
-                        btnChangeTitle.Enabled = true;
-                        btnDelete.Enabled = true;
-                    }
-                }
-                else
-                {
-                    panelLogged2.Visible = false;
-                    panelEdit.Visible = false;
-                }
+                //txtBoxEntryTitle.ReadOnly = true;
+                //txtBoxEntryText.ReadOnly = true;
+
+                //if (AccountService.Instance.Logged)
+                //{
+                //    panelLogged2.Visible = true;
+                //    panelEdit.Visible = false;
+                //    if (AccountService.Instance.User.ID != ID)
+                //    {
+                //        btnAddEntry.Enabled = false;
+                //        btnChangeTitle.Enabled = false;
+                //        btnDelete.Enabled = false;
+                //    }
+                //    else
+                //    {
+                //        btnAddEntry.Enabled = true;
+                //        btnChangeTitle.Enabled = true;
+                //        btnDelete.Enabled = true;
+                //    }
+                //}
+                //else
+                //{
+                //    panelLogged2.Visible = false;
+                //    panelEdit.Visible = false;
+                //}
 
             }
         }

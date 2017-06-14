@@ -32,20 +32,21 @@ namespace Blog.Client
         {
             if (listBlogs.SelectedItem != null)
             {
-                BlogForm child = new BlogForm();
+                int id = Convert.ToInt32(listBlogs.SelectedItem.ToString().Split('|')[0]);
+                string title = listBlogs.SelectedItem.ToString().Split('|')[1];
+                BlogForm child = new BlogForm(id, title);
                 this.Hide();
-                child.ID = Convert.ToInt32(listBlogs.SelectedItem.ToString().Split('|')[0]);
-                child.Title = listBlogs.SelectedItem.ToString().Split('|')[1];
                 child.ShowDialog();
                 DataService.Instance.LabelLoggedUser = labelLoggedUser;
                 DataService.Instance.GetLoggedUser();
+                DataService.Instance.GetBlogs();
+                DataService.Instance.GetConnection();
                 this.Show();
             }
         }
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            if (!ConnectionService.Instance.Connected()) ConnectionService.Instance.Reconnect();
-
+            //if (!ConnectionService.Instance.Connected()) ConnectionService.Instance.Reconnect();
             DataService.Instance.GetBlogs();
             DataService.Instance.GetConnection();  
         }
@@ -73,16 +74,20 @@ namespace Blog.Client
             RegisterForm register = new RegisterForm();
             DialogResult result = register.ShowDialog();
             register.Dispose();
+            DataService.Instance.GetBlogs();
+            DataService.Instance.GetConnection();
         }
         private void btnMyBlog_Click(object sender, EventArgs e)
         {
-            BlogForm child = new BlogForm();
+            int id = Convert.ToInt32(AccountService.Instance.User.ID);
+            string title = DataService.Instance.GetBlogTitle(Convert.ToInt32(AccountService.Instance.User.ID));
+            BlogForm child = new BlogForm(id, title);
             this.Hide();
-            child.ID = Convert.ToInt32(AccountService.Instance.User.ID);
-            child.Title = DataService.Instance.GetBlogTitle(Convert.ToInt32(AccountService.Instance.User.ID));
             child.ShowDialog();
             DataService.Instance.LabelLoggedUser = labelLoggedUser;
             DataService.Instance.GetLoggedUser();
+            DataService.Instance.GetBlogs();
+            DataService.Instance.GetConnection();
             this.Show();
         }
         private void btnExit_Click(object sender, EventArgs e)
