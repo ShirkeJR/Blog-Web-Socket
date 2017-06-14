@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Blog.Constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -42,7 +43,7 @@ namespace Blog.Client
         {
             if (!ConnectionService.Instance.Connected()) return false;
 
-            Frame request = new Frame("DISPLAY_BLOGS", null);
+            Frame request = new Frame(StringConstants.DisplayBlogsPacketName, null);
             Frame response = null;
 
             ConnectionService.Instance.SendFrame(request);
@@ -72,7 +73,7 @@ namespace Blog.Client
         {
             if (!ConnectionService.Instance.Connected()) return false;
 
-            Frame request = new Frame("DISPLAY_BLOG", new string[] { id.ToString() });
+            Frame request = new Frame(StringConstants.DisplayBlogPacketName, new string[] { id.ToString() });
             Frame response = null;
 
             ConnectionService.Instance.SendFrame(request);
@@ -100,7 +101,7 @@ namespace Blog.Client
         {
             if (!ConnectionService.Instance.Connected()) return false;
 
-            Frame request = new Frame("CHANGE_BLOG_NAME", new string[] { id.ToString(), title });
+            Frame request = new Frame(StringConstants.ChangeBlogNamePacketName, new string[] { id.ToString(), title });
             Frame response = null;
 
             ConnectionService.Instance.SendFrame(request);
@@ -112,7 +113,7 @@ namespace Blog.Client
         {
             if (!ConnectionService.Instance.Connected()) return false;
 
-            Frame request = new Frame("ADD_ENTRY", new string[] { title, text });
+            Frame request = new Frame(StringConstants.AddEntryPacketName, new string[] { title, text });
             Frame response = null;
 
             ConnectionService.Instance.SendFrame(request);
@@ -124,7 +125,7 @@ namespace Blog.Client
         {
             if (!ConnectionService.Instance.Connected()) return false;
 
-            Frame request = new Frame("DISPLAY_ENTRY", new string[] { id.ToString() });
+            Frame request = new Frame(StringConstants.DisplayEntryPacketName, new string[] { id.ToString() });
             Frame response = null;
 
             ConnectionService.Instance.SendFrame(request);
@@ -144,7 +145,7 @@ namespace Blog.Client
         {
             if (!ConnectionService.Instance.Connected()) return false;
 
-            Frame request = new Frame("DELETE_ENTRY", new string[] { id.ToString() });
+            Frame request = new Frame(StringConstants.DeleteEntryPacketName, new string[] { id.ToString() });
             Frame response = null;
 
             ConnectionService.Instance.SendFrame(request);

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Blog.Constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,7 +33,7 @@ namespace Blog.Client
         {
             if (!ConnectionService.Instance.Connected()) return false;
 
-            Frame request = new Frame("REGISTER", new string[] { login, password });
+            Frame request = new Frame(StringConstants.RegisterPacketName, new string[] { login, password });
             Frame response = null;
 
             ConnectionService.Instance.SendFrame(request);
@@ -44,7 +45,7 @@ namespace Blog.Client
         {
             if (!ConnectionService.Instance.Connected()) return false;
 
-            Frame request = new Frame("LOGIN", new string[] { login, password });
+            Frame request = new Frame(StringConstants.LoginPacketName, new string[] { login, password });
             Frame response = null;
 
             ConnectionService.Instance.SendFrame(request);
@@ -62,7 +63,7 @@ namespace Blog.Client
         {
             if (!ConnectionService.Instance.Connected()) return false;
 
-            Frame request = new Frame("THX_BYE", null);
+            Frame request = new Frame(StringConstants.LogoutPacketName, null);
             Frame response;
 
             ConnectionService.Instance.SendFrame(request);
