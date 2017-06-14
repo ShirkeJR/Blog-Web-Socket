@@ -1,0 +1,17 @@
+(Gdy naprawiono, to proszê zmieniæ "-" na "+")
+(Dodajemy znalezione bugi)
+==============================================================================================================
+BUGI: 
+	- gdy wpiszê w logowaniu "user" "user", wyskakuje nie obs³ugiwany b³¹d (null coœ tam)
+	- gdy jest 2 u¿ytkowników i jedene usunie post na którym jest drugi u¿ytkownik (null exep)
+	- 	
+
+--------------------------------------------------------------------------------------------------------------
+Co trzeba zrobiæ jeszcze:
+	- logi do pliku na serwerze (oraz lepszy wygl¹d i bardziej szczegó³owy istniej¹cych)
+	- dodaæ obs³ugê IPV6
+	- sprawdziæ, czy nie trzeba dodaæ nowych komunikatów b³êdu w wiadomoœciach 
+		(dok³adnie okreœliæ typ i format dozwolonych wiadomoœci)
+	- nale¿y zadbaæ o prawid³ow¹ obs³ugê b³êdów ka¿dej funkcji w programie (client tryhard)
+	- Gotowe projekty skopiowane i zapisane pod nazw¹ w formacie nazwisko1 nazwisko2 nazwisko3 nr projektu 2017.zip nale¿y wys³aæ,
+		wraz z plikiem Makefile pozwalaj¹cym na ich kompilacjê oraz opisem uruchomienia programu, na adres katarzyna.mazur@umcs.pl
