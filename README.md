@@ -15,10 +15,7 @@ gdzie:
 * `X` - całkowita długość prawidłowo odebranego pakietu liczona od pierwszego znaku Y do końca komunikatu
 * `Y` - komenda określająca żądanie
 * `ZZZZZZZZ...` - dane składające się na zapytanie (w przypadku klienta) bądź odpowiedź (w przypadku serwera)
-<<<<<<< HEAD
-=======
 * `END` - ciąg znaków oznaczający koniec komunikatu, /rn/rn/rn$$
->>>>>>> 1a4142a... Update README.md
 
 Pola te są rozdzielone tabulatorem.
 
