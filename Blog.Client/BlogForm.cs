@@ -129,8 +129,8 @@ namespace Blog.Client
                 btnRefresh.Enabled = true;
                 btnReturn.Enabled = true;
                 btnAddEntry.Enabled = true;
-                if (DataService.Instance.ChangeBlogTitle(ID, newTitle))
-                    Title = newTitle;
+                if (DataService.Instance.ChangeBlogTitle(ID, newTitle)) Title = newTitle;
+                else txtBoxBlogTitle.Text = Title;
                 txtBoxBlogTitle.Enabled = false;
             }
 
