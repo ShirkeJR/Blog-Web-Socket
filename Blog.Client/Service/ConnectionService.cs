@@ -47,11 +47,11 @@ namespace Blog.Client
             Port = port;
             try
             {
-                IPHostEntry hostEntry = Dns.GetHostEntry(Host);
+                IPHostEntry hostEntry = Dns.Resolve(Host);
                 foreach (IPAddress address in hostEntry.AddressList)
                 {                   
                     IPEndPoint ipEndPoint = new IPEndPoint(address, Port);
-                    if (ipEndPoint.AddressFamily == AddressFamily.InterNetworkV6)
+                    if (ipEndPoint.AddressFamily == AddressFamily.InterNetwork || true)
                     {
                         Socket tempSocket = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
                         try

@@ -28,8 +28,12 @@ namespace Blog.Client
             string pass2 = txtBoxPassword2.Text;
             if (pass1.Equals(pass2) && !pass1.Equals(""))
             {
-                if (AccountService.Instance.Register(login, pass1)) this.DialogResult = DialogResult.OK;
-                else MessageBox.Show("Register error", "Register error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if(login.Equals("")) MessageBox.Show("Login can't be empty", "Login error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                else
+                {
+                    if (AccountService.Instance.Register(login, pass1)) this.DialogResult = DialogResult.OK;
+                    else MessageBox.Show("Register error", "Register error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }               
             }
             else MessageBox.Show("Both passwords must be equal", "Password error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 

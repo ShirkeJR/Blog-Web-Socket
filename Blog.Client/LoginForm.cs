@@ -26,7 +26,6 @@ namespace Blog.Client
             string login = txtBoxLogin.Text;
             string pass = txtBoxPassword.Text;
             if (AccountService.Instance.Login(login, pass)) this.DialogResult = DialogResult.OK;
-            else MessageBox.Show("Wrong login or password", "Login error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }
