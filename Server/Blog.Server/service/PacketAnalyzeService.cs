@@ -1,5 +1,6 @@
 ﻿using Blog.Constants;
 using System;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 
 namespace Blog.Server
@@ -104,6 +105,12 @@ namespace Blog.Server
             int id = -1;
             if ((id = await AccountService.Instance.Login(packet[2], packet[3])) > 0) // jeśli istnieje i prawidłowe logowanie
             {
+                foreach(ClientData client in TestServer.Instance.Clients){
+                    if(id == client.Id && id > 0)
+                    {
+                        return string.Format(StringConstants.LoginPacketAnswerFormat, StringConstants.LoginPacketName, StringConstants.LoginPacketAnswerFailed, StringConstants.LoginPacketAnswerFailedInvalid);
+                    }
+                }
                 param1 = StringConstants.LoginPacketAnswerOK;
                 param2 = Convert.ToString(id);
                 clientData.Id = id;

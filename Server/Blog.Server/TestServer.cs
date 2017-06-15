@@ -41,7 +41,8 @@ namespace Blog.Server
         private IPAddress ipAddress;
         private IPEndPoint localEndPoint;
         private bool isListening = true;
-        
+        public List<ClientData> Clients { get { return _clients; } set { _clients = value; } }
+
         public void StartListening()
         {
             listenerSocket.SetSocketOption(SocketOptionLevel.IPv6, SocketOptionName.IPv6Only, 0);
