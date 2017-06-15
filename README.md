@@ -12,9 +12,9 @@
 (Gdy naprawiono, to proszę zmienić "-" na "+")
 (Dodajemy znalezione bugi)
 BUGI: 
-* - gdy wpiszę w logowaniu "user" "user", wyskakuje nie obsługiwany błąd (null coś tam)
-* + gdy jest 2 użytkowników i jedene usunie post na którym jest drugi użytkownik (null exep)
-* - zabronić logowania z dwóch klientów jednocześnie (najlepiej sprawdzać foreachem przy logowaniu czy jakiś klient jest już zalogowany)
+ 	- gdy wpiszę w logowaniu "user" "user", wyskakuje nie obsługiwany błąd (null coś tam)
+ 	+ gdy jest 2 użytkowników i jedene usunie post na którym jest drugi użytkownik (null exep)
+ 	- zabronić logowania z dwóch klientów jednocześnie (najlepiej sprawdzać foreachem przy logowaniu czy jakiś klient jest już zalogowany)
 
 Co trzeba zrobić jeszcze:
 	+ lepszy i bardziej szczegółowy wygląd istniejących logów
