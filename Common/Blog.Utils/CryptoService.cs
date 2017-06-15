@@ -77,12 +77,12 @@ namespace Blog.Utils
             try
             {
                 Decrypt<AesManaged>(content.Substring(0, content.Length - StringConstants.PacketEnding.Length), StringConstants.SymmetricKey, StringConstants.SymmetricSalt);
-                return true;
             }
             catch (Exception e)
             {
                 return false;
             }
+            return true;
         }
 
         private static void Decrypt<T>(string v, object symmetricKey, object symmetricSalt)

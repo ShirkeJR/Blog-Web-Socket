@@ -91,9 +91,11 @@ namespace Blog.Server
                                     clientSocket.Send(byteData);
                                 }
                             }
-                            defaultSend(clientSocket);
+                            else
+                                defaultSend(clientSocket);
                         }
-                        defaultSend(clientSocket);
+                        else
+                            defaultSend(clientSocket);
                     }
                 }
                 catch (SocketException ex)
