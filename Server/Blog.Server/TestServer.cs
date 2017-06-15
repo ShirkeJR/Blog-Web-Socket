@@ -18,7 +18,7 @@ namespace Blog.Server
             _clients = new List<ClientData>();
             ipHostInfo = Dns.Resolve(Dns.GetHostName());
             ipAddress = ipHostInfo.AddressList[0];
-            localEndPoint = new IPEndPoint(IPAddress.Any, Int16Constants.DefaultPort);
+            localEndPoint = new IPEndPoint(IPAddress.IPv6Any, Int16Constants.DefaultPort);
         }
 
         public static TestServer Instance
