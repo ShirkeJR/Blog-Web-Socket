@@ -82,9 +82,9 @@
             this.label1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.label1.Location = new System.Drawing.Point(287, 5);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(50, 24);
+            this.label1.Size = new System.Drawing.Size(55, 24);
             this.label1.TabIndex = 5;
-            this.label1.Text = "Logi";
+            this.label1.Text = "Logs";
             // 
             // label2
             // 
@@ -92,9 +92,9 @@
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label2.Location = new System.Drawing.Point(678, 5);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(124, 24);
+            this.label2.Size = new System.Drawing.Size(63, 24);
             this.label2.TabIndex = 6;
-            this.label2.Text = "Użytkownicy";
+            this.label2.Text = "Users";
             // 
             // btnExit
             // 
@@ -106,7 +106,7 @@
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(219, 42);
             this.btnExit.TabIndex = 7;
-            this.btnExit.Text = "Wylacz";
+            this.btnExit.Text = "Exit";
             this.btnExit.UseVisualStyleBackColor = false;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
