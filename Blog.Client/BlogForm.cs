@@ -74,9 +74,10 @@ namespace Blog.Client
         }
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            DataService.Instance.GetLoggedUser();          
+            DataService.Instance.GetLoggedUser();
+            DataService.Instance.GetBlogs();       
             DataService.Instance.GetEntries(ID);
-            Title = DataService.Instance.GetBlogTitle(ID);
+            Title = DataService.Instance.GetBlogTitle(ID).Remove(0, 3);
             txtBoxBlogTitle.Text = Title;
         }
         private void btnReturn_Click(object sender, EventArgs e)
