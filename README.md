@@ -5,8 +5,24 @@
 * Każdy klient ma własnego bloga, na który może dodawać posty.
 * Serwer zarządza blogami klientów
 
-### ToDo ###
-wszystko
+### ToDo & ToFix ###
+(Gdy naprawiono, to proszę zmienić "-" na "+")
+(Dodajemy znalezione bugi)
+BUGI: 
+	- gdy wpiszę w logowaniu "user" "user", wyskakuje nie obsługiwany błąd (null coś tam)
+	- gdy jest 2 użytkowników i jedene usunie post na którym jest drugi użytkownik (null exep)
+	- 	
+
+Co trzeba zrobić jeszcze:
+	- lepszy i bardziej szczegółowy wygląd istniejących logów
+	- dodać obsługę IPV6
+	- sprawdzić, czy nie trzeba dodać nowych komunikatów błędu w wiadomościach 
+		(dokładnie określić typ i format dozwolonych wiadomości)
+	- należy zadbać o prawidłową obsługę błędów każdej funkcji w programie
+ (client tryhard)
+	- Gotowe projekty skopiowane i zapisane pod nazwą w formacie nazwisko1 nazwisko2 nazwisko3 nr projektu 2017.zip należy wysłać,
+		wraz z plikiem Makefile pozwalającym na ich kompilację oraz opisem uruchomienia programu, na adres katarzyna.mazur@umcs.pl
+
 
 ### Opis protokołu ###
 Komunikaty pomiędzy serwerem a klientem wymieniane są w formie tekstowej. Pojedynczy pakiet ma następującą budowę:
