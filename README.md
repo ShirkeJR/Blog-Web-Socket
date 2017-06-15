@@ -13,7 +13,7 @@
 (Dodajemy znalezione bugi)
 BUGI: 
 * 	- 2 błędy gdy uzywam loginu którgo nie ma w bazie.
-*	- exception przy wpisaniu w login nazwa uzytkownika + złe hasło (user + x)
+*	- exception przy wpisaniu w login nazwa uzytkownika + złe hasło (user,1) / w bazie istnieje (user, user)
 * 	+ gdy jest 2 użytkowników i jedene usunie post na którym jest drugi użytkownik (null exep)
 * 	- zabronić logowania z dwóch klientów jednocześnie (najlepiej sprawdzać foreachem przy logowaniu czy jakiś klient jest już zalogowany)
 
