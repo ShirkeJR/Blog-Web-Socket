@@ -51,24 +51,16 @@ namespace Blog.Client
                 foreach (IPAddress address in hostEntry.AddressList)
                 {                   
                     IPEndPoint ipEndPoint = new IPEndPoint(address, Port);
-                    if (ipEndPoint.AddressFamily == AddressFamily.InterNetwork || true)
+                    Socket tempSocket = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+                   
+                    tempSocket.Connect(ipEndPoint);
+                    if (tempSocket.Connected)
                     {
-                        Socket tempSocket = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-                        try
-                        {
-                            tempSocket.Connect(ipEndPoint);
-                            if (tempSocket.Connected)
-                            {
-                                ConnectionSocket = tempSocket;
-                                IPEndPoint = ipEndPoint;
-                                return Ping();
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-
-                        }
+                        ConnectionSocket = tempSocket;
+                        IPEndPoint = ipEndPoint;
+                        return Ping();
                     }
+                     
                     
                 }
                 return false;
@@ -158,8 +150,8 @@ namespace Blog.Client
                 return new Frame(response, false);
 #endif
                 string[] temp = response.Split('\t');
-                if (temp.Length == 3) return new Frame(temp[1], null, false);
-                else return new Frame(temp[1], temp.Skip(2).Take(temp.Length - 3).ToArray(), false);
+                if (temp.Length == 3) return new Frame(temp[1], null, false, Convert.ToInt32(temp[0]));
+                else return new Frame(temp[1], temp.Skip(2).Take(temp.Length - 3).ToArray(), false, Convert.ToInt32(temp[0]));
             }
             catch(Exception ex)
             {

@@ -40,8 +40,9 @@ namespace Blog.Client
                     }
                 Length = cLength + 1 + pLength;
             }
+            if(!local) Length = Convert.ToInt32(arr[0]);
         }
-        public Frame(string cmd, string[] array, bool local = true)
+        public Frame(string cmd, string[] array, bool local = true, int length = 0)
         {
             Command = cmd;
             Parametres = array;
@@ -54,8 +55,9 @@ namespace Blog.Client
                 }
             Length = cLength + 1 + pLength; 
             Local = local;
+            if (!local) Length = length;
         }
-        public bool CheckFrame()
+        public bool CheckLength()
         {
             if (Local) return true;
             else
@@ -74,6 +76,7 @@ namespace Blog.Client
             if (Local) return false;
             else
             {
+                if (!CheckLength()) return true;
                 switch(Command)
                 {
                     case StringConstants.UnrecognizedCommandAnswer: { MessageBox.Show("Client request error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return true; }
@@ -112,7 +115,7 @@ namespace Blog.Client
                         }
                     case StringConstants.DisplayEntryPacketName:
                         {
-                            if (Parametres.Length < 3) return true;
+                            if (StringConstants.DisplayEntryPacketAnswerFailed.Equals(Parametres[1])) return true;
                             else return false;
                         }
                     case StringConstants.DeleteEntryPacketName:
