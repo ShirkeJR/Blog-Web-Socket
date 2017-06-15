@@ -64,32 +64,34 @@ namespace Blog.Server
 #endif
                         if (content.IndexOf(StringConstants.PacketEnding) > -1)
                         {
-                            LoggingService.Instance.AddLog("> " + ToString() + "\t-->\t" + content);
-                            if (content.StartsWith("4\tEOT\t"))
+                            if (content.Split('\t').Length < 3)
+                                defaultSend(clientSocket);
+                            else
                             {
-                                LoggingService.Instance.AddLog("*Client: " + ToString() + " closed");
+                                LoggingService.Instance.AddLog("> " + ToString() + "\t-->\t" + content);
+                                if (content.StartsWith("4\tEOT\t"))
+                                {
+                                    LoggingService.Instance.AddLog("*Client: " + ToString() + " closed");
 
-                                LoggingService.Instance.RemoveClient(this);
-                                clientSocket.Shutdown(SocketShutdown.Both);
-                                clientSocket.Close();
-                                isOpen = false;
-                                return;
-                            }
+                                    LoggingService.Instance.RemoveClient(this);
+                                    clientSocket.Shutdown(SocketShutdown.Both);
+                                    clientSocket.Close();
+                                    isOpen = false;
+                                    return;
+                                }
 
-                            content = await PacketAnalyzeService.Instance.getPacketResponse(content, this);
-                            LoggingService.Instance.AddLog("> " + ToString() + "\t<--\t" + content);
+                                content = await PacketAnalyzeService.Instance.getPacketResponse(content, this);
+                                LoggingService.Instance.AddLog("> " + ToString() + "\t<--\t" + content);
 #if IMPROVED_PACKET_ENCRYPTION
-                            content = string.Format("{0}{1}", CryptoService.Encrypt<AesManaged>(content.Substring(0, content.Length - StringConstants.PacketEnding.Length), StringConstants.SymmetricKey, StringConstants.SymmetricSalt), StringConstants.PacketEnding);
+                                content = string.Format("{0}{1}", CryptoService.Encrypt<AesManaged>(content.Substring(0, content.Length - StringConstants.PacketEnding.Length), StringConstants.SymmetricKey, StringConstants.SymmetricSalt), StringConstants.PacketEnding);
 #endif
-                            byte[] byteData = Encoding.ASCII.GetBytes(content);
-                            clientSocket.Send(byteData);
+                                byte[] byteData = Encoding.ASCII.GetBytes(content);
+                                clientSocket.Send(byteData);
+                            }
                         }
                         else
                         {
-                            content = await PacketAnalyzeService.Instance.getPacketResponse("daoijhdoiajsd", this);
-                            LoggingService.Instance.AddLog(content);
-                            byte[] byteData = Encoding.ASCII.GetBytes(content);
-                            clientSocket.Send(byteData);
+                            defaultSend(clientSocket);
                         }
                     }
                 }
@@ -99,6 +101,16 @@ namespace Blog.Server
                 }
             }
         }
+
+        public void defaultSend(Socket clientSocket)
+        {
+            string returnMessage = StringConstants.UnrecognizedCommandAnswer;
+            string content = string.Format(StringConstants.GlobalPacketFormat, returnMessage.Length + 1, returnMessage, StringConstants.PacketEnding);
+            LoggingService.Instance.AddLog(content);
+            byte[] byteData = Encoding.ASCII.GetBytes(content);
+            clientSocket.Send(byteData);
+        }
+
         public override string ToString()
         {
             return string.Format(((IPEndPoint)(_clientSocket.RemoteEndPoint)).ToString());
