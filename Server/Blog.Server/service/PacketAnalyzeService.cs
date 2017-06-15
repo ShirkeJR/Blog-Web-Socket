@@ -1,4 +1,5 @@
 ﻿using Blog.Constants;
+using Blog.Utils;
 using System;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -131,7 +132,7 @@ namespace Blog.Server
         private async Task<string> buildDisplayBlogs(string[] packet)
         {
             string paramsList = await BlogService.Instance.DisplayBlogs();
-            if (paramsList.Length > 2)
+            if (StringValidator.isValid(paramsList))
                 return string.Format(StringConstants.DisplayBlogsPacketAnswerFormat, StringConstants.DisplayBlogsPacketName, paramsList);
             else
                 return StringConstants.DisplayBlogsPacketName;
@@ -181,8 +182,13 @@ namespace Blog.Server
         private async Task<string> buildDisplayEntry(string[] packet)
         {
             int id = Convert.ToInt32(packet[2]);
-            string entry = await BlogService.Instance.DisplayEntry(id); // wpis w blogu
-            return string.Format(StringConstants.DisplayEntryPacketFormat, StringConstants.DisplayEntryPacketName, entry);
+            if (await BlogService.Instance.EntryExists(id))
+            {
+                string entry = await BlogService.Instance.DisplayEntry(id); // wpis w blogu
+                return string.Format(StringConstants.DisplayEntryPacketFormat, StringConstants.DisplayEntryPacketName, entry);
+            }
+            else
+                return string.Format(StringConstants.DisplayEntryPacketFormat, StringConstants.DisplayEntryPacketName, StringConstants.DisplayBlogPacketAnswerFailed, StringConstants.DisplayEntryPacketAnswerNOTEXIST);
         }
 
         private async Task<string> buildDeleteEntry(string[] packet, ClientData clientData)

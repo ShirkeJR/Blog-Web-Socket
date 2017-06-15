@@ -67,10 +67,15 @@ namespace Blog.Server
                 if (!client.IsOpen)
                 {
                     client.ClientSocket.Close();
-                    client.ClientThread.Abort();
                     _clients.Remove(client);
                 }
             }
+        }
+        public void disconnect()
+        {
+            isListening = false;
+            _clients.ForEach(client => client.IsOpen = false);
+            clearClosedClients();
         }
     }
 }

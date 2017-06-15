@@ -28,6 +28,7 @@ namespace Blog.Server
 
         private void btnExit_Click(object sender, EventArgs e)
         {
+            TestServer.Instance.disconnect();
             LoggingService.Instance.AddLog("*Server closing...");
             System.Environment.Exit(1);
         }

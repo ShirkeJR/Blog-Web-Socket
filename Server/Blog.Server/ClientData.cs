@@ -39,7 +39,7 @@ namespace Blog.Server
             byte[] bytes;
             int bytesRead = 0;
 
-            while (true)
+            while (isOpen)
             {
                 try
                 {
@@ -50,7 +50,6 @@ namespace Blog.Server
                         clientSocket.Shutdown(SocketShutdown.Both);
                         clientSocket.Close();
                         isOpen = false;
-                        ClientThread.Abort();
                         return;
                     }
                     bytes = new byte[clientSocket.SendBufferSize];
@@ -74,7 +73,6 @@ namespace Blog.Server
                                 clientSocket.Shutdown(SocketShutdown.Both);
                                 clientSocket.Close();
                                 isOpen = false;
-                                ClientThread.Abort();
                                 return;
                             }
 

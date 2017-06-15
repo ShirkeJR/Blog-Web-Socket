@@ -170,7 +170,11 @@ Ogólny format opisu pakietu:
 * __Opis parametru 1__: int określający ID wpisu
 * __Opis parametru 2__: string określający tytuł wpisu
 * __Opis parametru 3__: string określający treść wpisu
-
+* __Odpowiedź serwera__: `DISPLAY_ENTRY FAILED NOTEXIST`
+* __Opis odpowiedzi__: Wpis nie istnieje
+* __Ilość parametrów odpowiedzi__: 2
+* __Opis parametru 1__: string informujący o błędzie
+* __Opis parametru 2__: string informujący o braku posta
 ---
 * __Nazwa__: Pakiet usuwania wpisu z bloga
 * __Treść pakietu__: `DELETE_ENTRY 15`

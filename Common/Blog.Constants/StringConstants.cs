@@ -53,7 +53,11 @@
         // Display entry
         public const string DisplayEntryPacketName = "DISPLAY_ENTRY";
         public const string DisplayEntryPacketFormat = "{0}\t{1}";
-        public const string DisplayEntryPacketAnswerFormat = "{0}\t{1}\t{2}\t{3}";
+        public const string DisplayEntryPacketAnswerFormatOK = "{0}\t{1}\t{2}\t{3}";
+        public const string DisplayEntryPacketAnswerFormatFail = "{0}\t{1}\t{2}";
+        public const string DisplayEntryPacketAnswerFailed = "FAILED";
+        public const string DisplayEntryPacketAnswerNOTEXIST = "NOTEXIST";
+
 
         // Delete entry
         public const string DeleteEntryPacketName = "DELETE_ENTRY";

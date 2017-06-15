@@ -39,7 +39,7 @@ namespace Blog.Server
                 var result = await SqlManager.Instance.ExecuteReaderAsync(conn, query);
                 List<string> blogList = new List<string>();
                 if (!result.HasRows)
-                    return "";
+                    return string.Empty;
                 while (result.Read())
                 {
                     blogList.Add(Convert.ToString(result["Id"]) + "|" + Convert.ToString(result["BlogName"]));
@@ -53,6 +53,19 @@ namespace Blog.Server
         public async Task<bool> Exists(int id)
         {
             string query = "SELECT COUNT(*) FROM [dbo].[Posts] WHERE [UserId] = @Id";
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters["@Id"] = id;
+            using (SqlConnection conn = await SqlManager.Instance.CreateConnection())
+            {
+                var result = await SqlManager.Instance.ExecuteScalarAsync(conn, query, parameters);
+                int value = Convert.ToInt32(result.ToString());
+                return value > 0;
+            }
+        }
+
+        public async Task<bool> EntryExists(int id)
+        {
+            string query = "SELECT COUNT(*) FROM [dbo].[Posts] WHERE [Id] = @Id";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters["@Id"] = id;
             using (SqlConnection conn = await SqlManager.Instance.CreateConnection())
@@ -92,7 +105,7 @@ namespace Blog.Server
                 string entry = "";
                 var result = await SqlManager.Instance.ExecuteReaderAsync(conn, query, parameters);
                 if (!result.HasRows)
-                    return "";
+                    return string.Empty;
                 while (result.Read())
                 {
                     entry = Convert.ToString(result["Id"]) + "\t" + Convert.ToString(result["Title"]) + "\t" + Convert.ToString(result["Date"]) + "\t" + Convert.ToString(result["Content"]);
