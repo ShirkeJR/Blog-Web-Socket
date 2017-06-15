@@ -12,9 +12,9 @@
 (Gdy naprawiono, to proszę zmienić "-" na "+")
 (Dodajemy znalezione bugi)
 BUGI: 
-	- gdy wpiszę w logowaniu "user" "user", wyskakuje nie obsługiwany błąd (null coś tam)
-	- gdy jest 2 użytkowników i jedene usunie post na którym jest drugi użytkownik (null exep)
-	- 	
+* - gdy wpiszę w logowaniu "user" "user", wyskakuje nie obsługiwany błąd (null coś tam)
+* + gdy jest 2 użytkowników i jedene usunie post na którym jest drugi użytkownik (null exep)
+* - 	
 
 Co trzeba zrobić jeszcze:
 	+ lepszy i bardziej szczegółowy wygląd istniejących logów
