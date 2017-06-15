@@ -69,7 +69,6 @@ namespace Blog.Server
             {
                 _clientBox.Items.Add(clientData.ToString());
             });
-            WriteText(clientData.ToString() + " connected");
         }
 
         public void RemoveClient(ClientData clientData)
@@ -78,7 +77,6 @@ namespace Blog.Server
             {
                 _clientBox.Items.Remove(clientData.ToString());
             });
-            WriteText(clientData.ToString() + " disconnected.");
         }
 
         public void WriteException(Exception ex)

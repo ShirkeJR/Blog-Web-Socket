@@ -61,7 +61,7 @@ namespace Blog.Server
 #endif
                         if (content.IndexOf(StringConstants.PacketEnding) > -1)
                         {
-                            LoggingService.Instance.AddLog("-->\t" + content);
+                            LoggingService.Instance.AddLog("> " + ToString() + "\t-->\t" + content);
                             if (content.StartsWith("4\tEOT\t"))
                             {
                                 LoggingService.Instance.AddLog("*Client: " + ToString() + " closed");
@@ -73,7 +73,7 @@ namespace Blog.Server
                             }
 
                             content = await PacketAnalyzeService.Instance.getPacketResponse(content, this);
-                            LoggingService.Instance.AddLog("<--\t" + content);
+                            LoggingService.Instance.AddLog("> " + ToString() + "\t<--\t" + content);
 #if IMPROVED_PACKET_ENCRYPTION
                             content = string.Format("{0}{1}", CryptoService.Encrypt<AesManaged>(content.Substring(0, content.Length - StringConstants.PacketEnding.Length), StringConstants.SymmetricKey, StringConstants.SymmetricSalt), StringConstants.PacketEnding);
 #endif

@@ -43,10 +43,10 @@ namespace Blog.Server
 
         public void StartListening()
         {
-            LoggingService.Instance.AddLog("*Server starting...");
+            listenerSocket.SetSocketOption(SocketOptionLevel.IPv6, SocketOptionName.IPv6Only, 0);
             Socket s;
             listenerSocket.Bind(localEndPoint);
-            LoggingService.Instance.AddLog(string.Format("Socket bound to - "+ localEndPoint.ToString()));
+            LoggingService.Instance.AddLog(string.Format("Socket bound to - " + localEndPoint.ToString()));
             while (true)
             {
                 listenerSocket.Listen(0);
