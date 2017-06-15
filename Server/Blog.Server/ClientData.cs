@@ -14,27 +14,25 @@ namespace Blog.Server
 {
     internal class ClientData
     {
-        private Socket clientSocket = null;
-        private Thread clientThread = null;
-        private int id = -1;
-        public int Id { get { return id; } set { id = value; } }
-        public Socket ClientSocket { get { return clientSocket; } set { clientSocket = value; } }
-        public Thread ClientThread { get { return clientThread; } set { clientThread = value; } }
+        private Socket _clientSocket = null;
+        private Thread _clientThread = null;
+        private int _id = -1;
+        public int Id { get { return _id; } set { _id = value; } }
+        public Socket ClientSocket { get { return _clientSocket; } set { _clientSocket = value; } }
+        public Thread ClientThread { get { return _clientThread; } set { _clientThread = value; } }
 
         public ClientData(Socket clientSocket)
         {
-            this.clientSocket = clientSocket;
-            clientThread = new Thread(dataListening);
-            clientThread.Start(clientSocket);
+            _clientSocket = clientSocket;
+            _clientThread = new Thread(dataListening);
+            _clientThread.Start(clientSocket);
         }
 
         public async void dataListening(object cSocket)
         {
-            String content = String.Empty;
+            string content = string.Empty;
             Socket clientSocket = (Socket)cSocket;
-            LoggingService.Instance.AddLog("*Client: " +
-(((IPEndPoint)(clientSocket.RemoteEndPoint)).Address.ToString()) + ": " +
-(((IPEndPoint)(clientSocket.RemoteEndPoint)).Port.ToString()) + " open");
+            LoggingService.Instance.AddLog("*Client: " + ToString() + " open");
 
             byte[] bytes;
             int bytesRead = 0;
@@ -45,9 +43,7 @@ namespace Blog.Server
                 {
                     if (!clientSocket.Connected)
                     {
-                        LoggingService.Instance.AddLog("*Client: " +
-                            (((IPEndPoint)(clientSocket.RemoteEndPoint)).Address.ToString()) + ": " +
-                            (((IPEndPoint)(clientSocket.RemoteEndPoint)).Port.ToString()) + " closed");
+                        LoggingService.Instance.AddLog("*Client: " + ToString() + " closed");
                         LoggingService.Instance.RemoveClient(this);
                         clientSocket.Shutdown(SocketShutdown.Both);
                         clientSocket.Close();
@@ -68,9 +64,7 @@ namespace Blog.Server
                             LoggingService.Instance.AddLog("-->\t" + content);
                             if (content.StartsWith("4\tEOT\t"))
                             {
-                                LoggingService.Instance.AddLog("*Client: " +
-                                    (((IPEndPoint)(clientSocket.RemoteEndPoint)).Address.ToString()) + ": " +
-                                    (((IPEndPoint)(clientSocket.RemoteEndPoint)).Port.ToString()) + " closed");
+                                LoggingService.Instance.AddLog("*Client: " + ToString() + " closed");
 
                                 LoggingService.Instance.RemoveClient(this);
                                 clientSocket.Shutdown(SocketShutdown.Both);
@@ -79,10 +73,10 @@ namespace Blog.Server
                             }
 
                             content = await PacketAnalyzeService.Instance.getPacketResponse(content, this);
+                            LoggingService.Instance.AddLog("<--\t" + content);
 #if IMPROVED_PACKET_ENCRYPTION
                             content = string.Format("{0}{1}", CryptoService.Encrypt<AesManaged>(content.Substring(0, content.Length - StringConstants.PacketEnding.Length), StringConstants.SymmetricKey, StringConstants.SymmetricSalt), StringConstants.PacketEnding);
 #endif
-                            LoggingService.Instance.AddLog("<--\t" + content);
                             byte[] byteData = Encoding.ASCII.GetBytes(content);
                             clientSocket.Send(byteData);
                         }
@@ -95,10 +89,15 @@ namespace Blog.Server
                         }
                     }
                 }
-                catch (SocketException)
+                catch (SocketException ex)
                 {
+                    LoggingService.Instance.WriteException(ex);
                 }
             }
+        }
+        public override string ToString()
+        {
+            return string.Format("{0}:{1}", ((IPEndPoint)(_clientSocket.RemoteEndPoint)).Address.ToString(), ((IPEndPoint)(_clientSocket.RemoteEndPoint)).Port.ToString());
         }
     }
 }
