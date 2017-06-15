@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B70F27FE-9768-4651-B4C2-747B4C4F7D6D}</ProjectGuid>
+    <ProjectGuid>{5B1A6A4E-E134-46AD-82CD-6C7E3E4B3C90}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Blog.Client</RootNamespace>
-    <AssemblyName>Blog.Client</AssemblyName>
+    <RootNamespace>Blog.Server</RootNamespace>
+    <AssemblyName>Blog.Server</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -47,53 +47,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Service\AccountService.cs" />
-    <Compile Include="BlogForm.cs">
+    <Compile Include="Service\AuthManager.cs" />
+    <Compile Include="Service\BlogService.cs" />
+    <Compile Include="ClientData.cs" />
+    <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="BlogForm.Designer.cs">
-      <DependentUpon>BlogForm.cs</DependentUpon>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="ConnectionForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ConnectionForm.Designer.cs">
-      <DependentUpon>ConnectionForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Service\DataService.cs" />
-    <Compile Include="LoginForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="LoginForm.Designer.cs">
-      <DependentUpon>LoginForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Model\Frame.cs" />
-    <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Service\LoggingService.cs" />
+    <Compile Include="Service\PacketAnalyzeService.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service\ConnectionService.cs" />
-    <Compile Include="Model\User.cs" />
-    <Compile Include="RegisterForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="RegisterForm.Designer.cs">
-      <DependentUpon>RegisterForm.cs</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="BlogForm.resx">
-      <DependentUpon>BlogForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ConnectionForm.resx">
-      <DependentUpon>ConnectionForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="LoginForm.resx">
-      <DependentUpon>LoginForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
+    <Compile Include="TestServer.cs" />
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -104,9 +73,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="RegisterForm.resx">
-      <DependentUpon>RegisterForm.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -121,13 +87,17 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Common\Blog.Constants\Blog.Constants.csproj">
+    <ProjectReference Include="..\..\Common\Blog.Constants\Blog.Constants.csproj">
       <Project>{976d36ee-154d-427a-a37d-dd3f49a33e9f}</Project>
       <Name>Blog.Constants</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Common\Blog.Utils\Blog.Utils.csproj">
+    <ProjectReference Include="..\..\Common\Blog.Utils\Blog.Utils.csproj">
       <Project>{060cc0c1-017a-42b2-a643-5275cd7123c8}</Project>
       <Name>Blog.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Blog.Database\Blog.Database.csproj">
+      <Project>{98a99dcb-63dd-4e73-8759-f566d377b5eb}</Project>
+      <Name>Blog.Database</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
