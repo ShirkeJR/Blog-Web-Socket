@@ -12,19 +12,19 @@
 (Gdy naprawiono, to proszę zmienić "-" na "+")
 (Dodajemy znalezione bugi)
 BUGI: 
- 	- 2 błędy gdy uzywam loginu którgo nie ma w bazie.
-	- exception przy wpisaniu w login nazwa uzytkownika + złe hasło (user + x)
- 	+ gdy jest 2 użytkowników i jedene usunie post na którym jest drugi użytkownik (null exep)
- 	- zabronić logowania z dwóch klientów jednocześnie (najlepiej sprawdzać foreachem przy logowaniu czy jakiś klient jest już zalogowany)
+* 	- 2 błędy gdy uzywam loginu którgo nie ma w bazie.
+*	- exception przy wpisaniu w login nazwa uzytkownika + złe hasło (user + x)
+* 	+ gdy jest 2 użytkowników i jedene usunie post na którym jest drugi użytkownik (null exep)
+* 	- zabronić logowania z dwóch klientów jednocześnie (najlepiej sprawdzać foreachem przy logowaniu czy jakiś klient jest już zalogowany)
 
 Co trzeba zrobić jeszcze:
-	+ lepszy i bardziej szczegółowy wygląd istniejących logów
-	+ usuwanie clientów z kolejki na serwerze + aborcja taskó itp (chyba)
-	-/+ dodać obsługę IPV6
-	- sprawdzić, czy nie trzeba dodać nowych komunikatów błędu w wiadomościach 
+*	+ lepszy i bardziej szczegółowy wygląd istniejących logów
+*	+ usuwanie clientów z kolejki na serwerze + aborcja taskó itp (chyba)
+*	-/+ dodać obsługę IPV6
+*	- sprawdzić, czy nie trzeba dodać nowych komunikatów błędu w wiadomościach 
 		(dokładnie określić typ i format dozwolonych wiadomości)
-	- należy zadbać o prawidłową obsługę błędów każdej funkcji w programie(client tryhard)
-	- Gotowe projekty skopiowane i zapisane pod nazwą w formacie nazwisko1 nazwisko2 nazwisko3 nr projektu 2017.zip należy wysłać,
+*	- należy zadbać o prawidłową obsługę błędów każdej funkcji w programie(client tryhard)
+*	- Gotowe projekty skopiowane i zapisane pod nazwą w formacie nazwisko1 nazwisko2 nazwisko3 nr projektu 2017.zip należy wysłać,
 		wraz z plikiem Makefile pozwalającym na ich kompilację oraz opisem uruchomienia programu, na adres katarzyna.mazur@umcs.pl
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------
