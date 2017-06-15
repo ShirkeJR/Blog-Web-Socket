@@ -5,30 +5,6 @@
 * Każdy klient ma własnego bloga, na który może dodawać posty.
 * Serwer zarządza blogami klientów
 
----------------------------------------------------------------------------------------------------------------------------------------------------------
---------------------------------------------------------Do usunięcia gdy wszystko zostanie zrobione------------------------------------------------------
----------------------------------------------------------------------------------------------------------------------------------------------------------
-### ToDo & ToFix ###
-(Gdy naprawiono, to proszę zmienić "-" na "+")
-(Dodajemy znalezione bugi)
-BUGI: 
-* 	+ 2 błędy gdy uzywam loginu którgo nie ma w bazie.
-*	+ exception przy wpisaniu w login nazwa uzytkownika + złe hasło (user,1) / w bazie istnieje (user, user) --naprawiono na farta
-* 	+ gdy jest 2 użytkowników i jedene usunie post na którym jest drugi użytkownik (null exep) (Additional information: Indeks wykraczał poza granice tablicy.)
-* 	+ zabronić logowania z dwóch klientów jednocześnie (najlepiej sprawdzać foreachem przy logowaniu czy jakiś klient jest już zalogowany)
-
-Co trzeba zrobić jeszcze:
-*	+ lepszy i bardziej szczegółowy wygląd istniejących logów
-*	+ usuwanie clientów z kolejki na serwerze + aborcja taskó itp (chyba)
-*	-/+ dodać obsługę IPV6
-*	- sprawdzić, czy nie trzeba dodać nowych komunikatów błędu w wiadomościach 
-		(dokładnie określić typ i format dozwolonych wiadomości)
-*	- należy zadbać o prawidłową obsługę błędów każdej funkcji w programie(client tryhard)
-*	- Gotowe projekty skopiowane i zapisane pod nazwą w formacie nazwisko1 nazwisko2 nazwisko3 nr projektu 2017.zip należy wysłać,
-		wraz z plikiem Makefile pozwalającym na ich kompilację oraz opisem uruchomienia programu, na adres katarzyna.mazur@umcs.pl
-
---------------------------------------------------------------------------------------------------------------------------------------------------------
-
 ### Opis protokołu ###
 Komunikaty pomiędzy serwerem a klientem wymieniane są w formie tekstowej. Pojedynczy pakiet ma następującą budowę:
 `X Y ZZZZZZZZZ... END`
