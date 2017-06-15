@@ -36,6 +36,7 @@ namespace Blog.Client
                 int id = DataService.Instance.BlogsID[listBlogs.SelectedIndex];
                 string title = listBlogs.SelectedItem.ToString();
                 BlogForm child = new BlogForm(id, title);
+                child.Location = this.Location;
                 this.Hide();
                 child.ShowDialog();
                 DataService.Instance.LabelLoggedUser = labelLoggedUser;
@@ -83,6 +84,7 @@ namespace Blog.Client
             int id = Convert.ToInt32(AccountService.Instance.User.ID);
             string title = DataService.Instance.GetBlogTitle(Convert.ToInt32(AccountService.Instance.User.ID));
             BlogForm child = new BlogForm(id, title);
+            child.Location = this.Location;
             this.Hide();
             child.ShowDialog();
             DataService.Instance.LabelLoggedUser = labelLoggedUser;

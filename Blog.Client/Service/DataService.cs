@@ -66,6 +66,7 @@ namespace Blog.Client
             else
             {
                 ListBlogs.Items.Clear();
+                BlogsID.Clear();
                 return false;
             }
         }
@@ -94,6 +95,7 @@ namespace Blog.Client
             else
             {
                 ListEntries.Items.Clear();
+                EntriesID.Clear();
                 return false;
             }
         }
@@ -139,7 +141,10 @@ namespace Blog.Client
                 TxtBoxEntryText.Text = response.Parametres[3] + "\n\n" + response.Parametres[2];
                 return true;
             }
-            else return false;
+            else
+            {
+                return false;
+            } 
         }
         public bool DeleteEntry(int id)
         {

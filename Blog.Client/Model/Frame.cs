@@ -110,7 +110,11 @@ namespace Blog.Client
                                 else { MessageBox.Show("User permission error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return true; }
                             }
                         }
-                    case StringConstants.DisplayEntryPacketName: return false;
+                    case StringConstants.DisplayEntryPacketName:
+                        {
+                            if (Parametres.Length < 3) return true;
+                            else return false;
+                        }
                     case StringConstants.DeleteEntryPacketName:
                         {
                             if (StringConstants.DeleteEntryPacketAnswerFailed.Equals(Parametres[0]))

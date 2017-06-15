@@ -142,9 +142,10 @@ namespace Blog.Client
         }
         private void btnRefresh2_Click(object sender, EventArgs e)
         {
-            DataService.Instance.GetEntries(ID);
-            if(DataService.Instance.EntriesID.Contains(EID))
-                DataService.Instance.DisplayEntry(EID);
+            bool a = DataService.Instance.GetEntries(ID);
+            bool b = DataService.Instance.EntriesID.Contains(EID);
+
+            if (a && b) DataService.Instance.DisplayEntry(EID);
             else
             {
                 this.Width = 450;
