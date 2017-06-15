@@ -13,8 +13,8 @@
 (Dodajemy znalezione bugi)
 BUGI: 
 * 	- 2 błędy gdy uzywam loginu którgo nie ma w bazie.
-*	- exception przy wpisaniu w login nazwa uzytkownika + złe hasło (user,1) / w bazie istnieje (user, user)
-* 	+ gdy jest 2 użytkowników i jedene usunie post na którym jest drugi użytkownik (null exep)
+*	+ exception przy wpisaniu w login nazwa uzytkownika + złe hasło (user,1) / w bazie istnieje (user, user) --naprawiono na farta
+* 	- gdy jest 2 użytkowników i jedene usunie post na którym jest drugi użytkownik (null exep) (Additional information: Indeks wykraczał poza granice tablicy.)
 * 	- zabronić logowania z dwóch klientów jednocześnie (najlepiej sprawdzać foreachem przy logowaniu czy jakiś klient jest już zalogowany)
 
 Co trzeba zrobić jeszcze:
@@ -109,6 +109,11 @@ Ogólny format opisu pakietu:
 * __Ilość parametrów odpowiedzi__: 2
 * __Opis parametru 1__: string informujący o statusie logowania
 * __Opis parametru 2__: string informujący o zablokowaniu konta
+* __Odpowiedź serwera__: `LOGIN FAILED LOGGED`
+* __Opis odpowiedzi__: logowanie się nie powiodło, gdyż konto jest w użyciu
+* __Ilość parametrów odpowiedzi__: 2
+* __Opis parametru 1__: string informujący o statusie logowania
+* __Opis parametru 2__: string informujący o użytym koncie
 
 ---
 * __Nazwa__: Pakiet pobierania listy blogów

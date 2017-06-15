@@ -108,7 +108,7 @@ namespace Blog.Server
                 foreach(ClientData client in TestServer.Instance.Clients){
                     if(id == client.Id && id > 0)
                     {
-                        return string.Format(StringConstants.LoginPacketAnswerFormat, StringConstants.LoginPacketName, StringConstants.LoginPacketAnswerFailed, StringConstants.LoginPacketAnswerFailedInvalid);
+                        return string.Format(StringConstants.LoginPacketAnswerFormat, StringConstants.LoginPacketName, StringConstants.LoginPacketAnswerFailed, StringConstants.LoginPacketAnswerFailedLogged);
                     }
                 }
                 param1 = StringConstants.LoginPacketAnswerOK;

@@ -34,9 +34,10 @@ namespace Blog.Server
 
         public async Task<bool> Exists(string login, string password)
         {
-            string query = "SELECT COUNT(*) FROM [dbo].[Users] WHERE [Login] = @Login";
+            string query = "SELECT COUNT(*) FROM [dbo].[Users] WHERE [Login] = @Login AND [Password] = @Password";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters["@Login"] = login;
+            parameters["@Password"] = password.GetSHA256String();
             using (SqlConnection conn = await SqlManager.Instance.CreateConnection())
             {
                 var result = await SqlManager.Instance.ExecuteScalarAsync(conn, query, parameters);

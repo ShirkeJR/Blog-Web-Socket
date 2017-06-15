@@ -28,6 +28,7 @@
         public const string LoginPacketAnswerFailed = "FAILED";
         public const string LoginPacketAnswerFailedInvalid = "INVALID";
         public const string LoginPacketAnswerFailedLocked = "LOCKED";
+        public const string LoginPacketAnswerFailedLogged = "LOGGED";
 
         // Display blogs
         public const string DisplayBlogsPacketName = "DISPLAY_BLOGS";
