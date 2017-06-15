@@ -38,7 +38,7 @@ namespace Blog.Client
         public ushort Port { set; get; }
         public IPEndPoint IPEndPoint { set; get; }
         public Socket ConnectionSocket { set; get; }
-        // view
+
         
 
         public bool Connect(string host, ushort port)
@@ -49,23 +49,27 @@ namespace Blog.Client
             {
                 IPHostEntry hostEntry = Dns.GetHostEntry(Host);
                 foreach (IPAddress address in hostEntry.AddressList)
-                {
+                {                   
                     IPEndPoint ipEndPoint = new IPEndPoint(address, Port);
-                    Socket tempSocket = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-                    try
+                    if (ipEndPoint.AddressFamily == AddressFamily.InterNetworkV6)
                     {
-                        tempSocket.Connect(ipEndPoint);
-                        if (tempSocket.Connected)
+                        Socket tempSocket = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+                        try
                         {
-                            ConnectionSocket = tempSocket;
-                            IPEndPoint = ipEndPoint;
-                            return true;
+                            tempSocket.Connect(ipEndPoint);
+                            if (tempSocket.Connected)
+                            {
+                                ConnectionSocket = tempSocket;
+                                IPEndPoint = ipEndPoint;
+                                return true;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+
                         }
                     }
-                    catch (Exception ex)
-                    {
-
-                    }
+                    
                 }
                 return false;
             }
