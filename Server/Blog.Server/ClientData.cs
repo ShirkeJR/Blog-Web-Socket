@@ -50,6 +50,7 @@ namespace Blog.Server
                         clientSocket.Shutdown(SocketShutdown.Both);
                         clientSocket.Close();
                         isOpen = false;
+                        ClientThread.Abort();
                         return;
                     }
                     bytes = new byte[clientSocket.SendBufferSize];
@@ -73,6 +74,7 @@ namespace Blog.Server
                                 clientSocket.Shutdown(SocketShutdown.Both);
                                 clientSocket.Close();
                                 isOpen = false;
+                                ClientThread.Abort();
                                 return;
                             }
 
