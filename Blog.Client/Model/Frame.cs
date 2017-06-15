@@ -17,11 +17,19 @@ namespace Blog.Client
         public Frame(string cipher, bool local = true)
         {
             Local = local;
-            string temp = CryptoService.Decrypt<AesManaged>(cipher.Substring(0, cipher.Length - StringConstants.PacketEnding.Length), StringConstants.SymmetricKey, StringConstants.SymmetricSalt);
+            string temp = "";
+            try
+            {
+                temp = CryptoService.Decrypt<AesManaged>(cipher.Substring(0, cipher.Length - StringConstants.PacketEnding.Length), StringConstants.SymmetricKey, StringConstants.SymmetricSalt);
+            }
+            catch
+            {
+                temp = "EMPTY";
+            }
             temp += StringConstants.PacketEnding;
             string[] arr = temp.Split('\t');
 
-            if (arr.Length < 3) Command = "EMPTY";
+            if (arr.Length < 3) { Command = "EMPTY"; Length = 0; Parametres = null; }
             if (arr.Length == 3)
             {
                 Command = arr[1];
@@ -42,7 +50,7 @@ namespace Blog.Client
                     }
                 Length = cLength + 1 + pLength;
             }
-            if(!local) Length = Convert.ToInt32(arr[0]);
+            if(!local && arr.Length >= 3) Length = Convert.ToInt32(arr[0]);
         }
         public Frame(string cmd, string[] array, bool local = true, int length = 0)
         {
