@@ -15,7 +15,7 @@ BUGI:
 * 	+ 2 błędy gdy uzywam loginu którgo nie ma w bazie.
 *	+ exception przy wpisaniu w login nazwa uzytkownika + złe hasło (user,1) / w bazie istnieje (user, user) --naprawiono na farta
 * 	+ gdy jest 2 użytkowników i jedene usunie post na którym jest drugi użytkownik (null exep) (Additional information: Indeks wykraczał poza granice tablicy.)
-* 	- zabronić logowania z dwóch klientów jednocześnie (najlepiej sprawdzać foreachem przy logowaniu czy jakiś klient jest już zalogowany)
+* 	+ zabronić logowania z dwóch klientów jednocześnie (najlepiej sprawdzać foreachem przy logowaniu czy jakiś klient jest już zalogowany)
 
 Co trzeba zrobić jeszcze:
 *	+ lepszy i bardziej szczegółowy wygląd istniejących logów
