@@ -65,6 +65,9 @@ namespace Blog.Server
             {
                 if (!client.IsOpen)
                 {
+                    client.ClientSocket.Shutdown(SocketShutdown.Both);
+                    client.ClientSocket.Close();
+                    client.ClientThread.Abort();
                     _clients.Remove(client);
                 }
             }

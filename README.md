@@ -18,6 +18,7 @@ BUGI:
 
 Co trzeba zrobić jeszcze:
 	+ lepszy i bardziej szczegółowy wygląd istniejących logów
+	+ usuwanie clientów z kolejki na serwerze + aborcja taskó itp (chyba)
 	-/+ dodać obsługę IPV6
 	- sprawdzić, czy nie trzeba dodać nowych komunikatów błędu w wiadomościach 
 		(dokładnie określić typ i format dozwolonych wiadomości)
