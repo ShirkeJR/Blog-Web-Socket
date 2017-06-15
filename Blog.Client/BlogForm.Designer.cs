@@ -318,7 +318,7 @@
             this.Controls.Add(this.txtBoxBlogTitle);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "BlogForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Blog";
             this.panelUserControl.ResumeLayout(false);
             this.panelLogged.ResumeLayout(false);

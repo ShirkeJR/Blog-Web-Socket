@@ -13,23 +13,17 @@ namespace Blog.Server
 {
     public partial class Form1 : Form
     {
-        private bool running;
         public Form1()
         {
             InitializeComponent();
             LoggingService.Instance.Initialize(logBox, clientBox);
-            running = false;
         }
 
         private async void btnStart_Click(object sender, EventArgs e)
         {
             LoggingService.Instance.AddLog("*Server starting...");
             btnStart.Enabled = false;
-            if (!running)
-            {
-                running = true;
-                await Task.Run(() => TestServer.Instance.StartListening());
-            }  
+            await Task.Run(() => TestServer.Instance.StartListening());
         }
 
         private void btnExit_Click(object sender, EventArgs e)
@@ -37,5 +31,6 @@ namespace Blog.Server
             LoggingService.Instance.AddLog("*Server closing...");
             System.Environment.Exit(1);
         }
+
     }
 }

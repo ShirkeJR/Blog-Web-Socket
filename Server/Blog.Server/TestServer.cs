@@ -40,20 +40,33 @@ namespace Blog.Server
         private IPHostEntry ipHostInfo;
         private IPAddress ipAddress;
         private IPEndPoint localEndPoint;
-
+        private bool isListening = true;
+        
         public void StartListening()
         {
             listenerSocket.SetSocketOption(SocketOptionLevel.IPv6, SocketOptionName.IPv6Only, 0);
             Socket s;
             listenerSocket.Bind(localEndPoint);
             LoggingService.Instance.AddLog(string.Format("Socket bound to - " + localEndPoint.ToString()));
-            while (true)
+            while (isListening)
             {
                 listenerSocket.Listen(0);
                 s = listenerSocket.Accept();
                 ClientData clientData = new ClientData(s);
                 LoggingService.Instance.AddClient(clientData);
                 _clients.Add(clientData);
+                clearClosedClients();
+            }
+        }
+
+        public void clearClosedClients()
+        {
+            foreach (var client in _clients.ToArray())
+            {
+                if (!client.IsOpen)
+                {
+                    _clients.Remove(client);
+                }
             }
         }
     }

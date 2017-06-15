@@ -16,10 +16,12 @@ namespace Blog.Server
     {
         private Socket _clientSocket = null;
         private Thread _clientThread = null;
+        private bool isOpen = true;
         private int _id = -1;
         public int Id { get { return _id; } set { _id = value; } }
         public Socket ClientSocket { get { return _clientSocket; } set { _clientSocket = value; } }
         public Thread ClientThread { get { return _clientThread; } set { _clientThread = value; } }
+        public bool IsOpen { get { return isOpen; } set { isOpen = value; } }
 
         public ClientData(Socket clientSocket)
         {
@@ -47,6 +49,7 @@ namespace Blog.Server
                         LoggingService.Instance.RemoveClient(this);
                         clientSocket.Shutdown(SocketShutdown.Both);
                         clientSocket.Close();
+                        isOpen = false;
                         return;
                     }
                     bytes = new byte[clientSocket.SendBufferSize];
@@ -69,6 +72,7 @@ namespace Blog.Server
                                 LoggingService.Instance.RemoveClient(this);
                                 clientSocket.Shutdown(SocketShutdown.Both);
                                 clientSocket.Close();
+                                isOpen = false;
                                 return;
                             }
 

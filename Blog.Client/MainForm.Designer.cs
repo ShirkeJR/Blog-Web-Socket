@@ -199,7 +199,7 @@
             this.Controls.Add(this.listBlogs);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "MainForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Main Menu";
             this.panelLogged.ResumeLayout(false);
             this.panelGuest.ResumeLayout(false);
