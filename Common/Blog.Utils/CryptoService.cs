@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Blog.Constants;
+using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -46,6 +47,7 @@ namespace Blog.Utils
             }
         }
 
+
         public static string Decrypt<T>(string text, string password, string salt)
            where T : SymmetricAlgorithm, new()
         {
@@ -68,6 +70,24 @@ namespace Blog.Utils
                     }
                 }
             }
+        }
+
+        public static bool isEncrypted(string content)
+        {
+            try
+            {
+                Decrypt<AesManaged>(content.Substring(0, content.Length - StringConstants.PacketEnding.Length), StringConstants.SymmetricKey, StringConstants.SymmetricSalt);
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        private static void Decrypt<T>(string v, object symmetricKey, object symmetricSalt)
+        {
+            throw new NotImplementedException();
         }
     }
 }
