@@ -87,12 +87,15 @@ namespace Blog.Server
 
         public void WriteText(string text)
         {
-            if (!_logginEnabled) return;
-            string path = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), _logFileName);
-            using (StreamWriter sw = new StreamWriter(path, true))
-                sw.WriteLine(text);
-        }
+            lock (_threadSyncLock)
+            {
+                if (!_logginEnabled) return;
+                string path = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), _logFileName);
+                using (StreamWriter sw = new StreamWriter(path, true))
+                    sw.WriteLine(text);
+            }
 
+        }
         #endregion Metody
     }
 }
