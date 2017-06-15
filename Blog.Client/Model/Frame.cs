@@ -20,6 +20,8 @@ namespace Blog.Client
             string temp = CryptoService.Decrypt<AesManaged>(cipher.Substring(0, cipher.Length - StringConstants.PacketEnding.Length), StringConstants.SymmetricKey, StringConstants.SymmetricSalt);
             temp += StringConstants.PacketEnding;
             string[] arr = temp.Split('\t');
+
+            if (arr.Length < 3) Command = "EMPTY";
             if (arr.Length == 3)
             {
                 Command = arr[1];
@@ -27,7 +29,7 @@ namespace Blog.Client
                 Length = Command.Length + 1;
 
             }
-            else
+            if (arr.Length > 3)
             {
                 Command = arr[1];
                 Parametres = arr.Skip(2).Take(arr.Length - 3).ToArray();
