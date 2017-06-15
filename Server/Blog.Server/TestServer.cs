@@ -14,11 +14,11 @@ namespace Blog.Server
 
         private TestServer()
         {
-            listenerSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            listenerSocket = new Socket(AddressFamily.InterNetworkV6, SocketType.Stream, ProtocolType.Tcp);
             _clients = new List<ClientData>();
             ipHostInfo = Dns.Resolve(Dns.GetHostName());
             ipAddress = ipHostInfo.AddressList[0];
-            localEndPoint = new IPEndPoint(ipAddress, Int16Constants.DefaultPort);
+            localEndPoint = new IPEndPoint(IPAddress.Any, Int16Constants.DefaultPort);
         }
 
         public static TestServer Instance
@@ -65,7 +65,6 @@ namespace Blog.Server
             {
                 if (!client.IsOpen)
                 {
-                    client.ClientSocket.Shutdown(SocketShutdown.Both);
                     client.ClientSocket.Close();
                     client.ClientThread.Abort();
                     _clients.Remove(client);
