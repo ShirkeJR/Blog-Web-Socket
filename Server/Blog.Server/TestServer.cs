@@ -43,9 +43,10 @@ namespace Blog.Server
 
         public void StartListening()
         {
+            LoggingService.Instance.AddLog("*Server starting...");
             Socket s;
             listenerSocket.Bind(localEndPoint);
-            LoggingService.Instance.AddLog(string.Format("Socket bound to {0}:{1}", localEndPoint.Address, localEndPoint.Port));
+            LoggingService.Instance.AddLog(string.Format("Socket bound to - "+ localEndPoint.ToString()));
             while (true)
             {
                 listenerSocket.Listen(0);

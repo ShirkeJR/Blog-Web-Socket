@@ -62,7 +62,6 @@
             this.txtBoxHost.Name = "txtBoxHost";
             this.txtBoxHost.Size = new System.Drawing.Size(176, 20);
             this.txtBoxHost.TabIndex = 2;
-            this.txtBoxHost.Text = "192.168.0.11";
             // 
             // txtBoxPort
             // 
@@ -70,7 +69,6 @@
             this.txtBoxPort.Name = "txtBoxPort";
             this.txtBoxPort.Size = new System.Drawing.Size(176, 20);
             this.txtBoxPort.TabIndex = 3;
-            this.txtBoxPort.Text = "11000";
             // 
             // btnConnect
             // 

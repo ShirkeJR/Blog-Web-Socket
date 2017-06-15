@@ -23,7 +23,6 @@ namespace Blog.Server
 
         private async void btnStart_Click(object sender, EventArgs e)
         {
-            LoggingService.Instance.AddLog("*Server starting...");
             btnStart.Enabled = false;
             if (!running)
             {

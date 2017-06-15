@@ -18,8 +18,7 @@ Co trzeba zrobić jeszcze:
 	- dodać obsługę IPV6
 	- sprawdzić, czy nie trzeba dodać nowych komunikatów błędu w wiadomościach 
 		(dokładnie określić typ i format dozwolonych wiadomości)
-	- należy zadbać o prawidłową obsługę błędów każdej funkcji w programie
- (client tryhard)
+	- należy zadbać o prawidłową obsługę błędów każdej funkcji w programie(client tryhard)
 	- Gotowe projekty skopiowane i zapisane pod nazwą w formacie nazwisko1 nazwisko2 nazwisko3 nr projektu 2017.zip należy wysłać,
 		wraz z plikiem Makefile pozwalającym na ich kompilację oraz opisem uruchomienia programu, na adres katarzyna.mazur@umcs.pl
 

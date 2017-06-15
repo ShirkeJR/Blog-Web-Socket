@@ -97,7 +97,7 @@ namespace Blog.Server
         }
         public override string ToString()
         {
-            return string.Format("{0}:{1}", ((IPEndPoint)(_clientSocket.RemoteEndPoint)).Address.ToString(), ((IPEndPoint)(_clientSocket.RemoteEndPoint)).Port.ToString());
+            return string.Format(((IPEndPoint)(_clientSocket.RemoteEndPoint)).ToString());
         }
     }
 }

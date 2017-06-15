@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Blog.Constants;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -15,6 +17,8 @@ namespace Blog.Client
         public ConnectionForm()
         {
             InitializeComponent();
+            txtBoxHost.Text = Convert.ToString(Dns.Resolve(Dns.GetHostName()).AddressList[0]);
+            txtBoxPort.Text = Convert.ToString(Int16Constants.DefaultPort);
         }
         private void btnConnect_Click(object sender, EventArgs e)
         {
