@@ -89,6 +89,7 @@ namespace Blog.Client
                             else
                             {
                                 if(StringConstants.LoginPacketAnswerFailedInvalid.Equals(Parametres[1])) { MessageBox.Show("Wrong login or password", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return true; }
+                                else if(StringConstants.LoginPacketAnswerFailedLogged.Equals(Parametres[1])) { MessageBox.Show("Someone is already logged on this account", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return true; }
                                 else { MessageBox.Show("Account blocked", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return true; }
                             }
                         }
