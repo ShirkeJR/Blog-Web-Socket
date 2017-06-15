@@ -40,11 +40,12 @@ namespace Blog.Server
         private IPHostEntry ipHostInfo;
         private IPAddress ipAddress;
         private IPEndPoint localEndPoint;
-        private bool isListening = true;
+        private bool isListening;
         public List<ClientData> Clients { get { return _clients; } set { _clients = value; } }
 
         public void StartListening()
         {
+            isListening = true;
             listenerSocket.SetSocketOption(SocketOptionLevel.IPv6, SocketOptionName.IPv6Only, 0);
             Socket s;
             listenerSocket.Bind(localEndPoint);
@@ -71,7 +72,7 @@ namespace Blog.Server
                 }
             }
         }
-        public void disconnect()
+        public void Disconnect()
         {
             isListening = false;
             _clients.ForEach(client => client.IsOpen = false);
