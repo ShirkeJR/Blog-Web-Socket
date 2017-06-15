@@ -32,7 +32,6 @@ namespace Blog.Client
                 else
                 {
                     if (AccountService.Instance.Register(login, pass1)) this.DialogResult = DialogResult.OK;
-                    else MessageBox.Show("Register error", "Register error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }               
             }
             else MessageBox.Show("Both passwords must be equal", "Password error", MessageBoxButtons.OK, MessageBoxIcon.Error);
