@@ -51,7 +51,7 @@ namespace Blog.Client
                 foreach (IPAddress address in hostEntry.AddressList)
                 {                   
                     IPEndPoint ipEndPoint = new IPEndPoint(address, Port);
-                    if (ipEndPoint.AddressFamily == AddressFamily.InterNetworkV6)
+                    if (ipEndPoint.AddressFamily == AddressFamily.InterNetworkV6 || true)
                     {
                         Socket tempSocket = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
                         try
@@ -61,7 +61,7 @@ namespace Blog.Client
                             {
                                 ConnectionSocket = tempSocket;
                                 IPEndPoint = ipEndPoint;
-                                return true;
+                                return Ping();
                             }
                         }
                         catch (Exception ex)
@@ -105,6 +105,19 @@ namespace Blog.Client
             }
             else return false;
         }
+        public bool Ping()
+        {
+            if (!ConnectionService.Instance.Connected()) return false;
+
+            Frame request = new Frame(StringConstants.PingPacketName, null);
+            Frame response = null;
+
+            SendFrame(request);
+            response = ReceiveFrame();
+
+            return (!response.CheckError());
+        }
+    
         public bool SendFrame(Frame frame)
         {
             try
@@ -112,8 +125,7 @@ namespace Blog.Client
                 if (!ConnectionSocket.Connected) return false;
 
 #if IMPROVED_PACKET_ENCRYPTION
-                var frameString = frame.ToString();
-                string toSend = string.Format("{0}{1}", CryptoService.Encrypt<AesManaged>(frameString.Substring(0, frameString.Length - StringConstants.PacketEnding.Length), StringConstants.SymmetricKey, StringConstants.SymmetricSalt), StringConstants.PacketEnding);
+                string toSend = frame.EncryptFrame();
 #else
                 string toSend = frame.ToString();
 #endif
@@ -125,31 +137,6 @@ namespace Blog.Client
             }
             catch(Exception)
             {
-                return false;
-            }
-        }
-        public bool ReceiveFrame(Frame frame)
-        {
-            try
-            {
-                int receivedBytesCount = 0;
-                string response = "";
-                Byte[] bytesReceived = new Byte[1];
-
-                while (!response.EndsWith(StringConstants.PacketEnding))
-                {
-                    receivedBytesCount += ConnectionSocket.Receive(bytesReceived, bytesReceived.Length, 0);
-                    response = response + Encoding.ASCII.GetString(bytesReceived, 0, 1);
-                }
-
-                string[] temp = response.Split('\t');
-                if (temp.Length == 3) frame = new Frame(temp[1], null, false);  
-                else frame = new Frame(temp[1], temp.Skip(2).Take(temp.Length - 3).ToArray(), false);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                frame = new Frame("EMPTY", null, false);
                 return false;
             }
         }
@@ -168,8 +155,7 @@ namespace Blog.Client
                 }
 
 #if IMPROVED_PACKET_ENCRYPTION
-                var response2 = CryptoService.Decrypt<AesManaged>(response.Substring(0, response.Length - StringConstants.PacketEnding.Length), StringConstants.SymmetricKey, StringConstants.SymmetricSalt);
-                response = string.Format("{0}{1}", response2, response.Substring(response.Length - StringConstants.PacketEnding.Length));
+                return new Frame(response, false);
 #endif
                 string[] temp = response.Split('\t');
                 if (temp.Length == 3) return new Frame(temp[1], null, false);

@@ -161,11 +161,11 @@ namespace Blog.Client
         public void GetLoggedUser()
         {
             if (AccountService.Instance.Logged) LabelLoggedUser.Text = "Logged as: " + AccountService.Instance.User.Login.ToString();
-            else LabelLoggedUser.Text = "Logged as: -----------";
+            else LabelLoggedUser.Text = "";
         }    
         public string GetBlogTitle(int id)
         {
-            if (BlogsID.Contains(id)) return ListBlogs.Items[BlogsID.IndexOf(id)].ToString();
+            if (BlogsID.Contains(id)) return ListBlogs.Items[BlogsID.IndexOf(id)].ToString().Remove(0, 3);
             else return "";
         }
     }

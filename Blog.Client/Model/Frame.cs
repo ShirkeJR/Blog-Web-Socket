@@ -1,5 +1,8 @@
 ﻿using Blog.Constants;
+using Blog.Utils;
 using System;
+using System.Linq;
+using System.Security.Cryptography;
 using System.Windows.Forms;
 
 namespace Blog.Client
@@ -11,6 +14,33 @@ namespace Blog.Client
         public string[] Parametres { get; set; }
         public bool Local { get; set; }
 
+        public Frame(string cipher, bool local = true)
+        {
+            Local = local;
+            string temp = CryptoService.Decrypt<AesManaged>(cipher.Substring(0, cipher.Length - StringConstants.PacketEnding.Length), StringConstants.SymmetricKey, StringConstants.SymmetricSalt);
+            temp += StringConstants.PacketEnding;
+            string[] arr = temp.Split('\t');
+            if (arr.Length == 3)
+            {
+                Command = arr[1];
+                Parametres = null;
+                Length = Command.Length + 1;
+
+            }
+            else
+            {
+                Command = arr[1];
+                Parametres = arr.Skip(2).Take(arr.Length - 3).ToArray();
+                int pLength = 0;
+                int cLength = Command.Length;
+                if (Parametres != null)
+                    foreach (var param in Parametres)
+                    {
+                        pLength += param.Length + 1;
+                    }
+                Length = cLength + 1 + pLength;
+            }
+        }
         public Frame(string cmd, string[] array, bool local = true)
         {
             Command = cmd;
@@ -94,10 +124,19 @@ namespace Blog.Client
                             if (StringConstants.ChangeBlogNamePacketAnswerOK.Equals(Parametres[0])) return false;
                             else { MessageBox.Show("Failed to change blog name", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return true; }
                         }
+                    case StringConstants.PingPacketAnswer: return false;
                     case "EMPTY": { MessageBox.Show("Failed to get response from server", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return true; }
                     default: { MessageBox.Show("Server response error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); return true; } 
                 }
             }
+        }
+        public string EncryptFrame()
+        {
+            string temp = "";
+            if (Parametres != null) temp = string.Format(string.Format("{0}\t", StringConstants.GlobalPacketFormat), Length, Command, string.Join("\t", Parametres));
+            else temp = string.Format("{0}\t{1}\t", Length, Command);
+
+            return string.Format("{0}{1}", CryptoService.Encrypt<AesManaged>(temp, StringConstants.SymmetricKey, StringConstants.SymmetricSalt), StringConstants.PacketEnding);
         }
         override public string ToString()
         {

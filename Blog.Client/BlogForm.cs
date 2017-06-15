@@ -14,12 +14,13 @@ namespace Blog.Client
     {
         public string Title { set; get; }
         public int ID { set; get; }
+        public int EID { set; get; }
 
         public BlogForm(int id, string title)
         {
             InitializeComponent();
             ID = id;
-            Title = title.Remove(0, 1);
+            Title = title.Remove(0, 3);
             DataService.Instance.TxtBoxBlogTitle = txtBoxBlogTitle;
             DataService.Instance.ListEntries = listEntries;
             DataService.Instance.LabelLoggedUser = labelLoggedUser;
@@ -40,6 +41,9 @@ namespace Blog.Client
             txtBoxBlogTitle.SelectionLength = 0;
             txtBoxBlogTitle.SelectionStart = 0;
             txtBoxBlogTitle.Enabled = false;
+
+            txtBoxEntryTitle.ReadOnly = true;
+            txtBoxEntryText.ReadOnly = true;
 
             if (AccountService.Instance.Logged)
             {
@@ -67,21 +71,13 @@ namespace Blog.Client
                 panelEdit.Visible = false;
                 panelGuest.Visible = true;
             }
-            //this.Width = 450;
-
-            //txtBoxEntryText.Visible = false;
-            //txtBoxEntryTitle.Visible = false;
-            //panelUserControl2.Visible = false;
-            //panelEdit.Visible = false;
-            //panelLogged2.Visible = false;
-
-            //panelUserControl.Visible = true;
         }
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            DataService.Instance.GetLoggedUser();
-            txtBoxBlogTitle.Text = Title;
+            DataService.Instance.GetLoggedUser();          
             DataService.Instance.GetEntries(ID);
+            Title = DataService.Instance.GetBlogTitle(ID);
+            txtBoxBlogTitle.Text = Title;
         }
         private void btnReturn_Click(object sender, EventArgs e)
         {
@@ -146,7 +142,17 @@ namespace Blog.Client
         }
         private void btnRefresh2_Click(object sender, EventArgs e)
         {
-            DataService.Instance.DisplayEntry(DataService.Instance.EID);
+            DataService.Instance.GetEntries(ID);
+            if(DataService.Instance.EntriesID.Contains(EID))
+                DataService.Instance.DisplayEntry(EID);
+            else
+            {
+                this.Width = 450;
+                this.Height = 650;
+                txtBoxEntryText.Visible = false;
+                txtBoxEntryTitle.Visible = false;
+                panelUserControl2.Visible = false;
+            }
         }
         private void btnEditSave_Click(object sender, EventArgs e)
         {
@@ -210,15 +216,18 @@ namespace Blog.Client
         {
             if (listEntries.SelectedItem != null)
             {
-                int id = DataService.Instance.EntriesID[listEntries.SelectedIndex];
+                EID = DataService.Instance.EntriesID[listEntries.SelectedIndex];
 
-                DataService.Instance.DisplayEntry(id);
+                DataService.Instance.DisplayEntry(EID);
 
                 this.Width = 900;
                 this.Height = 650;
                 txtBoxEntryText.Visible = true;
                 txtBoxEntryTitle.Visible = true;
-                panelUserControl2.Visible = true;               
+                panelUserControl2.Visible = true;
+
+                txtBoxEntryTitle.ReadOnly = true;
+                txtBoxEntryText.ReadOnly = true;
             }
         }
     }
