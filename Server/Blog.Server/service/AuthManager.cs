@@ -34,6 +34,19 @@ namespace Blog.Server
 
         public async Task<bool> Exists(string login, string password)
         {
+            string query = "SELECT COUNT(*) FROM [dbo].[Users] WHERE [Login] = @Login";
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters["@Login"] = login;
+            using (SqlConnection conn = await SqlManager.Instance.CreateConnection())
+            {
+                var result = await SqlManager.Instance.ExecuteScalarAsync(conn, query, parameters);
+                int value = Convert.ToInt32(result.ToString());
+                return value > 0;
+            }
+        }
+
+        public async Task<bool> AccountExist(string login, string password)
+        {
             string query = "SELECT COUNT(*) FROM [dbo].[Users] WHERE [Login] = @Login AND [Password] = @Password";
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             parameters["@Login"] = login;
@@ -80,6 +93,9 @@ namespace Blog.Server
         public async Task<int> Login(string login, string password)
         {
             if (!(await Exists(login, password)))
+                return -1;
+
+            if (!(await AccountExist(login, password)))
                 return -1;
 
             string query = "SELECT [Id] FROM [dbo].[Users] WHERE [Login] = @Login AND [Password] = @Password AND [IsLocked] = 0";

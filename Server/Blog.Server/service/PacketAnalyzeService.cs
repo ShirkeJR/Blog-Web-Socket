@@ -36,7 +36,14 @@ namespace Blog.Server
             string[] packet = content.Split('\t');
             int packetSize = Convert.ToInt32(packet[0]);
             string packetType = packet[1];
+            int size = (content.Length - packet[0].Length - 1) - StringConstants.PacketEnding.Length;
             string returnMessage;
+            if (Convert.ToInt32(packet[0]) != size)
+            {
+                returnMessage = buildDefault(packet);
+                content = string.Format(StringConstants.GlobalPacketFormat, returnMessage.Length + 1, returnMessage, StringConstants.PacketEnding);
+                return content;
+            }
             switch (packetType)
             {
                 case StringConstants.RegisterPacketName:
