@@ -51,7 +51,7 @@ namespace Blog.Client
                 foreach (IPAddress address in hostEntry.AddressList)
                 {                   
                     IPEndPoint ipEndPoint = new IPEndPoint(address, Port);
-                    if (ipEndPoint.AddressFamily == AddressFamily.InterNetworkV6 || true)
+                    if (ipEndPoint.AddressFamily == AddressFamily.InterNetworkV6)
                     {
                         Socket tempSocket = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
                         try
