@@ -98,29 +98,37 @@ namespace Blog.Server
 
         public string receiveData(Socket clientSocket)
         {
-            int receivedBytesCount = 0;
-            string content = "";
+            string content = string.Empty;
             byte[] bytesReceived = new byte[1];
 
             while (!content.EndsWith(StringConstants.PacketEnding))
             {
-                    receivedBytesCount += clientSocket.Receive(bytesReceived, bytesReceived.Length, 0);
-                    content = content + Encoding.ASCII.GetString(bytesReceived, 0, 1);
+                clientSocket.Receive(bytesReceived, bytesReceived.Length, 0);
+                content = content + Encoding.ASCII.GetString(bytesReceived, 0, 1);
             }
             return content;
         }
 
-        public bool sendData(Socket clientSocket, string content)
+        public void sendData(Socket clientSocket, string content)
         {
             byte[] byteData = Encoding.ASCII.GetBytes(content);
-            int bytesCount = content.Length;
             int bytesSend = 0;
 
             bytesSend = clientSocket.Send(byteData);
-            if (bytesSend == bytesCount)
-                return true;
-            else
-                return false;
+            while (bytesSend != byteData.Length)
+            {
+                LoggingService.Instance.AddLog("Error with sending message, client: " + ToString());
+                bytesSend = clientSocket.Send(byteData);
+                if (!clientSocket.Connected)
+                {
+                    LoggingService.Instance.AddLog("*Client: " + ToString() + " closed");
+                    LoggingService.Instance.RemoveClient(this);
+                    clientSocket.Shutdown(SocketShutdown.Both);
+                    clientSocket.Close();
+                    isOpen = false;
+                    return;
+                }
+            }
         }
 
 
