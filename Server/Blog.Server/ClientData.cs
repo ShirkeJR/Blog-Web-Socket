@@ -36,9 +36,6 @@ namespace Blog.Server
             Socket clientSocket = (Socket)cSocket;
             LoggingService.Instance.AddLog("*Client: " + ToString() + " open");
 
-            byte[] bytes;
-            int bytesRead = 0;
-
             while (isOpen)
             {
                 try
@@ -52,12 +49,9 @@ namespace Blog.Server
                         isOpen = false;
                         return;
                     }
-                    bytes = new byte[clientSocket.SendBufferSize];
-                    bytesRead = clientSocket.Receive(bytes);
 
-                    if (bytesRead > 0)
-                    {
-                        content = Encoding.ASCII.GetString(bytes, 0, bytesRead);
+                    content = receiveData(clientSocket);
+
                         if (CryptoService.isEncrypted(content))
                         {
 #if IMPROVED_PACKET_ENCRYPTION
@@ -74,7 +68,6 @@ namespace Blog.Server
                                     if (content.StartsWith("4\tEOT\t"))
                                     {
                                         LoggingService.Instance.AddLog("*Client: " + ToString() + " closed");
-
                                         LoggingService.Instance.RemoveClient(this);
                                         clientSocket.Shutdown(SocketShutdown.Both);
                                         clientSocket.Close();
@@ -87,16 +80,14 @@ namespace Blog.Server
 #if IMPROVED_PACKET_ENCRYPTION
                                     content = string.Format("{0}{1}", CryptoService.Encrypt<AesManaged>(content.Substring(0, content.Length - StringConstants.PacketEnding.Length), StringConstants.SymmetricKey, StringConstants.SymmetricSalt), StringConstants.PacketEnding);
 #endif
-                                    byte[] byteData = Encoding.ASCII.GetBytes(content);
-                                    clientSocket.Send(byteData);
-                                }
+                                    sendData(clientSocket, content);
+                            }
                             }
                             else
                                 defaultSend(clientSocket);
                         }
                         else
                             defaultSend(clientSocket);
-                    }
                 }
                 catch (SocketException ex)
                 {
@@ -105,13 +96,40 @@ namespace Blog.Server
             }
         }
 
+        public string receiveData(Socket clientSocket)
+        {
+            int receivedBytesCount = 0;
+            string content = "";
+            byte[] bytesReceived = new byte[1];
+
+            while (!content.EndsWith(StringConstants.PacketEnding))
+            {
+                    receivedBytesCount += clientSocket.Receive(bytesReceived, bytesReceived.Length, 0);
+                    content = content + Encoding.ASCII.GetString(bytesReceived, 0, 1);
+            }
+            return content;
+        }
+
+        public bool sendData(Socket clientSocket, string content)
+        {
+            byte[] byteData = Encoding.ASCII.GetBytes(content);
+            int bytesCount = content.Length;
+            int bytesSend = 0;
+
+            bytesSend = clientSocket.Send(byteData);
+            if (bytesSend == bytesCount)
+                return true;
+            else
+                return false;
+        }
+
+
         public void defaultSend(Socket clientSocket)
         {
             string returnMessage = StringConstants.UnrecognizedCommandAnswer;
             string content = string.Format(StringConstants.GlobalPacketFormat, returnMessage.Length + 1, returnMessage, StringConstants.PacketEnding);
             LoggingService.Instance.AddLog(content);
-            byte[] byteData = Encoding.ASCII.GetBytes(content);
-            clientSocket.Send(byteData);
+            sendData(clientSocket, content);
         }
 
         public override string ToString()

@@ -59,6 +59,8 @@ namespace Blog.Server
                 _clients.Add(clientData);
                 clearClosedClients();
             }
+            listenerSocket.Shutdown(SocketShutdown.Both);
+            listenerSocket.Close();
         }
 
         public void clearClosedClients()
